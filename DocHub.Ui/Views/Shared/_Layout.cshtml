@@ -1,0 +1,54 @@
+﻿@using DocHub.Core.Enums.Identity;
+@using Microsoft.AspNetCore.Identity;
+@using DocHub.Core.Domain.Entities.IdentityEntities;
+@using System.Security.Claims;
+
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <title>DocHub</title>
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-white antialiased">
+
+    <nav class="bg-blue-500 p-4">
+        <div class="container mx-auto flex justify-between items-center flex-wrap">
+            <!-- Dodano klasę flex-wrap -->
+            <!-- Logo -->
+            <a asp-controller="Home" asp-action="Index" class="text-white text-lg font-bold mb-4 md:mb-0 md:mr-4">DocHub</a>
+            
+            <!-- Navigation Links -->
+            <!-- Log In and Register Buttons -->
+            @if (User.Identity.IsAuthenticated == false)
+            {
+            <div class="space-x-4">
+                <a asp-controller="Account" asp-action="LogIn" class="bg-white text-blue-500 px-4 py-2 rounded-full hover:bg-gray-200 transition duration-300">Log In</a>
+                <a asp-controller="Account" asp-action="Register" class="bg-white text-blue-500 px-4 py-2 rounded-full hover:bg-gray-200 transition duration-300">Register</a>
+                </div>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="EditAccount">@User.Identity.Name</a>
+                <div class="space-x-4">
+                    <a asp-controller="Account" asp-action="LogOut" class="bg-white text-blue-500 px-4 py-2 rounded-full hover:bg-gray-200 transition duration-300">Log Out</a>
+                    
+                </div>
+            }
+            @if (User.Identity.IsAuthenticated && User.IsInRole(UserRoles.Patient.ToString()))
+            {
+                <a asp-controller="Patient" asp-action="EditProfile">My patient profile</a>
+            }
+            @if (User.Identity.IsAuthenticated && (User.IsInRole(UserRoles.Admin.ToString()) || User.IsInRole(UserRoles.Doctor.ToString())))
+            {
+                <a asp-controller="MyPatients" asp-action="MyPatients">My patients</a>
+            }
+        </div>
+    </nav>
+
+    <!-- Content goes here -->
+    @RenderBody()
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿@using DocHub.Core.DTO;
+@model PatientAddRequest
+<div class="min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+        <h2 class="text-2xl font-semibold mb-6">Create a patient</h2>
+
+        <form asp-action="CreatePatient" method="post">
+            <div class="mb-4">
+                <label asp-for="FirstName" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="FirstName" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="FirstName" class="text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="LastName" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="LastName" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="LastName" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="PeselNumber" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="PeselNumber" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="PeselNumber" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Email" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="Email" type="email" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" required />
+                <span asp-validation-for="Email" class="text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="PhoneNumber" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="PhoneNumber" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="PhoneNumber" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="City" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="City" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="City" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Address" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="Address" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="Address" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="PostalCode" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <input asp-for="PostalCode" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="PostalCode" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="HistoryOfDiseases" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <textarea asp-for="HistoryOfDiseases" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"></textarea>
+                <span asp-validation-for="HistoryOfDiseases" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="TakenMedications" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <textarea asp-for="TakenMedications" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"></textarea>
+                <span asp-validation-for="TakenMedications" class="text-red-500"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Allergies" class="block text-gray-600 text-sm font-medium mb-2"></label>
+                <textarea asp-for="Allergies" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"></textarea>
+                <span asp-validation-for="Allergies" class="text-red-500"></span>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue spinner">
+                Add
+            </button>
+            <br />
+            <a asp-controller="DashBoard" asp-action="Index" class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray">@ViewBag.Skip</a>
+        </form>
+    </div>
+    @section scripts
+        {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    }
+
+</div>
