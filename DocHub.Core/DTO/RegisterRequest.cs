@@ -31,6 +31,6 @@ namespace DocHub.Core.DTO
         [DataType(DataType.Password)]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Password and confirm password do not match")]
         public required string ConfirmPassword { get; set; }
-        public UserRoles Role { get; set; } = UserRoles.Admin;
+        public UserRoles Role { get; set; } = UserRoles.Patient;
     }
 }
