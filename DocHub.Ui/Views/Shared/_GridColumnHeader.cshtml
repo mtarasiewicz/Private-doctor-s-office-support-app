@@ -1,0 +1,43 @@
+@using DocHub.Core.Enums.Views
+@if (ViewBag.CurrentSortBy == ViewBag.ColumnName && ViewBag.CurrentSortOrder == SortOrderOptions.Asc.ToString())
+{
+    <th scope="col" class="px-4 py-3 hover:bg-gray-100 hover:rounded-md hover:underline">
+        <a href="~/mypatients/index?sortBy=@(ViewBag.ColumnName)&sortOrder=Desc">
+        <div class="flex">
+            <div class="mr-4">
+                 @ViewBag.DisplayName
+            </div>
+            <div>
+            <svg class="w-[13px] h-[13px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 8">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"/>
+            </svg>
+            </div>
+        </div>
+        </a>
+    </th>
+}
+else if (ViewBag.CurrentSortBy == ViewBag.ColumnName && ViewBag.CurrentSortOrder == SortOrderOptions.Desc.ToString())
+{
+    <th scope="col" class="px-4 py-3 hover:bg-gray-100">
+        <a href="~/mypatients/index?sortBy=@(ViewBag.ColumnName)&sortOrder=Asc">
+           <div class="flex">
+               <div class="mr-4">
+                   @ViewBag.DisplayName
+               </div>
+               <div>
+                   <svg class="w-[13px] h-[13px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 8">
+                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"/>
+                     </svg>
+               </div>
+               </div>
+        </a>
+    </th>
+}
+else
+{
+    <th scope="col" class="px-4 py-3 hover:bg-gray-100">
+        <a href="~/mypatients/index?sortBy=@(ViewBag.ColumnName)&sortOrder=Asc">
+            @ViewBag.DisplayName dasda
+        </a>
+    </th>
+}

@@ -38,7 +38,7 @@
             }
             @if (User.Identity.IsAuthenticated && (User.IsInRole(UserRoles.Admin.ToString()) || User.IsInRole(UserRoles.Doctor.ToString())))
             {
-                <a asp-controller="MyPatients" asp-action="MyPatients">My patients</a>
+                <a asp-controller="MyPatients" asp-action="Index">My patients</a>
             }
         </div>
     </nav>
