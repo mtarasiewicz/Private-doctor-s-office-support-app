@@ -34,7 +34,7 @@ namespace DocHub.Ui.Controllers
             {
                 var addedPatient = await _patientsAdderService.AddPatient(request);
                 TempData["SuccessMessage"] = "Patient added.";
-                return View();
+                return RedirectToAction(nameof(MyPatientsController.MyPatients));
             }
             return View(request);
         }

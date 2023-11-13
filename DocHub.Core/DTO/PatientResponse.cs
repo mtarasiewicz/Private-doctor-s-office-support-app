@@ -22,6 +22,7 @@ namespace DocHub.Core.DTO
         public string? TakenMedications {  get; set; }
         public string? HistoryOfDseases { get; set; }
         public string? Allergies { get; set; }
+        public string? FullName { get; set; }
 
     }
 
@@ -43,7 +44,8 @@ namespace DocHub.Core.DTO
                 TakenMedications = patient.TakenMedications,
                 HistoryOfDseases = patient.HistoryOfDiseases,
                 PostalCode = patient.PostalCode,
-                Allergies = patient.Allergies
+                Allergies = patient.Allergies,
+                FullName = string.Concat(patient.LastName," ", patient.FirstName)
             };
 
         }
