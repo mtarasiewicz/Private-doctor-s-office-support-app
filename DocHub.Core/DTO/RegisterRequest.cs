@@ -15,9 +15,11 @@ namespace DocHub.Core.DTO
     {
         [Required(ErrorMessage = "First name can't be blank")]
         [MaxLength(50, ErrorMessage = "Max 50 characters")]
+        [RegularExpression("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$", ErrorMessage = "Last Name should contain only letters.")]
         public required string FirstName { get; set; }
         [Required(ErrorMessage = "Last name can't be blank")]
         [MaxLength(50, ErrorMessage = "Max 50 charactes")]
+        [RegularExpression("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$", ErrorMessage = "Last Name should contain only letters.")]
         public required string LastName { get; set;}
         [Required]
         [EmailAddress]

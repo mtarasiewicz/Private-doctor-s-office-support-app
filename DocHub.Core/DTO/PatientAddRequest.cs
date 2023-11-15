@@ -11,9 +11,13 @@ namespace DocHub.Core.DTO
 {
     public class PatientAddRequest
     {
-        public string? FirstName { get; set; }
+        [Required]
+        [RegularExpression("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$", ErrorMessage = "Last Name should contain only letters.")]
         [StringLength(50, ErrorMessage = "Last Name must be between {2} and {1} characters.", MinimumLength = 2)]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Last Name should contain only letters.")]
+        public string? FirstName { get; set; }
+        [Required]
+        [StringLength(50, ErrorMessage = "Last Name must be between {2} and {1} characters.", MinimumLength = 2)]
+        [RegularExpression("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$", ErrorMessage = "Last Name should contain only letters.")]
         public string? LastName { get; set; }
         [PeselNumber]
         public string? PeselNumber { get; set; }

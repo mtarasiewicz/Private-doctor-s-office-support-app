@@ -26,5 +26,6 @@ namespace DocHub.Core.Domain.Entities
         public string? Allergies { get; set; }
         public Guid? UserId { get; set; }
         public virtual ApplicationUser? User { get; set; }
+        public virtual ICollection<Appointment>? Appointments { get; set; }
     }
 }
