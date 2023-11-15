@@ -38,6 +38,7 @@ namespace DocHub.Ui.StartupExtensions
             services.AddScoped<IPatientsGetterService, PatientsGetterService>(); 
             services.AddScoped<IPatientsUpdaterService, PatientsUpdaterService>();
             services.AddScoped<IPatientsSorterService, PatientsSorterService>();
+            services.AddScoped<IPatientsSearcherService, PatientsSearcherService>();
            
             /*Configure database connection*/
             services.AddDbContext<ApplicationDbContext>(options =>

@@ -1,8 +1,9 @@
 @using DocHub.Core.Enums.Views
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @if (ViewBag.CurrentSortBy == ViewBag.ColumnName && ViewBag.CurrentSortOrder == SortOrderOptions.Asc.ToString())
 {
     <th scope="col" class="px-4 py-3 hover:bg-gray-100 hover:rounded-md hover:underline">
-        <a href="~/mypatients/index?sortBy=@(ViewBag.ColumnName)&sortOrder=Desc">
+        <a href="~/mypatients/index?query=@(ViewBag.CurrentQuery)&sortBy=@(ViewBag.ColumnName)&sortOrder=Desc">
         <div class="flex">
             <div class="mr-4">
                  @ViewBag.DisplayName
@@ -19,7 +20,7 @@
 else if (ViewBag.CurrentSortBy == ViewBag.ColumnName && ViewBag.CurrentSortOrder == SortOrderOptions.Desc.ToString())
 {
     <th scope="col" class="px-4 py-3 hover:bg-gray-100">
-        <a href="~/mypatients/index?sortBy=@(ViewBag.ColumnName)&sortOrder=Asc">
+        <a href="~/mypatients/index?query=@(ViewBag.CurrentQuery)&sortBy=@(ViewBag.ColumnName)&sortOrder=Asc">
            <div class="flex">
                <div class="mr-4">
                    @ViewBag.DisplayName
@@ -36,7 +37,7 @@ else if (ViewBag.CurrentSortBy == ViewBag.ColumnName && ViewBag.CurrentSortOrder
 else
 {
     <th scope="col" class="px-4 py-3 hover:bg-gray-100">
-        <a href="~/mypatients/index?sortBy=@(ViewBag.ColumnName)&sortOrder=Asc">
+        <a href="~/mypatients/index?query=@(ViewBag.CurrentQuery)&sortBy=@(ViewBag.ColumnName)&sortOrder=Asc">
             @ViewBag.DisplayName dasda
         </a>
     </th>

@@ -3,6 +3,7 @@ using DocHub.Core.Enums.Views;
 using DocHub.Core.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32.SafeHandles;
 
 namespace DocHub.Ui.Controllers
 {
@@ -13,24 +14,29 @@ namespace DocHub.Ui.Controllers
         private readonly IPatientsGetterService _patientsGetterService;
         private readonly IPatientsAdderService _patientsAdderService;
         private readonly IPatientsSorterService _patientsSorterService;
+        private readonly IPatientsSearcherService _patientsSearcherService;
         public MyPatientsController(IPatientsGetterService patientsGetterService,
             IPatientsAdderService patientsAdderService,
-            IPatientsSorterService patientsSorterService)
+            IPatientsSorterService patientsSorterService,
+            IPatientsSearcherService patientsSearcherService)
         {
             _patientsGetterService = patientsGetterService;
             _patientsAdderService = patientsAdderService;
             _patientsSorterService = patientsSorterService;
+            _patientsSearcherService = patientsSearcherService;
         }
-        public async Task<IActionResult> Index(
+        public async Task<IActionResult> Index(string? query,
             string sortBy = nameof(PatientResponse.FullName),
             SortOrderOptions sortOrder = SortOrderOptions.Asc)
         {
-            var  allPatients = await _patientsGetterService.GetAll();
             //TODO: Popraw ten null reference
+            var filteredPatients = 
+                await _patientsSearcherService.Search(query);
             var sortedPatients =
-                await _patientsSorterService.GetSortedPatients(allPatients, sortBy, sortOrder);
+                await _patientsSorterService.GetSortedPatients(filteredPatients, sortBy, sortOrder);
             ViewBag.CurrentSortBy = sortBy;
             ViewBag.CurrentSortOrder = sortOrder.ToString();
+            ViewBag.CurrentQuery = query;
             return View(sortedPatients.ToList());
         }
         [HttpGet]

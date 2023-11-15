@@ -28,7 +28,7 @@ namespace DocHub.Core.Services
 
         }
 
-        public async Task<IEnumerable<PatientResponse>?> GetAll()
+        public async Task<List<PatientResponse>?> GetAll()
         {
             List<Patient>? patients = await _patientsRepository.GetAll();
             if (patients is null) return null;
