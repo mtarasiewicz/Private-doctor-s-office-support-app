@@ -32,13 +32,19 @@ namespace DocHub.Ui.StartupExtensions
                 ///configure protection against XSRF attacks*/
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
+            /*Repositories*/
             services.AddScoped<IPatientsRepository, PatientsRepository>();
+            services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
+            /*Services*/
             services.AddScoped<IPatientsAdderService, PatientsAdderService>();
             services.AddScoped<IPatientsAdderService, PatientsAdderService>();
             services.AddScoped<IPatientsGetterService, PatientsGetterService>(); 
             services.AddScoped<IPatientsUpdaterService, PatientsUpdaterService>();
             services.AddScoped<IPatientsSorterService, PatientsSorterService>();
             services.AddScoped<IPatientsSearcherService, PatientsSearcherService>();
+            services.AddScoped<IAppointmentsGetterService, AppointmentsGetterService>();
+            services.AddScoped<IAppointmentsAdderService, AppointmentAdderService>();
+            services.AddScoped<IAppointmentsBookerService, AppointmentsBookerService>();
            
             /*Configure database connection*/
             services.AddDbContext<ApplicationDbContext>(options =>

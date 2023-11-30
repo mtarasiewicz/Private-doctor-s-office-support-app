@@ -3,6 +3,8 @@
 @{
     Layout = "_DashboardLayout";
     ViewBag.Title = "My patients";
+    ViewBag.CurrentUrl = "mypatients/index";
+    
 }
 <form asp-controller="MyPatients" asp-action="Index" method="get">
     <section class="bg-gray-50 p-3 sm:p-5">

@@ -1,0 +1,24 @@
+@model IEnumerable<AppointmentResponse>
+@{
+    Layout = "_DashboardLayout";
+    ViewBag.CurrentUrl = "appointments/index";
+}
+<h1>Appointments</h1>
+@foreach (var app in Model)
+{
+    <hr/>
+    <p class="text-red-600">Appointment:</p>
+    <p>Id: @app.Id</p>
+    <p>TestProp: @app.TestProp</p>
+    <p>PatientId: @app.PatientId</p>
+    <p>IsAvailable?:@app.IsAvailable</p>
+    @if (@app.IsAvailable)
+    {
+        <a asp-controller="Appointments" asp-action="ShowAppointment" asp-route-appointmentId="@app.Id">reserve</a>
+    }
+    else
+    {
+        <p>already reserved</p>
+    }
+    <hr/>
+}

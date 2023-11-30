@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DocHub.Core.Services
-{
+ {
     public class PatientsAdderService : IPatientsAdderService
     {
         private readonly IPatientsRepository _patientsRepository;

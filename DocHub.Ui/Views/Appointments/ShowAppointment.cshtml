@@ -1,0 +1,19 @@
+@model AppointmentReserveRequest
+@{
+    Layout = "_DashboardLayout";
+}
+
+<form asp-controller="Appointments" asp-action="ReserveAppointment" method="post">
+    <input type="hidden" asp-for="Id"/>
+    <p>Do you want to book this visit?</p>
+    <p>Id: @Model.Id</p>
+    @if (Model.PatientId is not null)
+    {
+        <p>PatientId: @Model.PatientId </p>
+    }
+    else
+    {
+        <p>PatientId: <i>empty</i></p>
+    }
+   <button type="submit"> reserve </button>
+</form>

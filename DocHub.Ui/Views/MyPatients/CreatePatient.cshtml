@@ -7,7 +7,7 @@
 }
 
 <div class="max-w-2xl mx-auto bg-white p-8 shadow-lg rounded-lg">
-    <h1 class="text-2xl font-semibold mb-4 text-blue-500">Add new patient</h1>
+    <h1 class="text-2xl font-semibold mb-4 text-blue-700">Add new patient</h1>
     <form asp-controller="MyPatients" asp-action="CreatePatient" method="post">
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -107,8 +107,8 @@
         </div>
 
         <div class="mt-6">
-            <button type="submit" class="bg-blue-500 text-white font-medium text-base px-4 py-2 rounded-md shadow-md border border-gray-200 hover:bg-blue-700 transition duration-300">Save</button>
-            <a asp-controller="Dashboard" asp-action="Index" class="bg-white text-gray-700 font-medium text-base px-4 py-2 rounded-md shadow-md border border-gray-200 hover:bg-gray-200 transition duration-300">Cancel</a>
+            <button type="submit" class="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br text-white font-medium text-base px-4 py-2 rounded-md shadow-md transition duration-300">Save</button>
+            <a asp-controller="Dashboard" asp-action="Index" class="bg-gray-50 border hover:bg-gray-100 text-gray-700 font-medium text-base px-4 py-2 rounded-md border-gray-200 duration-300">Cancel</a>
         </div>
     </form>
 </div>
