@@ -30,4 +30,5 @@ public class AppointmentsGetterService : IAppointmentsGetterService
         if (appointment is null) return null;
         return appointment.ToAppointmentResponse();
     }
+    
 }

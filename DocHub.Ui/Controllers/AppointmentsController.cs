@@ -15,7 +15,6 @@ public class AppointmentsController : Controller
     private readonly IAppointmentsBookerService _appointmentsBookerService;
     private readonly IPatientsGetterService _patientsGetterService;
     private readonly UserManager<ApplicationUser> _userManager;
-    private const int PageSize = 5;
     public AppointmentsController(IAppointmentsGetterService appointmentsGetterService, IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService, IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager)
     {
         _appointmentsGetterService = appointmentsGetterService;
@@ -77,10 +76,5 @@ public class AppointmentsController : Controller
        AppointmentResponse reservedAppointment = await _appointmentsBookerService.Reserve(request);
        return RedirectToAction("Index");
     }
-
-    private IEnumerable<IGrouping<DateTime, AppointmentResponse>> Paginate(
-        IOrderedEnumerable<IGrouping<DateTime, AppointmentResponse>> appointments, int page)
-    {
-        return appointments.Skip((page - 1) * PageSize).Take(PageSize);
-    }
+    
 }

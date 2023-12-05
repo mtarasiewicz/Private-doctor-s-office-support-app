@@ -7,4 +7,5 @@ public interface IAppointmentsGetterService
 {
     Task<List<AppointmentResponse>?> GetAll();
     Task<AppointmentResponse?> Get(Guid? id);
+    
 }

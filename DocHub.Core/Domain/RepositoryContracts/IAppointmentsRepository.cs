@@ -8,4 +8,5 @@ public interface IAppointmentsRepository
     Task<Appointment?> Get(Guid? id);
     Task<List<Appointment>?> GetAll();
     Task<Appointment> Edit(Appointment appointment);
+   
 }

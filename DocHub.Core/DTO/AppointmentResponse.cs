@@ -11,6 +11,9 @@ public class AppointmentResponse
     public Guid? PatientId { get; set; }
     public bool IsAvailable { get; set; } = true;
 
+    public DateTime? Start { get; set; }
+    public DateTime? End { get; set; }
+
     public AppointmentReserveRequest ToAppointmentReserveRequest() => new AppointmentReserveRequest()
     {
         Id = this.Id,
@@ -27,7 +30,9 @@ public static class AppointmentExtensions
             Id = appointment.Id,
             PatientId = appointment.PatientId,
             TestProp = appointment.TestProp,
-            IsAvailable = appointment.PatientId is null
+            IsAvailable = appointment.PatientId is null,
+            Start = appointment.Start,
+            End = appointment.End,
         };
     }
 }
