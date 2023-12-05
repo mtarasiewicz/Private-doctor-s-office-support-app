@@ -1,24 +1,73 @@
-@model IEnumerable<AppointmentResponse>
+@using Humanizer
+@model IOrderedEnumerable<IGrouping<DateTime, AppointmentResponse>>
 @{
     Layout = "_DashboardLayout";
     ViewBag.CurrentUrl = "appointments/index";
 }
 <h1>Appointments</h1>
-@foreach (var app in Model)
-{
-    <hr/>
-    <p class="text-red-600">Appointment:</p>
-    <p>Id: @app.Id</p>
-    <p>TestProp: @app.TestProp</p>
-    <p>PatientId: @app.PatientId</p>
-    <p>IsAvailable?:@app.IsAvailable</p>
-    @if (@app.IsAvailable)
+@* @foreach (var app in Model) *@
+@* { *@
+@*     <hr/> *@
+@*     <p class="text-red-600">Appointment:</p> *@
+@*     <p>Id: @app.Id</p> *@
+@*     <p>TestProp: @app.TestProp</p> *@
+@*     <p>PatientId: @app.PatientId</p> *@
+@*     <p>IsAvailable?:@app.IsAvailable</p> *@
+@*     <p>DateTime: @app.Start - @app.End</p> *@
+@*                                    *@
+@*     @if (@app.IsAvailable) *@
+@*     { *@
+@*         <a asp-controller="Appointments" asp-action="ShowAppointment" asp-route-appointmentId="@app.Id">reserve</a> *@
+@*     } *@
+@*     else *@
+@*     { *@
+@*         <p>already reserved</p> *@
+@*     } *@
+@*     <hr/> *@
+@* } *@
+  <h1 class="text-2xl font-bold mb-4">Wizyty</h1>
+
+    @foreach (var group in Model)
     {
-        <a asp-controller="Appointments" asp-action="ShowAppointment" asp-route-appointmentId="@app.Id">reserve</a>
+        <div class="mb-4">
+            <h2 class="text-xl font-bold mb-2">@group.Key.Date.ToString("dddd dd.MM")</h2>
+
+            <table class="table-auto w-full">
+                <thead>
+                <tr>
+                    <th class="border px-4 py-2">Godzina</th>
+                    <th class="border px-4 py-2">testProp</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var appointment in group.OrderBy(a => a.Start))
+                {
+                    <tr>
+                        <td class="border px-4 py-2">@appointment.Start.Value.ToString("HH:mm") - @appointment.End.Value.ToString("HH:mm")</td>
+                        <td class="border px-4 py-2">@appointment.TestProp</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        
     }
-    else
-    {
-        <p>already reserved</p>
-    }
-    <hr/>
-}
+<div class="flex justify-center">
+    <h1>Test</h1>
+    <nav class="mt-4">
+        @{
+            var currentPage = ViewBag.CurrentPage as int? ?? 1;
+            var pageCount = ViewBag.PageCount as int? ?? 1;
+        }
+       
+            <ul class="pagination">
+                @for (var i = 1; i <= pageCount; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i">@i</a>
+                    </li>
+                }
+            </ul>
+        
+    </nav>
+</div>

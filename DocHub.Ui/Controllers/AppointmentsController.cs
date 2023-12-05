@@ -15,6 +15,7 @@ public class AppointmentsController : Controller
     private readonly IAppointmentsBookerService _appointmentsBookerService;
     private readonly IPatientsGetterService _patientsGetterService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private const int PageSize = 5;
     public AppointmentsController(IAppointmentsGetterService appointmentsGetterService, IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService, IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager)
     {
         _appointmentsGetterService = appointmentsGetterService;
@@ -24,10 +25,13 @@ public class AppointmentsController : Controller
         _userManager = userManager;
     }
     // GET
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
         var appointments = await _appointmentsGetterService.GetAll();
-        return View(appointments);
+        if (appointments is null) return View();
+        var groupedAppointments = appointments.GroupBy(a => a.Start.Value.Date).OrderBy(a => a.Key);
+     
+        return View(groupedAppointments);
     }
 
     [HttpGet]
@@ -72,5 +76,11 @@ public class AppointmentsController : Controller
        request.PatientId = patient.Id;
        AppointmentResponse reservedAppointment = await _appointmentsBookerService.Reserve(request);
        return RedirectToAction("Index");
+    }
+
+    private IEnumerable<IGrouping<DateTime, AppointmentResponse>> Paginate(
+        IOrderedEnumerable<IGrouping<DateTime, AppointmentResponse>> appointments, int page)
+    {
+        return appointments.Skip((page - 1) * PageSize).Take(PageSize);
     }
 }
