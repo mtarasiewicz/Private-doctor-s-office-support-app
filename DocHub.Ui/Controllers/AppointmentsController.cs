@@ -1,5 +1,7 @@
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.Entities.IdentityEntities;
+using DocHub.Core.Domain.Models;
+using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using DocHub.Core.DTO;
@@ -15,22 +17,23 @@ public class AppointmentsController : Controller
     private readonly IAppointmentsBookerService _appointmentsBookerService;
     private readonly IPatientsGetterService _patientsGetterService;
     private readonly UserManager<ApplicationUser> _userManager;
-    public AppointmentsController(IAppointmentsGetterService appointmentsGetterService, IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService, IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager)
+    private readonly IAppointmentsRepository _appointmentsRepository;
+    public AppointmentsController(IAppointmentsGetterService appointmentsGetterService, IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService, IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager, IAppointmentsRepository appointmentsRepository)
     {
         _appointmentsGetterService = appointmentsGetterService;
         _appointmentsAdderService = appointmentsAdderService;
         _appointmentsBookerService = appointmentsBookerService;
         _patientsGetterService = patientsGetterService;
         _userManager = userManager;
+        _appointmentsRepository = appointmentsRepository;
     }
     // GET
     public async Task<IActionResult> Index(int page = 1)
     {
-        var appointments = await _appointmentsGetterService.GetAll();
-        if (appointments is null) return View();
-        var groupedAppointments = appointments.GroupBy(a => a.Start.Value.Date).OrderBy(a => a.Key);
-     
-        return View(groupedAppointments);
+        if (page < 1) page = 1;
+        int pageSize = 5;
+        var appointments =  _appointmentsRepository.GetAllAsViewModels();
+        return View(await PaginatedList<AppointmentResponse>.CreateAsync(appointments,page, pageSize));
     }
 
     [HttpGet]

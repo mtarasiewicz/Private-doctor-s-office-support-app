@@ -1,5 +1,6 @@
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.RepositoryContracts;
+using DocHub.Core.DTO;
 using DocHub.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,4 +47,7 @@ public class AppointmentsRepository : IAppointmentsRepository
         await _dbContext.SaveChangesAsync();
         return matchingAppointment;
     }
+
+    public IQueryable<AppointmentResponse?> GetAllAsViewModels() =>
+        _dbContext.Appointments.Select(appointment => appointment.ToAppointmentResponse());
 }

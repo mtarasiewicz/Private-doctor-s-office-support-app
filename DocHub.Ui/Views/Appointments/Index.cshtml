@@ -1,73 +1,78 @@
 @using Humanizer
-@model IOrderedEnumerable<IGrouping<DateTime, AppointmentResponse>>
+@using DocHub.Core.Domain.Entities
+@model DocHub.Core.Domain.Models.PaginatedList<AppointmentResponse>
 @{
     Layout = "_DashboardLayout";
     ViewBag.CurrentUrl = "appointments/index";
+    // var groupedCollection = Model.Items.GroupBy(a => a.Start.Value.Date).OrderBy(a => a.Key);
 }
 <h1>Appointments</h1>
-@* @foreach (var app in Model) *@
-@* { *@
-@*     <hr/> *@
-@*     <p class="text-red-600">Appointment:</p> *@
-@*     <p>Id: @app.Id</p> *@
-@*     <p>TestProp: @app.TestProp</p> *@
-@*     <p>PatientId: @app.PatientId</p> *@
-@*     <p>IsAvailable?:@app.IsAvailable</p> *@
-@*     <p>DateTime: @app.Start - @app.End</p> *@
-@*                                    *@
-@*     @if (@app.IsAvailable) *@
-@*     { *@
-@*         <a asp-controller="Appointments" asp-action="ShowAppointment" asp-route-appointmentId="@app.Id">reserve</a> *@
-@*     } *@
-@*     else *@
-@*     { *@
-@*         <p>already reserved</p> *@
-@*     } *@
-@*     <hr/> *@
-@* } *@
-  <h1 class="text-2xl font-bold mb-4">Wizyty</h1>
 
-    @foreach (var group in Model)
+@foreach (var app in Model.Items)
+{
+    <hr/>
+    <p class="text-red-600">Appointment:</p>
+    <p>Id: @app.Id</p>
+    <p>TestProp: @app.TestProp</p>
+    <p>PatientId: @app.PatientId</p>
+    <p>IsAvailable?:@app.IsAvailable</p>
+    <p>DateTime: @app.Start - @app.End</p>
+
+    @if (@app.IsAvailable)
     {
-        <div class="mb-4">
-            <h2 class="text-xl font-bold mb-2">@group.Key.Date.ToString("dddd dd.MM")</h2>
-
-            <table class="table-auto w-full">
-                <thead>
-                <tr>
-                    <th class="border px-4 py-2">Godzina</th>
-                    <th class="border px-4 py-2">testProp</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var appointment in group.OrderBy(a => a.Start))
-                {
-                    <tr>
-                        <td class="border px-4 py-2">@appointment.Start.Value.ToString("HH:mm") - @appointment.End.Value.ToString("HH:mm")</td>
-                        <td class="border px-4 py-2">@appointment.TestProp</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-        
+        <a asp-controller="Appointments" asp-action="ShowAppointment" asp-route-appointmentId="@app.Id">reserve</a>
     }
-<div class="flex justify-center">
-    <h1>Test</h1>
-    <nav class="mt-4">
-        @{
-            var currentPage = ViewBag.CurrentPage as int? ?? 1;
-            var pageCount = ViewBag.PageCount as int? ?? 1;
-        }
-       
-            <ul class="pagination">
-                @for (var i = 1; i <= pageCount; i++)
-                {
-                    <li class="page-item @(i == currentPage ? "active" : "")">
-                        <a class="page-link" href="?page=@i">@i</a>
-                    </li>
-                }
-            </ul>
-        
-    </nav>
-</div>
+    else
+    {
+        <p>already reserved</p>
+    }
+    <hr/>
+}
+<p>@Model.PageIndex</p>
+  @* <h1 class="text-2xl font-bold mb-4">Wizyty</h1> *@
+  @* *@
+  @*   @foreach (var group in groupedCollection) *@
+  @*   { *@
+  @*       <div class="mb-4"> *@
+  @*           <h2 class="text-xl font-bold mb-2">@group.Key.Date.ToString("dddd dd.MM")</h2> *@
+  @* *@
+  @*           <table class="table-auto w-full"> *@
+  @*               <thead> *@
+  @*               <tr> *@
+  @*                   <th class="border px-4 py-2">Godzina</th> *@
+  @*                   <th class="border px-4 py-2">testProp</th> *@
+  @*               </tr> *@
+  @*               </thead> *@
+  @*               <tbody> *@
+  @*               @foreach (var appointment in group.OrderBy(a => a.Start)) *@
+  @*               { *@
+  @*                   <tr> *@
+  @*                       <td class="border px-4 py-2">@appointment.Start.Value.ToString("HH:mm") - @appointment.End.Value.ToString("HH:mm")</td> *@
+  @*                       <td class="border px-4 py-2">@appointment.TestProp</td> *@
+  @*                   </tr> *@
+  @*               } *@
+  @*               </tbody> *@
+  @*           </table> *@
+  @*       </div> *@
+  @* *@
+  @*   } *@
+<nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+    <ul class="inline-flex items-stretch -space-x-px">
+        <li>
+            <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                <span class="sr-only">Previous</span>
+                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </li>
+        <li>
+            <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" disabled class= "flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                <span class="sr-only">Next</span>
+                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                </svg>
+            </a>
+        </li>
+    </ul>
+</nav>
