@@ -96,7 +96,7 @@
                         </li>
                     }
                 }
-                @if (User.IsInRole("Patient"))
+                @if (User.IsInRole("Patient") || User.IsInRole("Admin"))
                 {
                     @if (currentUrl == "appointments/index")
                     {

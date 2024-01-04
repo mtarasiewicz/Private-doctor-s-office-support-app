@@ -45,7 +45,7 @@ namespace DocHub.Ui.StartupExtensions
             services.AddScoped<IAppointmentsGetterService, AppointmentsGetterService>();
             services.AddScoped<IAppointmentsAdderService, AppointmentAdderService>();
             services.AddScoped<IAppointmentsBookerService, AppointmentsBookerService>();
-           
+            services.AddScoped<IAppointmentsAddRangeService, AppointmentsAddRangeService>();
             /*Configure database connection*/
             services.AddDbContext<ApplicationDbContext>(options =>
             {

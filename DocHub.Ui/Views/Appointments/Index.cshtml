@@ -1,78 +1,101 @@
 @using Humanizer
 @using DocHub.Core.Domain.Entities
-@model DocHub.Core.Domain.Models.PaginatedList<AppointmentResponse>
+@using System.Globalization
+@model DocHub.Core.Domain.Models.PaginatedGroup<DateTime?, AppointmentResponse>
 @{
     Layout = "_DashboardLayout";
     ViewBag.CurrentUrl = "appointments/index";
-    // var groupedCollection = Model.Items.GroupBy(a => a.Start.Value.Date).OrderBy(a => a.Key);
-}
-<h1>Appointments</h1>
+    CultureInfo pl = new CultureInfo("pl-PL");
+    TextInfo textInfo = pl.TextInfo;
 
-@foreach (var app in Model.Items)
-{
-    <hr/>
-    <p class="text-red-600">Appointment:</p>
-    <p>Id: @app.Id</p>
-    <p>TestProp: @app.TestProp</p>
-    <p>PatientId: @app.PatientId</p>
-    <p>IsAvailable?:@app.IsAvailable</p>
-    <p>DateTime: @app.Start - @app.End</p>
-
-    @if (@app.IsAvailable)
-    {
-        <a asp-controller="Appointments" asp-action="ShowAppointment" asp-route-appointmentId="@app.Id">reserve</a>
-    }
-    else
-    {
-        <p>already reserved</p>
-    }
-    <hr/>
 }
-<p>@Model.PageIndex</p>
-  @* <h1 class="text-2xl font-bold mb-4">Wizyty</h1> *@
-  @* *@
-  @*   @foreach (var group in groupedCollection) *@
-  @*   { *@
-  @*       <div class="mb-4"> *@
-  @*           <h2 class="text-xl font-bold mb-2">@group.Key.Date.ToString("dddd dd.MM")</h2> *@
-  @* *@
-  @*           <table class="table-auto w-full"> *@
-  @*               <thead> *@
-  @*               <tr> *@
-  @*                   <th class="border px-4 py-2">Godzina</th> *@
-  @*                   <th class="border px-4 py-2">testProp</th> *@
-  @*               </tr> *@
-  @*               </thead> *@
-  @*               <tbody> *@
-  @*               @foreach (var appointment in group.OrderBy(a => a.Start)) *@
-  @*               { *@
-  @*                   <tr> *@
-  @*                       <td class="border px-4 py-2">@appointment.Start.Value.ToString("HH:mm") - @appointment.End.Value.ToString("HH:mm")</td> *@
-  @*                       <td class="border px-4 py-2">@appointment.TestProp</td> *@
-  @*                   </tr> *@
-  @*               } *@
-  @*               </tbody> *@
-  @*           </table> *@
-  @*       </div> *@
-  @* *@
-  @*   } *@
-<nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-    <ul class="inline-flex items-stretch -space-x-px">
-        <li>
-            <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span class="sr-only">Previous</span>
-                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-            </a>
-        </li>
-        <li>
-            <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" disabled class= "flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span class="sr-only">Next</span>
-                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                </svg>
-            </a>
-        </li>
-    </ul>
-</nav>
+<section class="bg-gray-50 p-3 sm:p-5">
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <div class="bg-white relative shadow-md sm:rounded-lg overflow-x-auto">
+            <h1 class="text-2xl font-semibold mb-4 text-blue-500 pl-3 pt-3">Appointments</h1>
+            <div class="md:flex p-1">
+                <a asp-action="Index" asp-route-page="@(Model.PageNumber - 1)" class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+                    </svg>
+                </a>
+                @foreach (var group in Model)
+                {
+                    var header = group.Key?.Date.ToString("dddd dd.MM");
+                    <div class="md:w-2/3">
+                        <div class="font-bold px-3 rounded-sm text-sm text-center">
+                            @if (header != null)
+                            {
+                                @textInfo.ToTitleCase(header)
+                            }
+                        </div>
+                        <hr class="h-px my-2 bg-gray-200 border-0">
+
+                        @foreach (var item in group.ToList().OrderBy(a => a.Start))
+                        {
+                            var modalId = "modal" + item.Id;
+                            var tooltipId = "tooltip" + item.Id;
+                            if (item.PatientId is null)
+                            {
+                                <div data-modal-target="@modalId" data-modal-toggle="@modalId" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer">@item.Start?.ToString("HH:mm")</div>
+                            }
+                            else
+                            {
+                                <div data-tooltip-target="@tooltipId" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg border border-gray-600 focus:z-10 focus:ring-4 focus:ring-gray-200 line-through">@item.Start?.ToString("HH:mm")</div>
+                            }
+                          
+                            <div id="@tooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+                                Already reserved
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                            
+                            <div id="@modalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="@modalId">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <div class="p-4 md:p-5 text-center">
+                                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                            </svg>
+                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                                Are you sure you want to reserve this appointment? (
+                                                @if (item.Start != null)
+                                                {
+                                                    @item.Start.Value
+                                                }
+                                                )
+                                            </h3>
+                                            <div class="flex">
+                                            <form asp-action="ReserveAppointment" asp-controller="Appointments" method="post">
+                                                <input type="hidden" for="appointmentId" name="appointmentId" value="@item.Id"/>
+                                                <button data-modal-hide="@modalId" type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                                                    Yes, I'm sure
+                                                </button>
+                                            </form>
+                                                <button data-modal-hide="@modalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        }
+
+                    </div>
+                }
+                <a asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+</section>

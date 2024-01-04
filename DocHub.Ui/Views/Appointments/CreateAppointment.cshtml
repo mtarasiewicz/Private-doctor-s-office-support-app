@@ -4,23 +4,24 @@
     Layout = "_DashboardLayout";
 }
 <form asp-controller="Appointments" asp-action="CreateAppointment" method="post">
-<div class="max-w-md mx-auto bg-white rounded-md p-8 shadow-md">
-    <h1 class="text-2xl font-bold mb-6">Create appointment</h1>
+    <div class="max-w-md mx-auto bg-white rounded-md p-8 shadow-md">
+        <h1 class="text-2xl font-bold mb-6">Create appointment</h1>
 
-    <!-- Pole tekstowe -->
-    <div class="mb-4">
-        <label asp-for="TestProp" class="block text-gray-700 text-sm font-bold mb-2">Pole Tekstowe</label>
-        <input asp-for="TestProp" class="w-full px-3 py-2 border rounded-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
-        <label asp-for="Start" class="block text-gray-700 text-sm font-bold mb-2">Start</label>
-        <input asp-for="Start">
-        <label asp-for="End" class="block text-gray-700 text-sm font-bold mb-2">End</label>
-        <input asp-for="End">
+        <!-- Pole tekstowe -->
+        <div class="mb-4">
+            <label asp-for="TestProp" class="block text-gray-700 text-sm font-bold mb-2">Pole Tekstowe</label>
+            <input asp-for="TestProp" class="w-full px-3 py-2 border rounded-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
+            <label asp-for="Start" class="block text-gray-700 text-sm font-bold mb-2">Start</label>
+            <input asp-for="Start">
+            <label asp-for="End" class="block text-gray-700 text-sm font-bold mb-2">End</label>
+            <input asp-for="End">
         
-    </div>
+        </div>
 
-    <!-- Przycisk -->
-    <div class="flex items-center justify-center">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Create</button>
+        <!-- Przycisk -->
+        <div class="flex items-center justify-center">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Create</button>
+        </div>
     </div>
-</div>
 </form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/datepicker.min.js"></script>

@@ -12,4 +12,6 @@ public interface IAppointmentsRepository
 
     IQueryable<AppointmentResponse?> GetAllAsViewModels();
 
+    Task<List<Appointment>> AddRange(List<Appointment> appointments);
+
 }

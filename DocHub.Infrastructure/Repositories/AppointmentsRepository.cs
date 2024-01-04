@@ -50,4 +50,12 @@ public class AppointmentsRepository : IAppointmentsRepository
 
     public IQueryable<AppointmentResponse?> GetAllAsViewModels() =>
         _dbContext.Appointments.Select(appointment => appointment.ToAppointmentResponse());
+    
+
+    public async Task<List<Appointment>> AddRange(List<Appointment> appointments)
+    {
+        _dbContext.Appointments.AddRange(appointments);
+        await _dbContext.SaveChangesAsync();
+        return appointments;
+    }
 }
