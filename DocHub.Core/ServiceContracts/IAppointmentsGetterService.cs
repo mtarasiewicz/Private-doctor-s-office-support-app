@@ -7,5 +7,5 @@ public interface IAppointmentsGetterService
 {
     Task<List<AppointmentResponse>?> GetAll();
     Task<AppointmentResponse?> Get(Guid? id);
-    
+    Task<List<AppointmentResponse>?> GetAllReservedByDate(DateTime appointmentDate);
 }

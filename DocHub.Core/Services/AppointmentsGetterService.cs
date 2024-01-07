@@ -30,5 +30,10 @@ public class AppointmentsGetterService : IAppointmentsGetterService
         if (appointment is null) return null;
         return appointment.ToAppointmentResponse();
     }
-    
+
+    public async Task<List<AppointmentResponse>?> GetAllReservedByDate(DateTime appointmentDate)
+    {
+        var appointments = await _appointmentsRepository.GetAllReservedByDate(appointmentDate);
+        return appointments.Select(appointment => appointment.ToAppointmentResponse()).ToList();
+    }
 }

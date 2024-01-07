@@ -14,4 +14,6 @@ public interface IAppointmentsRepository
 
     Task<List<Appointment>> AddRange(List<Appointment> appointments);
 
+    Task<List<Appointment>> GetAllReservedByDate(DateTime appointmentDate);
+
 }

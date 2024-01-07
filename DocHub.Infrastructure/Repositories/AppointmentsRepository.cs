@@ -58,4 +58,9 @@ public class AppointmentsRepository : IAppointmentsRepository
         await _dbContext.SaveChangesAsync();
         return appointments;
     }
+
+    public async Task<List<Appointment>> GetAllReservedByDate(DateTime appointmentDate)
+    {
+        return await _dbContext.Appointments.Where(app => app.Start != null && app.Start.Value.Date == appointmentDate && app.PatientId != null).Include(app=> app.Patient).ToListAsync();
+    }
 }

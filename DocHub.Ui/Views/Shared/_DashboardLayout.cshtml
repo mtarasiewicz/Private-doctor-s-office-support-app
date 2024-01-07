@@ -14,6 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script src="~/js/clock.js"></script>
 </head>
 <body class="bg-gray-50">
     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
@@ -94,6 +95,29 @@
                                 <span class="flex-1 ml-3 whitespace-nowrap">My patients</span>
                             </a>
                         </li>
+                    }
+                    if (currentUrl == "today/index")
+                    {
+                        <li>
+                            <a asp-controller="Today" asp-action="Index" class="flex items-center p-2 text-gray-700 rounded-lg bg-white hover:text-gray-700 group">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.153 15 19 8l-4.847-7H1l4.848 7L1 15h13.153Z"/>
+                                  </svg>  
+                                <span class="flex-1 ml-3 whitespace-nowrap">Today appointments</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-controller="Today" asp-action="Index" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-gray-700 group">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.153 15 19 8l-4.847-7H1l4.848 7L1 15h13.153Z"/>
+                                </svg>  
+                                <span class="flex-1 ml-3 whitespace-nowrap">Today appointments</span>
+                            </a>
+                        </li>
+                        
                     }
                 }
                 @if (User.IsInRole("Patient") || User.IsInRole("Admin"))

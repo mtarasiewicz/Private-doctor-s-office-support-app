@@ -13,6 +13,8 @@ public class AppointmentResponse
 
     public DateTime? Start { get; set; }
     public DateTime? End { get; set; }
+    public string? PatientName { get; set; }
+    public string? PatientLastName { get; set; }
 
     public AppointmentReserveRequest ToAppointmentReserveRequest() => new AppointmentReserveRequest()
     {
@@ -33,6 +35,8 @@ public static class AppointmentExtensions
             IsAvailable = appointment.PatientId is null,
             Start = appointment.Start,
             End = appointment.End,
+            PatientName = appointment.Patient?.FirstName,
+            PatientLastName = appointment.Patient?.LastName,
         };
     }
 }
