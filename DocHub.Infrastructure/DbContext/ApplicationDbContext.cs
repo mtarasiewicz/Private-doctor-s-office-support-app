@@ -82,6 +82,8 @@ namespace DocHub.Infrastructure.DbContext
                 UserId = Guid.Parse("10F2BA6B-D114-4A9A-AC8F-BF1EDBAB4135"),
                 Email = "user@localhost"
             });
+            builder.Entity<Appointment>().HasIndex(app => app.Start).IsUnique();
+            
 
         }
     }

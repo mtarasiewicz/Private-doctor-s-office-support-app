@@ -12,14 +12,22 @@ namespace DocHub.Core.Domain.Entities
     {
         [Key]
         public Guid Id { get; set; }
+        [StringLength(40)]
         public string? Email { get; set; }
+        [StringLength(20)]
         public string? PhoneNumber {  get; set; }
+        [StringLength(30)]
         public string? FirstName { get; set; }
+        [StringLength(40)]
         public string? LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        [StringLength(11)]
         public string? PeselNumber { get; set; }
+        [StringLength(50)]
         public string? City { get; set; }
+        [StringLength(6)]
         public string? PostalCode { get; set; }
+        [StringLength(100)]
         public string? Address { get; set; }
         public string? TakenMedications { get; set; }
         public string? HistoryOfDiseases { get; set; }

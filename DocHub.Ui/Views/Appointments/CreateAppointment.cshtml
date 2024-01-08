@@ -1,27 +1,31 @@
 @model AppointmentAddRequest
-
 @{
     Layout = "_DashboardLayout";
 }
-<form asp-controller="Appointments" asp-action="CreateAppointment" method="post">
-    <div class="max-w-md mx-auto bg-white rounded-md p-8 shadow-md">
-        <h1 class="text-2xl font-bold mb-6">Create appointment</h1>
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
 
-        <!-- Pole tekstowe -->
+    <h1 class="text-2xl font-semibold mb-4">Create appointment</h1>
+
+    <form asp-action="CreateAppointment"  asp-controller="Appointments" method="post">
         <div class="mb-4">
-            <label asp-for="TestProp" class="block text-gray-700 text-sm font-bold mb-2">Pole Tekstowe</label>
-            <input asp-for="TestProp" class="w-full px-3 py-2 border rounded-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
-            <label asp-for="Start" class="block text-gray-700 text-sm font-bold mb-2">Start</label>
-            <input asp-for="Start">
-            <label asp-for="End" class="block text-gray-700 text-sm font-bold mb-2">End</label>
-            <input asp-for="End">
+            <label asp-for="Start" class="block text-sm font-medium text-gray-600">Appointments date:</label>
+            <input type="text" name="Start" datepicker class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+        </div>
+        <div class="mb-4">
+            <label asp-for="Hour" class="block text-sm font-medium text-gray-600">Time of appointment</label>
+            <input asp-for="Hour" id="timeInput" class="mt-1 p-2 w-full border border-gray-300 rounded-md" placeholder="__:__">
+        </div>
+        <div class="mb-4">
+            <label asp-for="Duration" class="block text-sm font-medium text-gray-600">Duration in minutes:</label>
+            <input asp-for="Duration" max="1400" min="1" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+        </div>
         
+        <div class="text-center">
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Add</button>
         </div>
 
-        <!-- Przycisk -->
-        <div class="flex items-center justify-center">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Create</button>
-        </div>
-    </div>
-</form>
+    </form>
+
+</div>
+<script src="~/js/hourInput.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/datepicker.min.js"></script>
