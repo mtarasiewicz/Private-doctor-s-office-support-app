@@ -9,6 +9,7 @@ using DocHub.Core.DTO;
 using DocHub.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DocHub.Ui.Controllers;
 [Route("[controller]/[action]")]
@@ -65,10 +66,29 @@ public class AppointmentsController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateAppointment(AppointmentAddRequest request)
     {
-        if (!ModelState.IsValid) return View(request);
-        var createdAppointment = await _appointmentsAdderService.Add(request);
-        TempData["SuccessMessage"] = "Appointment created.";
-        return RedirectToAction(nameof(DashboardController.Index));
+        if (ModelState.IsValid)
+        {
+            var appointments = await _appointmentsRepository.GetAll();
+            if (appointments != null)
+            {
+                var appointment = request.ToAppointment();
+                var overlappingEntry = appointments
+                    .Any(app =>
+                        ( appointment.Start >= app.Start && appointment.Start < app.End) ||
+                        (appointment.End > app.Start && appointment.End <= app.End));
+                if (overlappingEntry)
+                {
+                    ModelState.AddModelError("Start", "The appointment on the given date is already in the schedule");
+                    return View(request);
+                }
+            }
+            
+            var createdAppointment = await _appointmentsAdderService.Add(request);
+            TempData["SuccessMessage"] = "Appointment created.";
+            return RedirectToAction(nameof(DashboardController.Index));
+        }
+
+        return View(request);
 
     }
 
@@ -126,8 +146,12 @@ public class AppointmentsController : Controller
     [HttpPost]
     public async Task<IActionResult> AddRange(AppointmentAddRangeRequest request)
     {
-        var addRange = await _appointmentsAddRangeService.AddRange(request);
-        return RedirectToAction("Index");
+        if (ModelState.IsValid)
+        {
+            var addRange = await _appointmentsAddRangeService.AddRange(request);
+            return RedirectToAction("Index");
+        }
+        return View(request);
     }
 
 }

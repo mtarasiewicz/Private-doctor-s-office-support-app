@@ -35,13 +35,15 @@ public class AppointmentsAddRangeService : IAppointmentsAddRangeService
             while (currentTime.AddMinutes(duration) <= currentDay.AddHours(endHour)) 
             {
                 DateTime endTime = currentTime.AddMinutes(duration);
-
-                visits.Add(new Appointment()
+                if (IsAppointmentValid(currentTime, endTime))
                 {
-                    Id = Guid.NewGuid(),
-                    Start = currentTime,
-                    End = endTime
-                });
+                    visits.Add(new Appointment()
+                    {
+                        Id = Guid.NewGuid(),
+                        Start = currentTime,
+                        End = endTime
+                    });
+                }
 
                 currentTime = endTime;
             }
@@ -49,4 +51,27 @@ public class AppointmentsAddRangeService : IAppointmentsAddRangeService
         }
         return visits;
     }
+    private bool IsAppointmentValid(DateTime start, DateTime end)
+    {
+        var appointments = _appointmentsRepository.GetAll().Result;
+        if (appointments != null)
+        {
+            var existingAppointments = appointments;
+
+            foreach (var app in existingAppointments)
+            {
+                if (IsTimeOverlap(app.Start, app.End, start, end))
+                {
+                    return false; 
+                }
+            }
+        }
+
+        return true; 
+    }
+    private bool IsTimeOverlap(DateTime? existingStart, DateTime? existingEnd, DateTime newStart, DateTime newEnd)
+    {
+        return (newStart < existingEnd && newEnd > existingStart);
+    }
+
 }

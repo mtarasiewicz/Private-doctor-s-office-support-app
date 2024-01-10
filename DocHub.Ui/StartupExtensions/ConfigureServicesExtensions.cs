@@ -10,6 +10,7 @@ using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Infrastructure.Repositories;
 using DocHub.Core.ServiceContracts;
 using DocHub.Core.Services;
+using DocHub.Core.ValidationAttributes;
 
 namespace DocHub.Ui.StartupExtensions
 {
@@ -46,6 +47,7 @@ namespace DocHub.Ui.StartupExtensions
             services.AddScoped<IAppointmentsAdderService, AppointmentAdderService>();
             services.AddScoped<IAppointmentsBookerService, AppointmentsBookerService>();
             services.AddScoped<IAppointmentsAddRangeService, AppointmentsAddRangeService>();
+           
             /*Configure database connection*/
             services.AddDbContext<ApplicationDbContext>(options =>
             {
