@@ -44,6 +44,12 @@ public class AppointmentsRepository : IAppointmentsRepository
         matchingAppointment.TestProp = appointment.TestProp;
         matchingAppointment.Patient = appointment.Patient;
         matchingAppointment.PatientId = appointment.PatientId;
+        matchingAppointment.State = appointment.State;
+        matchingAppointment.Finished = appointment.Finished;
+        matchingAppointment.Recommendations = appointment.Recommendations;
+        matchingAppointment.Diagnosis = appointment.Diagnosis;
+        matchingAppointment.Notes = appointment.Notes;
+        matchingAppointment.Interview = appointment.Interview;
         await _dbContext.SaveChangesAsync();
         return matchingAppointment;
     }

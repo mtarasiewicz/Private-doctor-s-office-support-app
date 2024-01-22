@@ -1,0 +1,108 @@
+@model DocHub.Core.Domain.Models.Profile
+@{
+    Layout = "_DashboardLayout";
+}
+
+<style>
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+ 
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+</style>
+<div class="w-4/5 mx-auto bg-white p-4 rounded-md shadow-md">
+    <h2 class="text-2xl text-blue-600 font-bold mb-4">Personal data</h2>
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+                <a asp-controller="Dashboard" asp-action="Index" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400">
+                    <svg class="w-[12px] h-[12px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                        <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
+                    </svg>
+                    &nbsp; Dashbaord
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    </svg>
+                    <p class="ml-1 text-sm font-medium text-blue-600 hover:text-blue-600 md:ml-2">Profil</p>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    <div class="border-b border-gray-200 my-4"></div>
+
+    <div class="mb-4">
+        <div class="flex justify-between">
+            <div>
+                <div class="flex">
+                    <svg class="w-3 h-3 my-auto me-1 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+                    </svg>
+                    <label class="text-gray-600 text-sm">Full name:</label>
+                </div>
+                <p class="text-gray-800">@Model.Patient.FullName</p>
+            </div>
+            <a asp-controller="Patient" asp-action="EditProfile" class="text-blue-500 text-sm hover:underline">
+                <div class="flex">
+                    <div class="me-1">Edit</div>
+                    <svg class="w-3 h-3 my-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.418 17.861 1 20l2.139-6.418m4.279 4.279 10.7-10.7a3.027 3.027 0 0 0-2.14-5.165c-.802 0-1.571.319-2.139.886l-10.7 10.7m4.279 4.279-4.279-4.279m2.139 2.14 7.844-7.844m-1.426-2.853 4.279 4.279"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <div class="mb-4">
+        <div class="flex">
+            <svg class="w-3 h-3 my-auto me-1 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+            </svg>
+            <label class="text-gray-600 text-sm">Email:</label>
+        </div>
+        <p class="text-gray-800">@Model.Patient.Email</p>
+    </div>
+    <div class="mb-4">
+        <div class="flex">
+            <svg class="w-3 h-3 my-auto me-1 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+            </svg>
+            <label class="text-gray-600 text-sm">Pesel:</label>
+        </div>
+        <p class="text-gray-800">@Model.Patient.PeselNumber</p>
+    </div>
+
+
+</div>
+<div class="w-4/5 mx-auto bg-white p-4 rounded-md shadow-md mt-4">
+    <button class="accordion duration-1000">Section 3</button>
+    <div class="panel transition-all ease-in-out duration-1000 pr-18 overflow-hidden max-h-0">
+        <p>@Model.Patient.HistoryOfDseases</p>
+        <div class="flex">
+            <div>Imie</div>
+            <div>Imie</div>
+        </div>
+    </div>
+
+
+    <button class="accordion duration-200">Section 4</button>
+    <div class="panel transition-all ease-in-out duration-1000 pr-18 overflow-hidden max-h-0">
+    <p>@Model.Patient.Allergies</p>
+</div>
+</div>
+<script src="~/js/accordion.js"></script>

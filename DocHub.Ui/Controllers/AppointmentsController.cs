@@ -6,12 +6,14 @@ using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using DocHub.Core.DTO;
+using DocHub.Core.Enums.Appointments;
 using DocHub.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DocHub.Ui.Controllers;
+
 [Route("[controller]/[action]")]
 public class AppointmentsController : Controller
 {
@@ -22,7 +24,12 @@ public class AppointmentsController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IAppointmentsRepository _appointmentsRepository;
     private readonly IAppointmentsAddRangeService _appointmentsAddRangeService;
-    public AppointmentsController(IAppointmentsGetterService appointmentsGetterService, IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService, IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager, IAppointmentsRepository appointmentsRepository, IAppointmentsAddRangeService appointmentsAddRangeService)
+    private readonly IAppointmentUpdaterService _appointmentUpdaterService;
+
+    public AppointmentsController(IAppointmentsGetterService appointmentsGetterService,
+        IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService,
+        IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager,
+        IAppointmentsRepository appointmentsRepository, IAppointmentsAddRangeService appointmentsAddRangeService, IAppointmentUpdaterService appointmentUpdaterService)
     {
         _appointmentsGetterService = appointmentsGetterService;
         _appointmentsAdderService = appointmentsAdderService;
@@ -31,10 +38,12 @@ public class AppointmentsController : Controller
         _userManager = userManager;
         _appointmentsRepository = appointmentsRepository;
         _appointmentsAddRangeService = appointmentsAddRangeService;
+        _appointmentUpdaterService = appointmentUpdaterService;
     }
+
     // GET
     [Authorize(Roles = "Admin, Patient")]
-    public async Task<IActionResult> Index( int page = 1)
+    public async Task<IActionResult> Index(int page = 1)
     {
         if (page < 1) page = 1;
         int pageSize = 5;
@@ -44,12 +53,12 @@ public class AppointmentsController : Controller
         if (data != null)
         {
             var paginatedResult = PaginatedGroup<DateTime?, AppointmentResponse>.Create(
-                data,
+                data.Where(model => model.Start.Value.Date >= DateTime.Today),
                 x => x.Start.Value.Date,
                 page,
                 pageSize
             );
-            
+
             return View(paginatedResult);
         }
 
@@ -57,6 +66,7 @@ public class AppointmentsController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public IActionResult CreateAppointment()
     {
         return View();
@@ -74,7 +84,7 @@ public class AppointmentsController : Controller
                 var appointment = request.ToAppointment();
                 var overlappingEntry = appointments
                     .Any(app =>
-                        ( appointment.Start >= app.Start && appointment.Start < app.End) ||
+                        (appointment.Start >= app.Start && appointment.Start < app.End) ||
                         (appointment.End > app.Start && appointment.End <= app.End));
                 if (overlappingEntry)
                 {
@@ -82,14 +92,13 @@ public class AppointmentsController : Controller
                     return View(request);
                 }
             }
-            
+
             var createdAppointment = await _appointmentsAdderService.Add(request);
             TempData["SuccessMessage"] = "Appointment created.";
             return RedirectToAction(nameof(DashboardController.Index));
         }
 
         return View(request);
-
     }
 
     [Authorize(Roles = "Patient")]
@@ -105,20 +114,6 @@ public class AppointmentsController : Controller
     }
 
     [Authorize(Roles = "Patient")]
-    // [HttpPost] 
-    // public async Task<IActionResult> ReserveAppointment(AppointmentReserveRequest request)
-    // {
-    //     AppointmentResponse? response = await _appointmentsGetterService.Get(request.Id);
-    //     if (response is null) return RedirectToAction("Index");
-    //     ApplicationUser? user = await _userManager.GetUserAsync(User);
-    //     if (user is null) return RedirectToAction("Index");
-    //    PatientResponse? patient  = await  _patientsGetterService.GetByUserId(user.Id);
-    //    if (patient is null) return RedirectToAction("Index");
-    //    request.PatientId = patient.Id;
-    //    AppointmentResponse reservedAppointment = await _appointmentsBookerService.Reserve(request);
-    //    return RedirectToAction("Index");
-    // }
-
     [HttpPost]
     public async Task<IActionResult> ReserveAppointment(Guid appointmentId)
     {
@@ -134,15 +129,16 @@ public class AppointmentsController : Controller
         var reserve = await _appointmentsBookerService.Reserve(request);
         if (response.Start != null) TempData["SuccessMessage"] = "Appointment booked - " + response.Start.Value.Date;
         return RedirectToAction("Index");
-
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public IActionResult AddRange()
     {
         return View();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddRange(AppointmentAddRangeRequest request)
     {
@@ -151,7 +147,36 @@ public class AppointmentsController : Controller
             var addRange = await _appointmentsAddRangeService.AddRange(request);
             return RedirectToAction("Index");
         }
+
         return View(request);
     }
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid appointmentId)
+    {
+        AppointmentResponse? response = await _appointmentsGetterService.Get(appointmentId);
+        if (response is null) return RedirectToAction("Index", "Today");
+        var patient = await _patientsGetterService.Get(response.PatientId);
+        ViewData["Patient"] = patient;
+        ViewData["Appointment"] = response;
+        AppointmentUpdateRequest updateRequest = response.ToAppointmentUpdateRequest();
+        return View(updateRequest);
+    }
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> Update(AppointmentUpdateRequest request)
+    {
+        if (request.Finished is null)
+        {
+            request.State = State.During;
+            request.Finished = false;
+        }
+        if (ModelState.IsValid)
+        {
+            var model = await _appointmentUpdaterService.Update(request: request);
+            return RedirectToAction("Index", "Today");
+        }
 
+        return View(request);
+    }
 }

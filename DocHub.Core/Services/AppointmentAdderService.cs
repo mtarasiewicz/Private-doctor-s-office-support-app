@@ -3,6 +3,7 @@ using System.Web.WebPages;
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.DTO;
+using DocHub.Core.Enums.Appointments;
 using DocHub.Core.ServiceContracts;
 using ValidationHelper = DocHub.Core.Helpers.ValidationHelper;
 
@@ -22,6 +23,7 @@ public class AppointmentAdderService : IAppointmentsAdderService
         ValidationHelper.ModelValidation(request);
         Appointment appointment = request.ToAppointment();
         appointment.Id = Guid.NewGuid();
+        appointment.State = State.Available.ToString();
         await _appointmentsRepository.Create(appointment);
         return appointment.ToAppointmentResponse();
     }

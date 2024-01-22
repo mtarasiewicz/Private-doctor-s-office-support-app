@@ -17,7 +17,7 @@ public class TodayController : Controller
     // GET
     public async Task<IActionResult> Index()
     {
-        var data = await _appointmentsGetterService.GetAllReservedByDate(new DateTime(2024, 01, 06));
+        var data = await _appointmentsGetterService.GetAllReservedByDate(DateTime.Today);
         TodayAppointments todayAppointments = new TodayAppointments(data);
         return View(todayAppointments);
     }

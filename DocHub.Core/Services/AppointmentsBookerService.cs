@@ -1,6 +1,7 @@
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.DTO;
+using DocHub.Core.Enums.Appointments;
 using DocHub.Core.Helpers;
 using DocHub.Core.ServiceContracts;
 
@@ -26,6 +27,7 @@ public class AppointmentsBookerService : IAppointmentsBookerService
         if (matchingAppointment.PatientId is not null)
             throw new ArgumentException("Appointments is already booked");
         matchingAppointment.PatientId = appointmentReserveRequest.PatientId;
+        matchingAppointment.State = State.Reserved.ToString();
         await _appointmentsRepository.Edit(matchingAppointment);
         return matchingAppointment.ToAppointmentResponse();
     }

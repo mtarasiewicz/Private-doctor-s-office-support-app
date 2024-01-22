@@ -1,6 +1,7 @@
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.DTO;
+using DocHub.Core.Enums.Appointments;
 using DocHub.Core.ServiceContracts;
 
 namespace DocHub.Core.Services;
@@ -41,7 +42,8 @@ public class AppointmentsAddRangeService : IAppointmentsAddRangeService
                     {
                         Id = Guid.NewGuid(),
                         Start = currentTime,
-                        End = endTime
+                        End = endTime,
+                        State = State.Available.ToString(),
                     });
                 }
 

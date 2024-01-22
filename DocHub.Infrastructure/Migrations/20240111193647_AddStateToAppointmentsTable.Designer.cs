@@ -4,6 +4,7 @@ using DocHub.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocHub.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240111193647_AddStateToAppointmentsTable")]
+    partial class AddStateToAppointmentsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,26 +31,14 @@ namespace DocHub.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Diagnosis")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("Finished")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Interview")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("PatientId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Recommendations")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Start")
                         .HasColumnType("datetime2");
@@ -190,7 +181,7 @@ namespace DocHub.Infrastructure.Migrations
                         {
                             Id = new Guid("56123f55-83e3-4d3d-b59f-8a5e250f817e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "43eea4f6-c621-4e68-9bb2-371f28a9b67b",
+                            ConcurrencyStamp = "76ca9f66-069d-44ec-a687-34f942f30645",
                             Email = "admin@localhost",
                             EmailConfirmed = false,
                             FirstName = "Administrator",
@@ -198,7 +189,7 @@ namespace DocHub.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST",
                             NormalizedUserName = "ADMIN@LOCALHOST",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDSyVKaZofrCXxC6/gDTv1CYXECcqhtnQTuWcWZguPodA96Z1nMKCQ4AD4nliteHgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE3hjkEKfNdj53LwhvWURsB9W5Lk9+nce4we9r4HdRarr/7IwpjYObp1H9aPOKHTzg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "89A60FE0-0F8A-477D-9953-720E8DA36B73",
                             TwoFactorEnabled = false,
@@ -208,7 +199,7 @@ namespace DocHub.Infrastructure.Migrations
                         {
                             Id = new Guid("10f2ba6b-d114-4a9a-ac8f-bf1edbab4135"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "42cc5de3-6adf-4c3f-a272-61843f452cc6",
+                            ConcurrencyStamp = "ac958be5-0af6-40da-b17f-99d03a88df3c",
                             Email = "user@localhost",
                             EmailConfirmed = false,
                             FirstName = "Jan",
@@ -216,7 +207,7 @@ namespace DocHub.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST",
                             NormalizedUserName = "USER@LOCALHOST",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA6oOXH9fq0kOyuMtQbkXoIRzjr7aFuFt4L5BHW9pdCPffoLOQAe1rWdVpU4ytwPmg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEELXuF3BgczMsLET7DW1djptqJPu/4R3JjasfxRay6mfIWJ82HQ56rxBC8Ru1/CFqA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "582DC540-AAD8-4544-978B-847059FEE03E",
                             TwoFactorEnabled = false,

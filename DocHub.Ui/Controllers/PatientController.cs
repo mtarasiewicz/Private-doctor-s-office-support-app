@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
+using DocHub.Core.Domain.Models;
 
 namespace DocHub.Ui.Controllers
 {
@@ -18,22 +19,55 @@ namespace DocHub.Ui.Controllers
         private readonly IPatientsUpdaterService _patientsUpdaterService;
 
         public PatientController
-            (IPatientsGetterService patientsGetterService,
+        (IPatientsGetterService patientsGetterService,
             UserManager<ApplicationUser> userManager,
             IPatientsUpdaterService patientsUpdaterService)
         {
             _patientsGetterService = patientsGetterService;
             _userManager = userManager;
             _patientsUpdaterService = patientsUpdaterService;
-
         }
+
         [HttpGet]
-        public async Task<IActionResult> EditProfile(string? heading, string? submit, string? skip, bool register = false)
+        public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) { return RedirectToAction(nameof(DashboardController.Index), "Dashboard"); }
+            if (userId == null)
+            {
+                return RedirectToAction(nameof(DashboardController.Index), "Dashboard");
+            }
+
             var patientProfile = await _patientsGetterService.GetByUserId(Guid.Parse(userId));
-            if (patientProfile == null) { return RedirectToAction(nameof(DashboardController.Index), "Dashboard"); }
+            if (patientProfile == null)
+            {
+                return RedirectToAction(nameof(DashboardController.Index), "Dashboard");
+            }
+
+            Profile profile = new Profile()
+            {
+                Patient = patientProfile
+            };
+
+            return View(profile);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditProfile(string? heading, string? submit, string? skip,
+            bool register = false)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return RedirectToAction(nameof(DashboardController.Index), "Dashboard");
+            }
+
+            var patientProfile = await _patientsGetterService.GetByUserId(Guid.Parse(userId));
+            if (patientProfile == null)
+            {
+                return RedirectToAction(nameof(DashboardController.Index), "Dashboard");
+            }
+
             var model = new PatientUpdateRequest()
             {
                 Id = patientProfile.Id,
@@ -56,7 +90,6 @@ namespace DocHub.Ui.Controllers
                 ViewBag.Heading = heading;
                 ViewBag.Submit = submit;
                 ViewBag.Skip = skip;
-
             }
             else
             {
@@ -64,6 +97,7 @@ namespace DocHub.Ui.Controllers
                 ViewBag.Submit = "Save";
                 ViewBag.Skip = "Cancel";
             }
+
             return View(model);
         }
 
@@ -94,12 +128,9 @@ namespace DocHub.Ui.Controllers
                         ModelState.AddModelError(string.Empty, err.Description);
                     }
                 }
-
             }
+
             return View(request);
         }
-        
-
-
     }
 }

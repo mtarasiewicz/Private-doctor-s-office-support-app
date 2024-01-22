@@ -1,0 +1,140 @@
+@model AppointmentUpdateRequest
+
+@{
+    Layout = "_DashboardLayout";
+    PatientResponse patient = ViewData["Patient"] as PatientResponse ?? throw new InvalidOperationException();
+    AppointmentResponse appointment = ViewData["Appointment"] as AppointmentResponse ?? throw new InvalidOperationException();
+    //@item.Start?.ToString("HH:mm")
+
+    string? dayOfVisit = @appointment.Start?.ToString("dd.MM.yy");
+    string? startVisit = @appointment.Start?.ToString("HH:mm");
+    string? endVistit = @appointment.End?.ToString("HH:mm");
+
+    string fullAddress = patient.City + " " + patient.PostalCode
+                        + ", " + patient.Address;
+}
+<div class="md:flex space-x-2 mx-auto justify-center">
+    <div class="bg-white p-8 rounded-md shadow-md md:w-1/2">
+        <h2 class="text-2xl text-blue-500 font-semibold mb-4">Appointment</h2>
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a asp-controller="Today" asp-action="Index" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400">
+                        <svg class="w-[12px] h-[12px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                            <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
+                        </svg>
+                        &nbsp; Today appointments
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                        </svg>
+                        <p class="ml-1 text-sm font-medium text-blue-600 hover:text-blue-600 md:ml-2">
+                            @patient.FullName - @dayOfVisit @startVisit - @endVistit
+                        </p>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        <div class="border-b border-gray-200 my-4"></div>
+        <form asp-controller="Appointments" asp-action="Update" method="post">
+            <input type="hidden" asp-for="Id"/>
+
+            <div class="mb-4">
+                <label asp-for="Interview" class="block text-sm font-medium text-gray-600">Interview</label>
+                <textarea asp-for="Interview" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
+                <span asp-validation-for="Interview"></span>
+            </div>
+
+
+            <div class="mb-4">
+                <label asp-for="Diagnosis" class="block text-sm font-medium text-gray-600">Diagnosis</label>
+                <textarea asp-for="Diagnosis" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
+                <span asp-validation-for="Diagnosis"></span>
+            </div>
+
+
+            <div class="mb-4">
+                <label asp-for="Recommendations" class="block text-sm font-medium text-gray-600">Recommendations</label>
+                <textarea asp-for="Recommendations" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
+                <span asp-validation-for="Recommendations"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Notes" class="block text-sm font-medium text-gray-600">Notes</label>
+                <textarea asp-for="Notes" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
+                <span asp-validation-for="Notes"></span>
+            </div>
+
+            <div class="md:flex">
+                <div class="mt-6 me-1">
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Submit</button>
+                </div>
+                <div class="mt-8">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="Finished" value="true" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">End the appointment? </span>
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="bg-white p-8 rounded-md shadow-md md:w-1/2 mt-5 md:mt-0">
+        <h2 class="text-2xl text-blue-500 font-semibold mb-4">Patient</h2>
+        <div class="flex justify-between">
+            <div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">First name:</label>
+                    <p class="text-gray-700">@patient.FirstName</p>
+                </div>
+
+                <!-- Nazwisko -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Last name:</label>
+                    <p class="text-gray-700">@patient.LastName</p>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+                    <p class="text-gray-700">@patient.Email</p>
+                </div>
+            </div>
+            <div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">PESEL:</label>
+                    @if (String.IsNullOrEmpty(patient.PeselNumber))
+                    {
+                        <p class="text-gray-500 italic">empty</p>
+                    }
+                    else
+                    {
+                        <p class="text-gray-800">@patient.PeselNumber</p>
+                    }
+                </div>
+
+                <!-- Nazwisko -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Address:</label>
+                    <p class="text-gray-800">@fullAddress</p>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Phone number:</label>
+                    <p class="text-gray-800">@patient.PhoneNumber</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}

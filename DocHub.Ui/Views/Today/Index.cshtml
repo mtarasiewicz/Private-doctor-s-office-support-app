@@ -1,3 +1,4 @@
+@using DocHub.Core.Enums.Appointments
 @model DocHub.Core.Domain.Models.TodayAppointments
 @{
     Layout = "_DashboardLayout";
@@ -55,11 +56,11 @@
                     <p class="text-gray-500 dark:text-gray-400">Visits today</p>
                 </div>
                 <div class="w-1/3 p-4 text-center">
-                    <dt class="mb-2 text-3xl font-extrabold">1</dt>
+                    <dt class="mb-2 text-3xl font-extrabold">@Model.CompletedAppointmetns</dt>
                     <dd class="text-gray-500 dark:text-gray-400">Completed visits</dd>
                 </div>
                 <div class="w-1/3 p-4 text-center">
-                    <dt class="mb-2 text-3xl font-extrabold">3</dt>
+                    <dt class="mb-2 text-3xl font-extrabold">@Model.AppointmentsLeft</dt>
                     <dd class="text-gray-500 dark:text-gray-400">Visits left</dd>
                 </div>
             </div>
@@ -73,66 +74,137 @@
     var sendMessageTooltipId = "sendMessageTooltip" + counter;
     var patientProfileTooltipId = "patientProfileTooltip" + counter;
     var removeVisitToolTopId = "RemoveVisitTooltip" + counter;
-    <div class="w-4/5 mx-auto rounded-lg border border-gray-200 bg-white text-left shadow mt-3">
-
-        <div class="p-6">
-            <div class="flex justify-between space-x-4">
-                <div>
-                    <div class="flex">
-                        <h1 class="font-bold text-gray-900">@appointment.Start.Value.ToString("HH:mm")</h1>
-                        <span class="ml-1 inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-                            <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-                            Actual
-                        </span>
-                    </div>
-                    <p class="text-sm text-gray-500">
-                        Patient: @appointment.PatientName @appointment.PatientLastName
-                    </p>
-                </div>
-                <div class="flex">
-                    <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 my-auto">
-                        Start visit
-                        <svg class="inline-flex w-2 h-3 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 16">
-                            <path d="M0 .984v14.032a1 1 0 0 0 1.506.845l12.006-7.016a.974.974 0 0 0 0-1.69L1.506.139A1 1 0 0 0 0 .984Z"/>
-                        </svg>
-                    </button>
-                    <div class="my-auto me-1">
-                        <a href="#">
-                            <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white" data-tooltip-target="@patientProfileTooltipId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                              </svg>
-                        </a>
+    var infoAppointmentId = "AppointmentDetails" + counter;
+    @if (appointment.State is State.Finished)
+    {
+        <div class="w-4/5 mx-auto rounded-lg border border-gray-200 bg-gray-100 text-left shadow mt-3">
+            <div class="p-6">
+                <div class="flex justify-between space-x-4">
+                    <div>
+                        <div class="flex">
+                            <h1 class="font-semibold text-gray-500 line-through">@appointment.Start.Value.ToString("HH:mm")</h1>
+                            <span class="ml-1 inline-flex items-center bg-gray-200 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                <span class="w-2 h-2 me-1 bg-gray-500 rounded-full"></span>
+                                @appointment.State.ToString()
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-500">
+                            Patient: @appointment.PatientName @appointment.PatientLastName
+                        </p>
                     </div>
                     <div class="my-auto me-1">
                         <a href="#">
-                            <svg class="w-[20px] h-[20px] text-gray-900" data-tooltip-target="@sendMessageTooltipId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 2-8.4 7.05a1 1 0 0 1-1.2 0L1 2m18 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1m18 0v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2"/>
-                            </svg>
-                        </a>
-                    </div>
-                    <div class="my-auto me-1">
-                        <a href="#">
-                            <svg class="w-[20px] h-[20px] text-gray-900" data-tooltip-target="@removeVisitToolTopId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            <svg class="w-[20px] h-[20px] text-gray-500" data-tooltip-target="@infoAppointmentId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9h2v5m-2 0h4M9.408 5.5h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                             </svg>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="@sendMessageTooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-        Send email
-        <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
-    <div id="@patientProfileTooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-        Check patient profile
-        <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
-    <div id="@removeVisitToolTopId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-        Cancel appointment
-        <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
+        <div id="@infoAppointmentId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+            Appointments details
+            <div class="tooltip-arrow" data-popper-arrow></div>
+        </div>
+    }
+    else
+    {
+        <div class="w-4/5 mx-auto rounded-lg border border-gray-200 bg-white text-left shadow mt-3">
+            <div class="p-6">
+                <div class="flex justify-between space-x-4">
+                    <div>
+                        <div class="flex">
+                            <h1 class="font-bold text-gray-900">@appointment.Start.Value.ToString("HH:mm")</h1>
+                            @if (appointment.State == State.Reserved)
+                            {
+                                <span class="ml-1 inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                    <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                                    @appointment.State.ToString()
+                                </span>
+                            }
+                            @if (appointment.State == State.During)
+                            {
+                                <span class="ml-1 inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                    <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                                    @appointment.State.ToString()
+                                </span>
+                            }
+                            @if (appointment.State == State.Finished)
+                            {
+                                <span class="ml-1 inline-flex items-center bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                    <span class="w-2 h-2 me-1 bg-gray-500 rounded-full"></span>
+                                    @appointment.State.ToString()
+                                </span>
+                            }
+                        </div>
+                        <p class="text-sm text-gray-500">
+                            Patient: @appointment.PatientName @appointment.PatientLastName
+                        </p>
+                    </div>
+                    <div class="flex">
+                        @if ((appointment.State is State.Reserved) && !Model.IsAnyDuring())
+                        {
+                            <a asp-controller="Appointments" asp-action="Update" asp-route-appointmentId="@appointment.Id">
+                                <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 my-auto">
+                                    Start
+                                    <svg class="inline-flex my-auto w-2 h-3 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 16">
+                                        <path d="M0 .984v14.032a1 1 0 0 0 1.506.845l12.006-7.016a.974.974 0 0 0 0-1.69L1.506.139A1 1 0 0 0 0 .984Z"/>
+                                    </svg>
+                                </button>
+                            </a>
+                        }
+                        @if ((appointment.State is State.During))
+                        {
+                            <a asp-controller="Appointments" asp-action="Update" asp-route-appointmentId="@appointment.Id">
+                                <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 my-auto">
+                                    Continue
+                                    <svg class="inline-flex my-auto w-2 h-3 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 16">
+                                        <path d="M0 .984v14.032a1 1 0 0 0 1.506.845l12.006-7.016a.974.974 0 0 0 0-1.69L1.506.139A1 1 0 0 0 0 .984Z"/>
+                                    </svg>
+                                </button>
+                            </a>
+                        }
+                        @if (appointment.State is State.Reserved)
+                        {
+                            <div class="my-auto me-1">
+                                <a href="#">
+                                    <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white" data-tooltip-target="@patientProfileTooltipId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="my-auto me-1">
+                                <a href="#">
+                                    <svg class="w-[20px] h-[20px] text-gray-900" data-tooltip-target="@sendMessageTooltipId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 2-8.4 7.05a1 1 0 0 1-1.2 0L1 2m18 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1m18 0v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="my-auto me-1">
+                                <a href="#">
+                                    <svg class="w-[20px] h-[20px] text-gray-900" data-tooltip-target="@removeVisitToolTopId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="@sendMessageTooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+            Send email
+            <div class="tooltip-arrow" data-popper-arrow></div>
+        </div>
+        <div id="@patientProfileTooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+            Check patient profile
+            <div class="tooltip-arrow" data-popper-arrow></div>
+        </div>
+        <div id="@removeVisitToolTopId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+            Cancel appointment
+            <div class="tooltip-arrow" data-popper-arrow></div>
+        </div>
+    }
 }
 
 <script src="~/js/clock.js"></script>

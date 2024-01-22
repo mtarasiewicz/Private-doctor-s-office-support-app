@@ -11,12 +11,14 @@ namespace DocHub.Core.DTO
     public class PatientUpdateRequest
     {
         public Guid? Id { get; set; }
+        [MaxLength(50)]
         [StringLength(50, ErrorMessage = "First Name must be between {2} and {1} characters.", MinimumLength = 2)]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "First Name should contain only letters.")]
+        [RegularExpression("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$", ErrorMessage = "First Name should contain only letters.")]
         [Required(ErrorMessage = "First name can't be blank")]
         public string? FirstName { get; set; }
+        [MaxLength(50)]
         [StringLength(50, ErrorMessage = "Last Name must be between {2} and {1} characters.", MinimumLength = 2)]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Last Name should contain only letters.")]
+        [RegularExpression("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$", ErrorMessage = "Last Name should contain only letters.")]
         [Required(ErrorMessage = "Last name cant'be blank")]
         public string? LastName { get; set; }
         [PeselNumber]
