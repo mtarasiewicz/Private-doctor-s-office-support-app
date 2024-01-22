@@ -21,6 +21,7 @@ public class PaginatedGroup<TGroup, TItem> : IEnumerable<IGrouping<TGroup, TItem
         this._groupComparer = groupComparer;
     }
     public bool HasNextPage => (PageNumber < TotalPages);
+    public bool IsEmpty => (!Items.Any());
     public static PaginatedGroup<TGroup, TItem> Create(IEnumerable<TItem> items, Func<TItem, TGroup> keySelector, int pageNumber, int pageSize, IComparer<TGroup> groupComparer = null)
     {
         var groupedItems = items.GroupBy(keySelector).OrderBy(group => group.Key);

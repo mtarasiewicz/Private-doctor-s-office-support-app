@@ -18,4 +18,7 @@ public class AppointmentAddRangeRequest
     [Range(1, 24)]
     [WorkHours("StartHour")]
     public int EndHour { get; set; }
+
+    public bool IncludeSaturdays { get; set; } = false;
+    public bool IncludeSundays { get; set; } = false;
 }

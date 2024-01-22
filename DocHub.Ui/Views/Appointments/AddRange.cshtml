@@ -2,6 +2,20 @@
 @{
     Layout = "_DashboardLayout";
 }
+<style>
+    .active, .accordion:hover {
+      text-decoration: underline;
+    }
+    .rotate-icon {
+      transition: transform 0.3s ease;
+    }
+    .rotate-icon:hover {
+      transform: rotate(90deg);
+    }
+    .settings:hover .rotate-icon {
+      transform: rotate(90deg);
+    }
+</style>
 <div class="max-w-md my-auto mx-auto bg-white p-8 rounded-lg shadow-md">
     <ul class="flex mb-4">
         <li class="mr-6">
@@ -73,7 +87,7 @@
                     </svg>
                 </span>
                 <input asp-for="Duration" max="1400" min="1" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="45 minutes">
-                
+
             </div>
             <span asp-validation-for="Duration" class="text-red-500 text-sm"></span>
         </div>
@@ -102,8 +116,31 @@
                 </div>
             </div>
         </div>
-<span asp-validation-for="StartHour" class="text-red-500 text-sm"></span>
-<span asp-validation-for="EndHour" class="text-red-500 text-sm"></span>
+        <span asp-validation-for="StartHour" class="text-red-500 text-sm"></span>
+        <span asp-validation-for="EndHour" class="text-red-500 text-sm"></span>
+        <div class="">
+            <button class="accordion duration-1000 text-sm font-medium text-gray-600 me-1 inline-flex settings" type="button">
+                <svg class="w-4 h-4 my-auto text-gray-600 me-1 rotate-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M19 11V9a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L12 2.757V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L2.929 4.343a1 1 0 0 0 0 1.414l.536.536L2.757 8H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535L8 17.243V18a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H18a1 1 0 0 0 1-1Z"/>
+                        <path d="M10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                    </g>
+                </svg>Additional options
+            </button>
+            <div class="panel transition-all ease-in-out duration-1000 pr-18 overflow-hidden max-h-0 mt-1 my-auto justify-between pt-2 pl-1">
+                <label class="relative inline-flex items-center mb-5 cursor-pointer">
+                    <input type="checkbox" name="IncludeSaturdays" value="true" class="sr-only peer mt-1">
+                    <div class="w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <span class="ms-2 text-sm font-medium text-gray-600">Include saturdays</span>
+                </label>
+                <label class="relative inline-flex items-center mb-5 cursor-pointer">
+                    <input type="checkbox" value="true" name="IncludeSundays" class="sr-only peer mt-1">
+                    <div class="w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <span class="ms-2 text-sm font-medium text-gray-600">Include sundays</span>
+                </label>
+
+            </div>
+        </div>
         <div class="text-center flex mx-auto justify-between space-x-2">
             <div>
                 <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Add</button>
@@ -131,5 +168,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/hourInput.js"></script>
+    <script src="~/js/accordion.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/datepicker.min.js"></script>
 }

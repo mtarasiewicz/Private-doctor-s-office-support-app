@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.DTO;
@@ -18,13 +19,13 @@ public class AppointmentsAddRangeService : IAppointmentsAddRangeService
     {
         if(request.StartDate is null || request.EndDate is null) throw new ArgumentNullException("nie ma daty");
         var appointments =
-            GenerateVisit(request.StartDate.Value, request.EndDate.Value, request.Duration, request.StartHour, request.EndHour);
+            GenerateVisit(request.StartDate.Value, request.EndDate.Value, request.Duration, request.StartHour, request.EndHour, request.IncludeSaturdays, request.IncludeSundays);
         await _appointmentsRepository.AddRange(appointments);
         return appointments;
     }
 
     private List<Appointment> GenerateVisit(DateTime startDate, DateTime endDate, int duration,
-        int startHour, int endHour)
+        int startHour, int endHour, bool includeSat, bool includeSun)
     {
         List<Appointment> visits = new List<Appointment>();
         DateTime currentDay = startDate.Date;
@@ -36,15 +37,42 @@ public class AppointmentsAddRangeService : IAppointmentsAddRangeService
             while (currentTime.AddMinutes(duration) <= currentDay.AddHours(endHour)) 
             {
                 DateTime endTime = currentTime.AddMinutes(duration);
-                if (IsAppointmentValid(currentTime, endTime))
+                if (currentDay.DayOfWeek == DayOfWeek.Saturday && includeSat)
                 {
-                    visits.Add(new Appointment()
+                    if (IsAppointmentValid(currentTime, endTime))
                     {
-                        Id = Guid.NewGuid(),
-                        Start = currentTime,
-                        End = endTime,
-                        State = State.Available.ToString(),
-                    });
+                        visits.Add(new Appointment()
+                        {
+                            Id = Guid.NewGuid(),
+                            Start = currentTime,
+                            End = endTime,
+                            State = State.Available.ToString(),
+                        });
+                    }
+                }else if (currentDay.DayOfWeek == DayOfWeek.Sunday && includeSun)
+                {
+                    if (IsAppointmentValid(currentTime, endTime))
+                    {
+                        visits.Add(new Appointment()
+                        {
+                            Id = Guid.NewGuid(),
+                            Start = currentTime,
+                            End = endTime,
+                            State = State.Available.ToString(),
+                        });
+                    }
+                }else if (currentDay.DayOfWeek != DayOfWeek.Saturday && currentDay.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    if (IsAppointmentValid(currentTime, endTime))
+                    {
+                        visits.Add(new Appointment()
+                        {
+                            Id = Guid.NewGuid(),
+                            Start = currentTime,
+                            End = endTime,
+                            State = State.Available.ToString(),
+                        });
+                    }
                 }
 
                 currentTime = endTime;

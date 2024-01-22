@@ -174,6 +174,10 @@ public class AppointmentsController : Controller
         if (ModelState.IsValid)
         {
             var model = await _appointmentUpdaterService.Update(request: request);
+            if (request.State is State.During)
+            {
+                TempData["Test"] = "Widzisz mnie?";
+            }
             return RedirectToAction("Index", "Today");
         }
 
