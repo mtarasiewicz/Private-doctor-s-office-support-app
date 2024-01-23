@@ -1,6 +1,7 @@
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.DTO;
+using DocHub.Core.Enums.Appointments;
 using DocHub.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ public class AppointmentsRepository : IAppointmentsRepository
     {
         this._dbContext = dbContext;
     }
+
     public async Task<Appointment> Create(Appointment appointment)
     {
         _dbContext.Appointments.Add(appointment);
@@ -23,7 +25,7 @@ public class AppointmentsRepository : IAppointmentsRepository
 
     public async Task<Appointment?> Get(Guid? id)
     {
-        return await _dbContext.Appointments.Where(appointment => 
+        return await _dbContext.Appointments.Where(appointment =>
             appointment.Id == id).FirstOrDefaultAsync();
     }
 
@@ -56,7 +58,7 @@ public class AppointmentsRepository : IAppointmentsRepository
 
     public IQueryable<AppointmentResponse?> GetAllAsViewModels() =>
         _dbContext.Appointments.Select(appointment => appointment.ToAppointmentResponse());
-    
+
 
     public async Task<List<Appointment>> AddRange(List<Appointment> appointments)
     {
@@ -67,6 +69,13 @@ public class AppointmentsRepository : IAppointmentsRepository
 
     public async Task<List<Appointment>> GetAllReservedByDate(DateTime appointmentDate)
     {
-        return await _dbContext.Appointments.Where(app => app.Start != null && app.Start.Value.Date == appointmentDate && app.PatientId != null).Include(app=> app.Patient).ToListAsync();
+        return await _dbContext.Appointments
+            .Where(app => app.Start != null && app.Start.Value.Date == appointmentDate && app.PatientId != null)
+            .Include(app => app.Patient).ToListAsync();
+    }
+
+    public async Task<List<Appointment>> GetAllFinishedPatientAppointments(Guid patientId)
+    {
+        return await _dbContext.Appointments.Where(app => app.PatientId == patientId && app.State == State.Finished.ToString()).ToListAsync();
     }
 }

@@ -145,6 +145,7 @@ public class AppointmentsController : Controller
         if (ModelState.IsValid)
         {
             var addRange = await _appointmentsAddRangeService.AddRange(request);
+            TempData["test"] = addRange.Count;
             return RedirectToAction("Index");
         }
 
@@ -157,6 +158,14 @@ public class AppointmentsController : Controller
         AppointmentResponse? response = await _appointmentsGetterService.Get(appointmentId);
         if (response is null) return RedirectToAction("Index", "Today");
         var patient = await _patientsGetterService.Get(response.PatientId);
+        if (response.PatientId != null)
+        {
+             var finishedAppointments = 
+                await _appointmentsGetterService.GetAllFinishedPatientsAppointments(response.PatientId.Value);
+             ViewBag.AllAppointments = finishedAppointments.OrderByDescending(app => app.Start).ToList();
+        }
+
+
         ViewData["Patient"] = patient;
         ViewData["Appointment"] = response;
         AppointmentUpdateRequest updateRequest = response.ToAppointmentUpdateRequest();
@@ -174,10 +183,6 @@ public class AppointmentsController : Controller
         if (ModelState.IsValid)
         {
             var model = await _appointmentUpdaterService.Update(request: request);
-            if (request.State is State.During)
-            {
-                TempData["Test"] = "Widzisz mnie?";
-            }
             return RedirectToAction("Index", "Today");
         }
 

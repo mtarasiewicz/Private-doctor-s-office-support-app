@@ -1,3 +1,6 @@
+@using System.Collections
+@using System.Globalization
+@using Humanizer
 @model AppointmentUpdateRequest
 
 @{
@@ -5,13 +8,14 @@
     PatientResponse patient = ViewData["Patient"] as PatientResponse ?? throw new InvalidOperationException();
     AppointmentResponse appointment = ViewData["Appointment"] as AppointmentResponse ?? throw new InvalidOperationException();
     //@item.Start?.ToString("HH:mm")
-
+    var allAppointments = ((List<AppointmentResponse>)ViewBag.AllAppointments);
     string? dayOfVisit = @appointment.Start?.ToString("dd.MM.yy");
     string? startVisit = @appointment.Start?.ToString("HH:mm");
     string? endVistit = @appointment.End?.ToString("HH:mm");
 
     string fullAddress = patient.City + " " + patient.PostalCode
                          + ", " + patient.Address;
+
 }
 <div class="md:flex space-x-2 mx-auto justify-center">
     <div class="bg-white p-8 rounded-md shadow-md md:w-1/2">
@@ -147,6 +151,61 @@
                 </div>
             </div>
         </div>
+        <div class="mt-2 bg-gray-50 border border-gray-200 rounded-md p-2">
+            <div class="mb-1">
+                <label class="text-gray-700 text-xs font-semibold">History of diseases:</label>
+                <p class="text-gray-600 text-xs">@patient.HistoryOfDseases</p>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-1">
+                <label class="text-gray-700 text-xs font-semibold">Allergies:</label>
+                <p class="text-gray-600 text-xs">@patient.Allergies</p>
+            </div>
+            <div class="mb-1">
+                <label class="text-gray-700 text-xs font-semibold">Other:</label>
+                <p class="text-gray-600 text-xs">@patient.TakenMedications</p>
+            </div>
+        </div>
+        <div class="mt-2 bg-gray-50 border border-gray-200 rounded-md p-2 overflow-y-scroll max-h-80">
+            <p class="text-gray-600 text-xs font-semibold">Recent appointments</p>
+            @if (allAppointments.Any())
+            {
+                foreach (var item in allAppointments)
+                {
+                    <div class="w-full mx-auto border-gray-200 bg-white border rounded-md mb-1 p-2">
+                        <button class="accordion duration-1000 text-sm text-gray-700 font-semibold">@item.Start.Value.ToString("dd.MM.yyyy HH:mm") @item.Start.Humanize()</button>
+                        <div class="panel transition-all ease-in-out duration-1000 overflow-hidden max-h-0 bg-white rounded">
+                            <div class="md:flex bg-white justify-between">
+                                <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
+                                    <p class="text-xs font-semibold text-gray-700">Interview: </p>
+                                    <p class="text-xs text-justify text-gray-800">@item.Interview</p>
+                                </div>
+                                <div class="flex-1 mr-1 b p-1 hover:bg-yellow-50 rounded-md">
+                                    <p class="text-xs font-semibold text-gray-700">Diagnosis: </p>
+                                    <p class="text-xs text-justify text-gray-800">@item.Diagnosis</p>
+                                </div>
+                            </div>
+                            <div class="md:flex bg-white justify-between">
+                                <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
+                                    <p class="text-xs font-semibold text-gray-700">Recommendations: </p>
+                                    <p class="text-xs text-justify text-gray-800">@item.Recommendations</p>
+                                </div>
+                                <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
+                                    <p class="text-xs font-semibold text-gray-700">Notes: </p>
+                                    <p class="text-xs text-justify text-gray-800">@item.Notes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-sm font-semibold text-gray-700">This is the first appoinment </p>
+            }
+
+        </div>
     </div>
 </div>
 
@@ -155,4 +214,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/accordion.js"></script>
 }

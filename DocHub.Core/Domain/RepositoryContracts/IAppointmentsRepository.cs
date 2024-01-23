@@ -16,4 +16,6 @@ public interface IAppointmentsRepository
 
     Task<List<Appointment>> GetAllReservedByDate(DateTime appointmentDate);
 
+    Task<List<Appointment>> GetAllFinishedPatientAppointments(Guid patientId);
+
 }

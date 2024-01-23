@@ -36,4 +36,10 @@ public class AppointmentsGetterService : IAppointmentsGetterService
         var appointments = await _appointmentsRepository.GetAllReservedByDate(appointmentDate);
         return appointments.Select(appointment => appointment.ToAppointmentResponse()).ToList();
     }
+
+    public async Task<List<AppointmentResponse>> GetAllFinishedPatientsAppointments(Guid patientId)
+    {
+        var finishedAppointments = await _appointmentsRepository.GetAllFinishedPatientAppointments(patientId);
+        return finishedAppointments.Select(app => app.ToAppointmentResponse()).ToList();
+    }
 }

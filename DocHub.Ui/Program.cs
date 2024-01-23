@@ -1,3 +1,4 @@
+using System.Globalization;
 using DocHub.Ui.StartupExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
