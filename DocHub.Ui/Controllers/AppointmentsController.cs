@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System.Runtime.InteropServices.JavaScript;
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.Entities.IdentityEntities;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using DocHub.Core.DTO;
 using DocHub.Core.Enums.Appointments;
 using DocHub.Core.Services;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -121,16 +123,30 @@ public class AppointmentsController : Controller
     public async Task<IActionResult> ReserveAppointment(Guid appointmentId)
     {
         AppointmentResponse? response = await _appointmentsGetterService.Get(appointmentId);
-        if (response is null) return RedirectToAction("Index");
-
+        if (response is null)
+        {
+            return RedirectToAction("Index");
+        }
         var user = await _userManager.GetUserAsync(User);
-        if (user is null) return RedirectToAction("Index");
+        if (user is null)
+        {
+            return RedirectToAction("Index");
+        }
 
         var patient = await _patientsGetterService.GetByUserId(user.Id);
-        if (patient is null) return RedirectToAction("Index");
+        if (patient is null)
+        {
+            return RedirectToAction("Index");
+        }
         var request = new AppointmentReserveRequest() { PatientId = patient.Id, Id = appointmentId };
         var reserve = await _appointmentsBookerService.Reserve(request);
-        await _emailSender.SendEmailAsync(user.Email, "test", "test");
+        if (reserve.PatientId is not null)
+        {
+            // DateTime reminderTime = reserve.Start.Value.AddHours(-24);      
+            DateTime reminderTime = DateTime.Now.AddSeconds(10);
+            BackgroundJob.Schedule(() => _emailSender.SendEmailAsync("marcin13101999@gmail.com", "Test", $"{reserve.Start.Value}"),
+                reminderTime);
+        }
         if (response.Start != null) TempData["SuccessMessage"] = "Appointment booked - " + response.Start.Value.Date;
         return RedirectToAction("Index");
     }

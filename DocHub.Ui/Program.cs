@@ -1,5 +1,6 @@
 using System.Globalization;
 using DocHub.Ui.StartupExtensions;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,11 @@ builder.Services.ConfigureServices(builder.Configuration); //Use custom extensio
 var app = builder.Build();
 
 /*Built-in exception pages*/
-if (builder.Environment.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
+if (builder.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseHangfireDashboard("/jobs");
+}
 else
 {
     /*
@@ -37,6 +42,8 @@ app.UseAuthorization();
 
 /*Map controllers*/
 app.MapControllers();
+
+
 
 
 

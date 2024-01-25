@@ -9,6 +9,7 @@ using DocHub.Infrastructure.Repositories;
 using DocHub.Core.ServiceContracts;
 using DocHub.Core.Services;
 using DocHub.Infrastructure.BackgroundServices;
+using Hangfire;
 
 namespace DocHub.Ui.StartupExtensions
 {
@@ -55,6 +56,12 @@ namespace DocHub.Ui.StartupExtensions
             });
             /*Hosted services*/
             services.AddHostedService<AppointmentsCleanUpBackgroundService>();
+            services.AddHangfire((sp, config) =>
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                config.UseSqlServerStorage(connectionString);
+            });
+            services.AddHangfireServer();
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequiredLength = 3;
