@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Mail;
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Core.DTO;
@@ -84,6 +86,7 @@ public class AppointmentsRepository : IAppointmentsRepository
         _dbContext.RemoveRange(appointments);
         await _dbContext.SaveChangesAsync();
         return appointments;
+       
     }
     
 }

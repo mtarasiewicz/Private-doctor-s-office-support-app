@@ -25,11 +25,13 @@ public class AppointmentsController : Controller
     private readonly IAppointmentsRepository _appointmentsRepository;
     private readonly IAppointmentsAddRangeService _appointmentsAddRangeService;
     private readonly IAppointmentUpdaterService _appointmentUpdaterService;
+    private readonly IEmailSenderService _emailSender;
 
     public AppointmentsController(IAppointmentsGetterService appointmentsGetterService,
         IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService,
         IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager,
-        IAppointmentsRepository appointmentsRepository, IAppointmentsAddRangeService appointmentsAddRangeService, IAppointmentUpdaterService appointmentUpdaterService)
+        IAppointmentsRepository appointmentsRepository, IAppointmentsAddRangeService appointmentsAddRangeService,
+        IAppointmentUpdaterService appointmentUpdaterService, IEmailSenderService emailSender)
     {
         _appointmentsGetterService = appointmentsGetterService;
         _appointmentsAdderService = appointmentsAdderService;
@@ -39,6 +41,7 @@ public class AppointmentsController : Controller
         _appointmentsRepository = appointmentsRepository;
         _appointmentsAddRangeService = appointmentsAddRangeService;
         _appointmentUpdaterService = appointmentUpdaterService;
+        _emailSender = emailSender;
     }
 
     // GET
@@ -127,6 +130,7 @@ public class AppointmentsController : Controller
         if (patient is null) return RedirectToAction("Index");
         var request = new AppointmentReserveRequest() { PatientId = patient.Id, Id = appointmentId };
         var reserve = await _appointmentsBookerService.Reserve(request);
+        await _emailSender.SendEmailAsync(user.Email, "test", "test");
         if (response.Start != null) TempData["SuccessMessage"] = "Appointment booked - " + response.Start.Value.Date;
         return RedirectToAction("Index");
     }
@@ -151,6 +155,7 @@ public class AppointmentsController : Controller
 
         return View(request);
     }
+
     [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid appointmentId)
@@ -160,9 +165,9 @@ public class AppointmentsController : Controller
         var patient = await _patientsGetterService.Get(response.PatientId);
         if (response.PatientId != null)
         {
-             var finishedAppointments = 
+            var finishedAppointments =
                 await _appointmentsGetterService.GetAllFinishedPatientsAppointments(response.PatientId.Value);
-             ViewBag.AllAppointments = finishedAppointments.OrderByDescending(app => app.Start).ToList();
+            ViewBag.AllAppointments = finishedAppointments.OrderByDescending(app => app.Start).ToList();
         }
 
 
@@ -171,6 +176,7 @@ public class AppointmentsController : Controller
         AppointmentUpdateRequest updateRequest = response.ToAppointmentUpdateRequest();
         return View(updateRequest);
     }
+
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Update(AppointmentUpdateRequest request)
@@ -180,6 +186,7 @@ public class AppointmentsController : Controller
             request.State = State.During;
             request.Finished = false;
         }
+
         if (ModelState.IsValid)
         {
             var model = await _appointmentUpdaterService.Update(request: request);
