@@ -42,4 +42,5 @@ public class AppointmentsGetterService : IAppointmentsGetterService
         var finishedAppointments = await _appointmentsRepository.GetAllFinishedPatientAppointments(patientId);
         return finishedAppointments.Select(app => app.ToAppointmentResponse()).ToList();
     }
+    
 }

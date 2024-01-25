@@ -78,4 +78,12 @@ public class AppointmentsRepository : IAppointmentsRepository
     {
         return await _dbContext.Appointments.Where(app => app.PatientId == patientId && app.State == State.Finished.ToString()).ToListAsync();
     }
+
+    public async Task<List<Appointment>> RemoveRange(List<Appointment> appointments)
+    {
+        _dbContext.RemoveRange(appointments);
+        await _dbContext.SaveChangesAsync();
+        return appointments;
+    }
+    
 }

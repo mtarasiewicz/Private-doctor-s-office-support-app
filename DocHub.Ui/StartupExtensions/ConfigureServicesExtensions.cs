@@ -4,13 +4,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using System.ComponentModel;
 using DocHub.Core.Domain.RepositoryContracts;
 using DocHub.Infrastructure.Repositories;
 using DocHub.Core.ServiceContracts;
 using DocHub.Core.Services;
-using DocHub.Core.ValidationAttributes;
+using DocHub.Infrastructure.BackgroundServices;
 
 namespace DocHub.Ui.StartupExtensions
 {
@@ -30,7 +28,6 @@ namespace DocHub.Ui.StartupExtensions
             /*Add Controllers with views*/
             services.AddControllersWithViews(options =>
             {
-                ///configure protection against XSRF attacks*/
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
             /*Repositories*/
@@ -48,11 +45,14 @@ namespace DocHub.Ui.StartupExtensions
             services.AddScoped<IAppointmentsBookerService, AppointmentsBookerService>();
             services.AddScoped<IAppointmentsAddRangeService, AppointmentsAddRangeService>();
             services.AddScoped<IAppointmentUpdaterService, AppointmentsUpdaterService>();
+            services.AddScoped<IAppointmentsDeleterService, AppointmentsDeleterService>();
             /*Configure database connection*/
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            /*Hosted services*/
+            services.AddHostedService<AppointmentsCleanUpBackgroundService>();
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequiredLength = 3;

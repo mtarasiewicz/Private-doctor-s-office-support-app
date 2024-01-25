@@ -86,7 +86,7 @@
                                 <hr class="my-2 border-blue-500 border-2">
                             }
                             <div class="flex flex-wrap justify-center">
-                                @foreach (var item in group.ToList().OrderBy(a => a.Start))
+                                @foreach (var item in group.ToList().OrderBy(a => a.Start).Where(a => a.Start > DateTime.Now))
                                 {
                                     var modalId = "modal" + item.Id;
                                     var tooltipId = "tooltip" + item.Id;

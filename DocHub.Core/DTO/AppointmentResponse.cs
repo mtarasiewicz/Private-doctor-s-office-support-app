@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Enums.Appointments;
@@ -37,6 +38,19 @@ public class AppointmentResponse
         Interview = this.Interview,
         Diagnosis = this.Diagnosis,
         Recommendations = this.Recommendations,
+        Notes = this.Notes
+    };
+
+    public Appointment ToAppointment() => new Appointment()
+    {
+        Id = this.Id,
+        PatientId = this.PatientId,
+        Interview = this.Interview,
+        Diagnosis = this.Diagnosis,
+        Start = this.Start,
+        End = this.End,
+        Finished = this.Finished,
+        State = this.State.ToString() ?? Enums.Appointments.State.Available.ToString(),
         Notes = this.Notes
     };
 
