@@ -39,7 +39,7 @@ app.UseAuthentication();
 
 /*Enable authorizatiojn*/
 app.UseAuthorization();
-
+app.UseSession();
 /*Map controllers*/
 app.MapControllers();
 

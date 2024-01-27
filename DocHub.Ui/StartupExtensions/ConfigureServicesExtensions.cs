@@ -34,6 +34,7 @@ namespace DocHub.Ui.StartupExtensions
             /*Repositories*/
             services.AddScoped<IPatientsRepository, PatientsRepository>();
             services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
+            services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
             /*Services*/
             services.AddScoped<IPatientsAdderService, PatientsAdderService>();
             services.AddScoped<IPatientsAdderService, PatientsAdderService>();
@@ -47,7 +48,13 @@ namespace DocHub.Ui.StartupExtensions
             services.AddScoped<IAppointmentsAddRangeService, AppointmentsAddRangeService>();
             services.AddScoped<IAppointmentUpdaterService, AppointmentsUpdaterService>();
             services.AddScoped<IAppointmentsDeleterService, AppointmentsDeleterService>();
-
+            services.AddScoped<IPrescriptionAdderService, PrescriptionAdderService>();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(1);
+                options.Cookie.IsEssential = true;
+            });
             services.AddTransient<IEmailSenderService, EmailSenderService>();
             /*Configure database connection*/
             services.AddDbContext<ApplicationDbContext>(options =>

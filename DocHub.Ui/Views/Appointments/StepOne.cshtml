@@ -1,5 +1,3 @@
-@using System.Collections
-@using System.Globalization
 @using Humanizer
 @model AppointmentUpdateRequest
 
@@ -19,6 +17,38 @@
 }
 <div class="md:flex space-x-2 mx-auto justify-center">
     <div class="bg-white p-8 rounded-md shadow-md md:w-1/2">
+        <div class="items-center w-full space-y-4 mx-auto ml-10">
+            <ol class="sm:flex justify-between">
+                <li class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
+                        1
+                    </span>
+                    <span>
+                        <h3 class="text-sm font-semibold leading-tight">Conducting the appointment</h3>
+                        <p class="text-xs">Enter the details of the appointment</p>
+                    </span>
+                </li>
+                <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                        2
+                    </span>
+                    <span>
+                        <h3 class="text-sm  font-semibold leading-tight">Issuing a referral/prescription</h3>
+                        <p class="text-xs">
+Add prescriptions or referrals</p>
+                    </span>
+                </li>
+                <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                        3
+                    </span>
+                    <span>
+                        <h3 class="text-sm leading-tight font-semibold">Summary of the appointment</h3>
+                        <p class="text-xs"></p>
+                    </span>
+                </li>
+            </ol>
+            </div>
         <h2 class="text-2xl text-blue-500 font-semibold mb-4">Appointment</h2>
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -45,7 +75,7 @@
             </ol>
         </nav>
         <hr class="border border-gray-200 my-2">
-        <form asp-controller="Appointments" asp-action="Update" method="post">
+        <form asp-controller="Appointments" asp-action="StepOne" method="post">
             <input type="hidden" asp-for="Id"/>
 
             <div class="mb-4">
@@ -89,8 +119,6 @@
 
 
             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Submit</button>
-
-
         </form>
     </div>
     <div class="bg-white p-8 rounded-md shadow-md md:w-1/2 mt-2 md:mt-0 mx-auto">

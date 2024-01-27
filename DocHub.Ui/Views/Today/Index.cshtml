@@ -144,7 +144,7 @@
                     <div class="flex">
                         @if ((appointment.State is State.Reserved) && !Model.IsAnyDuring())
                         {
-                            <a asp-controller="Appointments" asp-action="Update" asp-route-appointmentId="@appointment.Id">
+                            <a asp-controller="Appointments" asp-action="StepOne" asp-route-appointmentId="@appointment.Id">
                                 <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 my-auto">
                                     Start
                                     <svg class="inline-flex my-auto w-2 h-3 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 16">
@@ -155,7 +155,7 @@
                         }
                         @if ((appointment.State is State.During))
                         {
-                            <a asp-controller="Appointments" asp-action="Update" asp-route-appointmentId="@appointment.Id">
+                            <a asp-controller="Appointments" asp-action="StepOne" asp-route-appointmentId="@appointment.Id">
                                 <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 my-auto">
                                     Continue
                                     <svg class="inline-flex my-auto w-2 h-3 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 16">

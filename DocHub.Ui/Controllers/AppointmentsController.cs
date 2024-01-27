@@ -1,5 +1,6 @@
 using System.Net.Mail;
 using System.Runtime.InteropServices.JavaScript;
+using System.Text.Json;
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Domain.Entities.IdentityEntities;
 using DocHub.Core.Domain.Models;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using DocHub.Core.DTO;
 using DocHub.Core.Enums.Appointments;
 using DocHub.Core.Services;
+using DocHub.Ui.Session;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,12 +30,13 @@ public class AppointmentsController : Controller
     private readonly IAppointmentsAddRangeService _appointmentsAddRangeService;
     private readonly IAppointmentUpdaterService _appointmentUpdaterService;
     private readonly IEmailSenderService _emailSender;
+    private readonly IPrescriptionAdderService _prescriptionAdderService;
 
     public AppointmentsController(IAppointmentsGetterService appointmentsGetterService,
         IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService,
         IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager,
         IAppointmentsRepository appointmentsRepository, IAppointmentsAddRangeService appointmentsAddRangeService,
-        IAppointmentUpdaterService appointmentUpdaterService, IEmailSenderService emailSender)
+        IAppointmentUpdaterService appointmentUpdaterService, IEmailSenderService emailSender, IPrescriptionAdderService prescriptionAdderService)
     {
         _appointmentsGetterService = appointmentsGetterService;
         _appointmentsAdderService = appointmentsAdderService;
@@ -44,6 +47,7 @@ public class AppointmentsController : Controller
         _appointmentsAddRangeService = appointmentsAddRangeService;
         _appointmentUpdaterService = appointmentUpdaterService;
         _emailSender = emailSender;
+        _prescriptionAdderService = prescriptionAdderService;
     }
 
     // GET
@@ -174,7 +178,7 @@ public class AppointmentsController : Controller
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<IActionResult> Update(Guid appointmentId)
+    public async Task<IActionResult> StepOne(Guid appointmentId)
     {
         AppointmentResponse? response = await _appointmentsGetterService.Get(appointmentId);
         if (response is null) return RedirectToAction("Index", "Today");
@@ -186,29 +190,122 @@ public class AppointmentsController : Controller
             ViewBag.AllAppointments = finishedAppointments.OrderByDescending(app => app.Start).ToList();
         }
 
-
+       //var model = HttpContext.Session.GetObject<TestModel>("TestModel") ?? new TestModel();
         ViewData["Patient"] = patient;
         ViewData["Appointment"] = response;
-        AppointmentUpdateRequest updateRequest = response.ToAppointmentUpdateRequest();
-        return View(updateRequest);
+        var key = "StepOne" + appointmentId;
+        var updateRequestFromSession = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        if (updateRequestFromSession == null)
+        {
+            AppointmentUpdateRequest updateRequest = response.ToAppointmentUpdateRequest();
+            updateRequest.Prescriptions = new List<PrescriptionAddRequest>();
+            HttpContext.Session.SetObject("StepOne", updateRequest);
+            return View(updateRequest);
+        }
+
+        return View(updateRequestFromSession);
     }
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
-    public async Task<IActionResult> Update(AppointmentUpdateRequest request)
+    public IActionResult StepOne(AppointmentUpdateRequest request)
     {
+        var key = "StepOne" + request.Id;
+        var listKey = "List" + request.Id;
         if (request.Finished is null)
         {
             request.State = State.During;
             request.Finished = false;
         }
-
+        var collection = HttpContext.Session.GetObject<List<PrescriptionAddRequest>>("List");
+        if (collection != null)
+        {
+            request.Prescriptions = collection;   
+        }
         if (ModelState.IsValid)
         {
-            var model = await _appointmentUpdaterService.Update(request: request);
-            return RedirectToAction("Index", "Today");
+            //var model = await _appointmentUpdaterService.Update(request: request);
+            request.Prescriptions = collection ?? new List<PrescriptionAddRequest>();
+            HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne",request);
+            var model = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+            return RedirectToAction("AddPrescription");
         }
 
         return View(request);
+    }
+    [HttpGet]
+    public IActionResult AddPrescription()
+    {
+        var model = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        ViewBag.List = model.Prescriptions;
+        ViewBag.Appointment = model;
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult AddPrescription(PrescriptionAddRequest request)
+    {
+        var appointment = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        
+        if (request is { FirstDigit: not null, SecondDigit: not null, ThirdDigit: not null, FourthDigit: not null } && appointment != null)
+        {
+            request.AppointmentId = appointment.Id;
+            appointment?.Prescriptions?.Add(request);
+            if (appointment != null)
+            {
+                HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", appointment);
+                HttpContext.Session.SetObject<List<PrescriptionAddRequest>>("List", appointment.Prescriptions);
+            }
+        }
+
+        if (request is { FirstDigit: null, SecondDigit: null, ThirdDigit: null, FourthDigit: null, Information: null })
+        {
+            HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", appointment);
+            var obj = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+            return RedirectToAction("Summary", obj);
+        }
+
+        return RedirectToAction("AddPrescription");
+    }
+
+    [HttpGet]
+    public IActionResult Summary()
+    {  
+        var obj = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        return View(obj);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Save(AppointmentUpdateRequest request)
+    {
+        if (ModelState.IsValid)
+        {
+            var a = await _appointmentUpdaterService.Update(request);
+            if (request.Prescriptions is not null)
+            {
+                if (request.Prescriptions.Any())
+                {
+                    var b = await _prescriptionAdderService.AddRange(request.Prescriptions);
+                }
+            }
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Today");
+        }
+
+        return Json(request);
+    }
+
+    public IActionResult RemovePrescription(int id)
+    {
+        if (id < 0)
+            return RedirectToAction("AddPrescription");
+        var request = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        if (request?.Prescriptions != null && request.Prescriptions.Any())
+        {
+            request.Prescriptions.RemoveAt(id);
+        }
+        if (request != null) HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", request);
+        return RedirectToAction("AddPrescription");
+
     }
 }
