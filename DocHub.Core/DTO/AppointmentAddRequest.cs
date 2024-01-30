@@ -15,6 +15,16 @@ public class AppointmentAddRequest
     [RegularExpression(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "The appointment time must be a clock value")]
     public required string Hour { get; set; }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (obj.GetType() != typeof(AppointmentAddRequest)) return false;
+
+        var other = obj as AppointmentAddRequest;
+        return this.Start == other?.Start && this.Duration == other.Duration
+                                          && this.Hour == other.Hour;
+    }
+
     public Appointment ToAppointment()
     {
         string[] hourMinute = Hour.Split(":");

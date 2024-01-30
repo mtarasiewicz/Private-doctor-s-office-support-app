@@ -31,12 +31,13 @@ public class AppointmentsController : Controller
     private readonly IAppointmentUpdaterService _appointmentUpdaterService;
     private readonly IEmailSenderService _emailSender;
     private readonly IPrescriptionAdderService _prescriptionAdderService;
+    private readonly IPrescriptionGetterService _prescriptionGetterService;
 
     public AppointmentsController(IAppointmentsGetterService appointmentsGetterService,
         IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService,
         IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager,
         IAppointmentsRepository appointmentsRepository, IAppointmentsAddRangeService appointmentsAddRangeService,
-        IAppointmentUpdaterService appointmentUpdaterService, IEmailSenderService emailSender, IPrescriptionAdderService prescriptionAdderService)
+        IAppointmentUpdaterService appointmentUpdaterService, IEmailSenderService emailSender, IPrescriptionAdderService prescriptionAdderService, IPrescriptionGetterService prescriptionGetterService)
     {
         _appointmentsGetterService = appointmentsGetterService;
         _appointmentsAdderService = appointmentsAdderService;
@@ -48,6 +49,7 @@ public class AppointmentsController : Controller
         _appointmentUpdaterService = appointmentUpdaterService;
         _emailSender = emailSender;
         _prescriptionAdderService = prescriptionAdderService;
+        _prescriptionGetterService = prescriptionGetterService;
     }
 
     // GET
@@ -187,10 +189,13 @@ public class AppointmentsController : Controller
         {
             var finishedAppointments =
                 await _appointmentsGetterService.GetAllFinishedPatientsAppointments(response.PatientId.Value);
+            foreach (var item in finishedAppointments)
+            {
+                item.SetPrescriptions(_prescriptionGetterService.GetAllByAppointmentId(item.Id));
+            }
             ViewBag.AllAppointments = finishedAppointments.OrderByDescending(app => app.Start).ToList();
         }
-
-       //var model = HttpContext.Session.GetObject<TestModel>("TestModel") ?? new TestModel();
+        
         ViewData["Patient"] = patient;
         ViewData["Appointment"] = response;
         var key = "StepOne" + appointmentId;
@@ -269,9 +274,14 @@ public class AppointmentsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Summary()
+    public async Task<IActionResult> Summary()
     {  
         var obj = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        AppointmentResponse? response = await _appointmentsGetterService.Get(obj.Id);
+        if (response is null) return RedirectToAction("Index", "Today");
+        var patient = await _patientsGetterService.Get(response.PatientId);
+        ViewBag.Appointment = response;
+        ViewBag.Patient = patient;
         return View(obj);
     }
 

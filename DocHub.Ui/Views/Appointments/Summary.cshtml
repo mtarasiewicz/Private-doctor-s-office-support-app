@@ -4,51 +4,219 @@
 
 @{
     Layout = "_DashboardLayout";
+    var patient = ViewBag.Patient as PatientResponse;
+    var appointment = ViewBag.Appointment as AppointmentResponse;
+    string fullAddress = patient.City + " " + patient.PostalCode
+                         + ", " + patient.Address;
 }
-@Model.Id
-<br/>
-@Model.Interview
-<br/>
-@Model.Diagnosis
-<br/>
-@Model.Recommendations
-<br/>
-@Model.Notes
-<br/>
-
-@foreach (var item in Model.Prescriptions)
-{
-    <h4>Acces: @String.Concat(item.FirstDigit, item.SecondDigit, item.ThirdDigit, item.FourthDigit)</h4>
-    <h4>Information: @item.Information</h4>
-}
-<form asp-controller="Appointments" asp-action="Save" method="post">
-    <input asp-for="Id" type="hidden"/>
-    <input asp-for="Interview" type="hidden"/>
-    <input asp-for="Diagnosis" type="hidden"/>
-    <input asp-for="Recommendations" type="hidden"/>
-    <input asp-for="Notes" type="hidden"/>
-    @for (int i = 0; i < @Model.Prescriptions.Count; i++)
-    {
-        <input asp-for="Prescriptions[i].FirstDigit" type="hidden">
-        <input asp-for="Prescriptions[i].SecondDigit" type="hidden">
-        <input asp-for="Prescriptions[i].ThirdDigit" type="hidden">
-        <input asp-for="Prescriptions[i].FourthDigit" type="hidden">
-        <input asp-for="Prescriptions[i].Information" type="hidden">
-        <input asp-for="Prescriptions[i].AppointmentId" type="hidden">
-    }
-    <label asp-for="Finished" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End appointment</label>
-    <div class="mb-4 px-4 py-4 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 md:flex">
-        <div class="my-auto">
-            <label class="relative inline-flex items-center cursor-pointer my-auto">
-                <input type="checkbox" name="Finished" value="true" class="sr-only peer">
-                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span class="ms-3 text-sm font-medium text-gray-900"></span>
-            </label>
+<div class="md:flex space-x-2 mx-auto justify-center">
+    <div class="bg-white p-8 rounded-md shadow-md md:w-1/2 md:mb-0 mb-2">
+        <div class="items-center w-full space-y-4 mx-auto ml-10">
+            <ol class="sm:flex justify-between">
+                <li class="flex items-center text-gray-500 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-blue-500">
+                        1
+                    </span>
+                    <span>
+                        <h3 class="text-sm font-semibold leading-tight">Conducting the appointment</h3>
+                        <p class="text-xs">Enter the details of the appointment</p>
+                    </span>
+                </li>
+                <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                        2
+                    </span>
+                    <span>
+                        <h3 class="text-sm  font-semibold leading-tight">Issuing a referral/prescription</h3>
+                        <p class="text-xs">
+                            Add prescriptions or referrals
+                        </p>
+                    </span>
+                </li>
+                <li class="flex items-center text-blue-600 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-gray-400">
+                        3
+                    </span>
+                    <span>
+                        <h3 class="text-sm leading-tight font-semibold">Summary of the appointment</h3>
+                        <p class="text-xs"></p>
+                    </span>
+                </li>
+            </ol>
         </div>
-        <div class="my-auto">
-            <p class="text-xs leading-tight text-justify text-grey-400"> If the end of the appointment is not marked, after clicking the Save button, the appointment will go to the "during" state and you will be able to return to it. Once selected, the appointment is saved and goes to a "finished" state.</p>
+        <h2 class="text-2xl text-blue-500 font-semibold mb-4">Summary</h2>
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a asp-controller="Today" asp-action="Index" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400">
+                        <svg class="w-2 h-2 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                            <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
+                        </svg>
+                        &nbsp;
+                        <p class="text-xs text-gray-700 font-semibold">Today appointments</p>
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                        </svg>
+                        <div class="my-auto ms-2">
+                            <p class="text-xs text-gray-700 font-semibold justify-center">@patient.FullName</p>
+                            <p class="text-xs text-blue-600 justify-center"></p>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        <hr class="my-2">
+        <div class="mb-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Interview</label>
+            <div rows="4" class="block p-2.5 w-full text-sm text-gray-900 italic ">@Model.Interview</div>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Diagnosis</label>
+            <div rows="4" class="block p-2.5 w-full text-sm text-gray-900 italic ">@Model.Diagnosis</div>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recommendations</label>
+            <div rows="4" class="block p-2.5 w-full text-sm text-gray-900 italic ">@Model.Recommendations</div>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
+            <div rows="4" class="block p-2.5 w-full text-sm text-gray-900 italic ">@Model.Notes</div>
+        </div>
+        <form asp-controller="Appointments" asp-action="Save" method="post">
+            <input asp-for="Id" type="hidden"/>
+            <input asp-for="Interview" type="hidden"/>
+            <input asp-for="Diagnosis" type="hidden"/>
+            <input asp-for="Recommendations" type="hidden"/>
+            <input asp-for="Notes" type="hidden"/>
+            @for (int i = 0; i < @Model.Prescriptions.Count; i++)
+            {
+                <input asp-for="Prescriptions[i].FirstDigit" type="hidden">
+                <input asp-for="Prescriptions[i].SecondDigit" type="hidden">
+                <input asp-for="Prescriptions[i].ThirdDigit" type="hidden">
+                <input asp-for="Prescriptions[i].FourthDigit" type="hidden">
+                <input asp-for="Prescriptions[i].Information" type="hidden">
+                <input asp-for="Prescriptions[i].AppointmentId" type="hidden">
+            }
+            <input asp-for="Finished" value="true" class="sr-only peer" type="hidden">
+            <hr class="my-2">
+            <div class="flex justify-between">
+                <div>
+                    <a asp-action="AddPrescription" asp-controller="Appointments">
+                        <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Back</button>
+                    </a>
+                </div>
+                <div>
+                    <button type="submit" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="bg-white p-8 rounded-md shadow-md md:w-1/2">
+        <h2 class="text-xl text-gray-600 font-semibold mb-4">List of attached prescriptions</h2>
+        <hr class="my-2">
+        <div class="rounded-md p-2 overflow-y-scroll max-h-80">
+            @if (Model.Prescriptions.Any())
+            {
+                foreach (var item in Model.Prescriptions)
+                {
+                    <div class="md:flex bg-white justify-between border-b border-gray-50 p-1 rounded-md mb-1">
+                        <div class="my-auto me-1">
+                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 mr-1 my-auto">
+                            <p class="text-xs font-semibold text-gray-700">AccessCode: @String.Concat(item.FirstDigit, item.SecondDigit, item.ThirdDigit, item.FourthDigit)</p>
+                        </div>
+                        <div class="flex-1 mr-1 ">
+                            <p class="text-xs font-semibold text-gray-700">Information: </p>
+                            <p class="text-xs text-justify text-gray-800">@item.Information</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-sm font-semibold text-gray-700">No prescriptions</p>
+            }
+
+        </div>
+        <h2 class="text-2xl text-blue-500 font-semibold mb-4">Patient</h2>
+        <div class="flex justify-between bg-gray-50 p-2 border border-gray-200 rounded-md">
+            <div>
+                <div class="mb-4">
+                    <label class="text-gray-700 text-sm font-semibold">First name:</label>
+                    <p class="text-gray-600 text-sm">@patient.FirstName</p>
+                </div>
+
+                <!-- Nazwisko -->
+                <div class="mb-4">
+                    <label class="text-gray-700 text-sm font-semibold">Last name:</label>
+                    <p class="text-gray-600 text-sm">@patient.LastName</p>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="text-gray-700 text-sm font-semibold">Email:</label>
+                    <p class="text-gray-700 text-sm">@patient.Email</p>
+                </div>
+                <div class="mb-4">
+                    <label class="text-gray-700 text-sm font-semibold">Date of birth:</label>
+                    @if (patient.DateOfBirth is null)
+                    {
+                        <p class="text-gray-500 italic text-xs">empty</p>
+                    }
+                    else
+                    {
+                        <p class="text-gray-600 text-sm">@patient.DateOfBirth.Value.ToString("dd.MM.yyyy")</p>
+                    }
+                </div>
+            </div>
+            <div>
+                <div class="mb-4">
+                    <label class="text-gray-700 text-sm font-semibold">PESEL:</label>
+                    @if (String.IsNullOrEmpty(patient.PeselNumber))
+                    {
+                        <p class="text-gray-500 italic text-xs">empty</p>
+                    }
+                    else
+                    {
+                        <p class="text-gray-600 text-sm">@patient.PeselNumber</p>
+                    }
+                </div>
+
+                <!-- Nazwisko -->
+                <div class="mb-4">
+                    <label class="text-gray-700 text-sm font-semibold">Address:</label>
+                    <p class="text-gray-600 text-sm">@fullAddress</p>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="text-gray-700 text-sm font-semibold">Phone number:</label>
+                    <p class="text-gray-600 text-sm">@patient.PhoneNumber</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 bg-gray-50 border border-gray-200 rounded-md p-2">
+            <div class="mb-1">
+                <label class="text-gray-700 text-xs font-semibold">History of diseases:</label>
+                <p class="text-gray-600 text-xs">@patient.HistoryOfDseases</p>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-1">
+                <label class="text-gray-700 text-xs font-semibold">Allergies:</label>
+                <p class="text-gray-600 text-xs">@patient.Allergies</p>
+            </div>
+            <div class="mb-1">
+                <label class="text-gray-700 text-xs font-semibold">Other:</label>
+                <p class="text-gray-600 text-xs">@patient.TakenMedications</p>
+            </div>
         </div>
     </div>
-    <button type="submit">Zapisz </button>
-</form>
-<a asp-action="AddPrescription">asdadas</a>
+</div>

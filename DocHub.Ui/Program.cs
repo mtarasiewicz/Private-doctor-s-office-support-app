@@ -48,3 +48,8 @@ app.MapControllers();
 
 
 app.Run(); //Start app
+
+
+public partial class Program
+{
+}

@@ -4,5 +4,5 @@ namespace DocHub.Core.ServiceContracts;
 
 public interface IPatientsSearcherService
 {
-    Task<IEnumerable<PatientResponse>> Search(string query);
+    Task<IEnumerable<PatientResponse>?> Search(string query);
 }

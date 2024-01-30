@@ -5,5 +5,5 @@ namespace DocHub.Core.ServiceContracts;
 
 public interface IAppointmentsAdderService
 {
-    Task<AppointmentResponse> Add(AppointmentAddRequest request);
+    Task<AppointmentResponse> Add(AppointmentAddRequest? request);
 }

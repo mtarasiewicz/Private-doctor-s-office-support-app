@@ -18,4 +18,9 @@ public class PrescriptionRepository : IPrescriptionRepository
         await _dbContext.SaveChangesAsync();
         return prescriptions;
     }
+
+    public List<Prescription> GetAllByAppointmentId(Guid appointmentId)
+    {
+        return _dbContext.Prescriptions.Where(pres => pres.AppointmentId == appointmentId).ToList();
+    }
 }

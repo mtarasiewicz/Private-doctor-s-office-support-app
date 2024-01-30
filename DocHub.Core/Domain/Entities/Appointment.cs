@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DocHub.Core.DTO;
 
 namespace DocHub.Core.Domain.Entities;
 
@@ -18,5 +19,14 @@ public class Appointment
     public bool? Finished { get; set; }
     public DateTime? Start { get; set; }
     public DateTime? End { get; set; }
-    public virtual ICollection<Prescription>? Prescriptions { get; set; }
+    public virtual List<PrescriptionResponse>? Prescriptions { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (obj.GetType() != typeof(Appointment)) return false;
+
+        var other = obj as Appointment;
+        return this.Id == other?.Id;
+    }
 }

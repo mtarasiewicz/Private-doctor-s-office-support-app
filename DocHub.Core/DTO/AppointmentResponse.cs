@@ -2,6 +2,7 @@ using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using DocHub.Core.Domain.Entities;
 using DocHub.Core.Enums.Appointments;
+using DocHub.Core.ServiceContracts;
 using Microsoft.AspNetCore.Identity;
 
 namespace DocHub.Core.DTO;
@@ -22,12 +23,26 @@ public class AppointmentResponse
     public string? Diagnosis { get; set; }
     public string? Recommendations { get; set; }
     public string? Notes { get; set; }
+    public List<PrescriptionResponse>? Prescriptions { get; set; }
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (obj.GetType() != typeof(AppointmentResponse)) return false;
+        var other = obj as AppointmentResponse;
+        return this.Id == other?.Id;
+    }
 
     public AppointmentReserveRequest ToAppointmentReserveRequest() => new AppointmentReserveRequest()
     {
         Id = this.Id,
         PatientId = this.PatientId,
     };
+
+    public List<PrescriptionResponse> SetPrescriptions(List<PrescriptionResponse> prescriptionResponses)
+    {
+        this.Prescriptions = prescriptionResponses;
+        return prescriptionResponses;
+    }
 
     public AppointmentUpdateRequest ToAppointmentUpdateRequest() => new AppointmentUpdateRequest()
     {
@@ -75,7 +90,7 @@ public static class AppointmentExtensions
                 Recommendations = appointment.Recommendations,
                 Interview = appointment.Interview,
                 Diagnosis = appointment.Diagnosis,
-                Notes = appointment.Notes
+                Notes = appointment.Notes,
             };
     }
 }

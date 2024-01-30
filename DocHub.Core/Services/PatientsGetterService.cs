@@ -15,17 +15,23 @@ namespace DocHub.Core.Services
     public class PatientsGetterService : IPatientsGetterService
     {
         private readonly IPatientsRepository _patientsRepository;
+
         public PatientsGetterService(IPatientsRepository patientsRepository)
         {
-           _patientsRepository = patientsRepository;
+            _patientsRepository = patientsRepository;
         }
+
+        /// <summary>
+        /// Searches the repository to find a patient with the identifier (guid) specified in the method parameter.
+        /// </summary>
+        /// <param name="id">Patient identifier in guid form, may be null</param>
+        /// <returns>In the case of null given as a method parameter, it returns the null value, in the case of an identifier that was not found in the repository, it returns the null value, in the case of a value found in the repository, it returns the Patient object in the form <see cref="PatientResponse"/></returns>
         public async Task<PatientResponse?> Get(Guid? id)
         {
-            if (id is null) throw new ArgumentNullException(nameof(id));
+            if (id is null) return null;
             Patient? patient = await _patientsRepository.Get(id);
             if (patient == null) return null;
             return patient.ToPatientResponse();
-
         }
 
         public async Task<List<PatientResponse>?> GetAll()
@@ -37,8 +43,8 @@ namespace DocHub.Core.Services
 
         public async Task<PatientResponse?> GetByUserId(Guid? userId)
         {
-            if (userId is null) throw new ArgumentNullException(nameof(userId));
-            Patient? patient = await _patientsRepository.GetByUserId(userId); 
+            if (userId is null) return null;
+            Patient? patient = await _patientsRepository.GetByUserId(userId);
             if (patient == null) return null;
             return patient.ToPatientResponse();
         }

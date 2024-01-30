@@ -5,4 +5,5 @@ namespace DocHub.Core.Domain.RepositoryContracts;
 public interface IPrescriptionRepository
 {
     Task<List<Prescription>> AddRange(List<Prescription> prescriptions);
+    List<Prescription> GetAllByAppointmentId(Guid appointmentId);
 }

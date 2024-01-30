@@ -17,7 +17,7 @@ public class AppointmentAdderService : IAppointmentsAdderService
     {
         _appointmentsRepository = appointmentsRepository;
     }
-    public async Task<AppointmentResponse> Add(AppointmentAddRequest request)
+    public async Task<AppointmentResponse> Add(AppointmentAddRequest? request)
     {
         if (request is null) throw new ArgumentNullException(nameof(request));
         ValidationHelper.ModelValidation(request);

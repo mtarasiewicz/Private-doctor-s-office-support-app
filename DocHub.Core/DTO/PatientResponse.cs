@@ -24,6 +24,13 @@ namespace DocHub.Core.DTO
         public string? Allergies { get; set; }
         public string? FullName { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            if (obj is null) return false;
+            if (obj.GetType() != typeof(PatientResponse)) return false;
+            var other = obj as PatientResponse;
+            return this.Id == other?.Id;
+        }
     }
 
     public static class PatientExtenstions

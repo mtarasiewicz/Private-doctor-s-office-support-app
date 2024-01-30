@@ -17,6 +17,7 @@ public class TodayController : Controller
     // GET
     public async Task<IActionResult> Index()
     {
+        HttpContext.Session.Clear();
         var data = await _appointmentsGetterService.GetAllReservedByDate(DateTime.Today);
         TodayAppointments todayAppointments = new TodayAppointments(data);
         return View(todayAppointments);
