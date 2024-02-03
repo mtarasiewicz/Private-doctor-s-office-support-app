@@ -23,7 +23,7 @@ namespace DocHub.Core.DTO
         public string? HistoryOfDseases { get; set; }
         public string? Allergies { get; set; }
         public string? FullName { get; set; }
-
+        
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;

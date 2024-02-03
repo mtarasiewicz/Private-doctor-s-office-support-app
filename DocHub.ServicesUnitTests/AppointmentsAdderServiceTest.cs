@@ -34,7 +34,7 @@ public class AppointmentsAdderServiceTest
         Func<Task> action = async () => await _appointmentsAdderService.Add(request);
         await action.Should().ThrowAsync<ArgumentNullException>();
     }
-
+    
     [Fact]
     public async Task Add_RequestIsCorrect_ShouldBeSuccessful()
     {
@@ -44,11 +44,7 @@ public class AppointmentsAdderServiceTest
             .Setup(method => method.Create(It.IsAny<Appointment>()))
             .ReturnsAsync(appointment);
         var expectedAppointment = appointment.ToAppointmentResponse();
-
-        _mockAppointmentsRepository
-            .Setup(method => method.Create(It.IsAny<Appointment>()))
-            .ReturnsAsync(appointment);
-
+        
         var response = await _appointmentsAdderService.Add(request);
         expectedAppointment.Id = response.Id;
 

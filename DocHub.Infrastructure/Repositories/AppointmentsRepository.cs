@@ -81,12 +81,23 @@ public class AppointmentsRepository : IAppointmentsRepository
         return await _dbContext.Appointments.Where(app => app.PatientId == patientId && app.State == State.Finished.ToString()).ToListAsync();
     }
 
+    public async Task<Appointment> Delete(Appointment appointment)
+    {
+        _dbContext.Appointments.Remove(appointment);
+        await _dbContext.SaveChangesAsync();
+        return appointment;
+    }
+
     public async Task<List<Appointment>> RemoveRange(List<Appointment> appointments)
     {
-        _dbContext.RemoveRange(appointments);
+        _dbContext.Appointments.RemoveRange(appointments);
         await _dbContext.SaveChangesAsync();
         return appointments;
        
     }
-    
+
+    public async Task<List<Appointment>> GetAllPatientsAppointments(Guid? patientId)
+    {
+        return await _dbContext.Appointments.Where(appointment => appointment.PatientId == patientId).ToListAsync();
+    }
 }

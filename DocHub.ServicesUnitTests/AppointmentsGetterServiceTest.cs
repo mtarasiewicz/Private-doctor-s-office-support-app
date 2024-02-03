@@ -97,6 +97,7 @@ public class AppointmentsGetterServiceTest
         expectedAppointment.Should().Be(appointment.ToAppointmentResponse());
     }
     #endregion
-   
+
+  
     
 }

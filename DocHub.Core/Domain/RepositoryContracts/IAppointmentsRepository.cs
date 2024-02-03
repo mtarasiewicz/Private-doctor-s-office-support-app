@@ -17,5 +17,9 @@ public interface IAppointmentsRepository
     Task<List<Appointment>> GetAllReservedByDate(DateTime appointmentDate);
 
     Task<List<Appointment>> GetAllFinishedPatientAppointments(Guid patientId);
-    
+
+    Task<Appointment> Delete(Appointment appointment);
+    Task<List<Appointment>> RemoveRange(List<Appointment> appointments);
+    Task<List<Appointment>> GetAllPatientsAppointments(Guid? patientId);
+
 }
