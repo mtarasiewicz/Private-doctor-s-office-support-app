@@ -16,6 +16,8 @@ namespace DocHub.Infrastructure.DbContext
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Appointment> Appointments { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
+        public virtual DbSet<Referral> Referrals { get; set; }
+        
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
             
@@ -26,6 +28,7 @@ namespace DocHub.Infrastructure.DbContext
             builder.Entity<Patient>().ToTable("Patients");
             builder.Entity<Appointment>().ToTable("Appointments");
             builder.Entity<Prescription>().ToTable("Prescription");
+            builder.Entity<Referral>().ToTable("Referrals");
             builder.Entity<ApplicationRole>().HasData(new ApplicationRole()
             {
                 Id = Guid.Parse("8FC5BB05-B154-4B14-97B5-CAA6BE775820"),

@@ -26,8 +26,8 @@ public class PaginatedList<T> : IEnumerable<T>
     public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
     {
         var count = await source.CountAsync();
-        var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
-        return new PaginatedList<T>(await items, pageIndex, pageSize, count);
+        var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        return new PaginatedList<T>(items, pageIndex, pageSize, count);
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()

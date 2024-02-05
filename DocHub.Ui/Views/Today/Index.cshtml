@@ -75,6 +75,7 @@
     var patientProfileTooltipId = "patientProfileTooltip" + counter;
     var removeVisitToolTopId = "RemoveVisitTooltip" + counter;
     var infoAppointmentId = "AppointmentDetails" + counter;
+    var confirmCancelAppointmentModalId = string.Concat(appointment.Id, "modal", "cancelAppointment");
     @if (appointment.State is State.Finished)
     {
         <div class="w-4/5 mx-auto rounded-lg border border-gray-200 bg-gray-100 text-left shadow mt-3">
@@ -156,18 +157,58 @@
                                 </a>
                             </div>
                             <div class="my-auto me-1">
-                                <a href="#">
+                                <div data-modal-target="@confirmCancelAppointmentModalId" data-modal-toggle="@confirmCancelAppointmentModalId">
                                     <svg class="w-[20px] h-[20px] text-gray-900" data-tooltip-target="@removeVisitToolTopId" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                     </svg>
-                                </a>
+                                </div>
                             </div>
                         }
                     </div>
                 </div>
             </div>
         </div>
-        
+         <div id="@confirmCancelAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                        <div class="relative p-4 w-full max-w-md max-h-full">
+                                            <div class="relative bg-white border border-gray-500 rounded-lg shadow">
+                                                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="@confirmCancelAppointmentModalId">
+                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
+                                                </button>
+                                                <div class="p-4 md:p-5 text-center">
+                                                    <div class="mt-3">
+                                                        <svg class="w-8 h-8 text-gray-500 me-1 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                                        </svg>
+                                                        <div class="my-auto">
+                                                            <h3 class="text-lg font-normal text-gray-500 my-auto">
+                                                                Do you want to cancel appointment?
+                                                            </h3>
+                                                            <p class="font-semibold text-sm text-gray-700">@appointment.Start.Value.ToString("dd.MM.yy HH:mm")</p>
+                                                            <p class="font-semibold text-xs text-gray-500">
+                                                                Duration: @((int)(appointment.End.Value - appointment.Start.Value).TotalMinutes) minutes
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex text-center items-center justify-center">
+                                                        <form asp-action="CancelAppointment" asp-controller="Today" method="post">
+                                                            <input type="hidden" for="appointmentId" name="appointmentId" value="@appointment.Id"/>
+                                                            <div class="flex items-center mb-4">
+                                                                <input name="beDeleted" type="checkbox" value="true" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                                <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">delete an appointment?</label>
+                                                            </div>
+                                                            <button data-modal-hide="@confirmCancelAppointmentModalId" type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
+                                                                Yes
+                                                            </button>
+                                                             <button data-modal-hide="@confirmCancelAppointmentModalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">No</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
         <div id="@patientProfileTooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
             Check patient profile
             <div class="tooltip-arrow" data-popper-arrow></div>

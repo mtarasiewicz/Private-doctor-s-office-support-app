@@ -22,7 +22,6 @@ public class AppointmentsUpdaterService : IAppointmentUpdaterService
         ValidationHelper.ModelValidation(request);
         Appointment? matchingAppointment = await _appointmentsRepository.Get(request.Id);
         if (matchingAppointment is null) throw new ArgumentException();
-        matchingAppointment.TestProp = request.TestProp;
         matchingAppointment.Notes = request.Notes;
         matchingAppointment.Interview = request.Interview;
         matchingAppointment.Diagnosis = request.Diagnosis;

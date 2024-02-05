@@ -1,6 +1,7 @@
 @using Humanizer
 @using DocHub.Core.Domain.Entities
 @using System.Globalization
+@using DocHub.Core.Enums.Appointments
 @model DocHub.Core.Domain.Models.PaginatedGroup<DateTime?, AppointmentResponse>
 @{
     Layout = "_DashboardLayout";
@@ -119,6 +120,7 @@
                                     var dropDownAppointmentId = string.Concat(item.Id, "dropdown");
                                     var dropDownButtonAppointmentId = string.Concat(item.Id, "dropdownButton");
                                     var tooltipId = "tooltip" + item.Id;
+                                    var tooltipIdFinished = "tooltipFinished" + item.Id;
                                     if (item.PatientId is null)
                                     {
                                         if (User.IsInRole("Patient"))
@@ -130,13 +132,13 @@
                                             <div data-modal-target="@signInPatientToAppointmentModalId" data-modal-toggle="@signInPatientToAppointmentModalId" class="text-white bg-gradient-to-r w-20 from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer">@item.Start?.ToString("HH:mm")</div>
                                         }
                                     }
-                                    else
+                                    else 
                                     {
                                         if (User.IsInRole("Patient"))
                                         {
                                             <div data-tooltip-target="@tooltipId" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-200 line-through">@item.Start?.ToString("HH:mm")</div>
                                         }
-                                        else if (User.IsInRole("Admin"))
+                                        else if (User.IsInRole("Admin") && item is {State: State.Reserved})
                                         {
                                             <button id="@dropDownButtonAppointmentId" data-dropdown-toggle="@dropDownAppointmentId" class=" text-white bg-gradient-to-r w-20 from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer" type="button">
                                                 @item.Start?.ToString("HH:mm")
@@ -154,10 +156,18 @@
                                                 </ul>
                                             </div>
                                         }
+                                        else
+                                        {
+                                            <div data-tooltip-target="@tooltipIdFinished" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-200 line-through">@item.Start?.ToString("HH:mm")</div>
+                                        }
                                     }
 
                                     <div id="@tooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
                                         Already reserved
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
+                                    <div id="@tooltipIdFinished" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+                                        Finished
                                         <div class="tooltip-arrow" data-popper-arrow></div>
                                     </div>
                                     <div id="@confirmCancelAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -307,5 +317,3 @@
         }
     </div>
 </div>
-
-<!-- Dropdown menu -->

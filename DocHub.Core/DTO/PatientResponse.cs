@@ -23,7 +23,7 @@ namespace DocHub.Core.DTO
         public string? HistoryOfDseases { get; set; }
         public string? Allergies { get; set; }
         public string? FullName { get; set; }
-        
+        public Guid? UserId { get; set; }
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;
@@ -52,7 +52,8 @@ namespace DocHub.Core.DTO
                 HistoryOfDseases = patient.HistoryOfDiseases,
                 PostalCode = patient.PostalCode,
                 Allergies = patient.Allergies,
-                FullName = string.Concat(patient.LastName," ", patient.FirstName)
+                FullName = string.Concat(patient.LastName," ", patient.FirstName),
+                UserId = patient.UserId
             };
 
         }

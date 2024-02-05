@@ -1,15 +1,11 @@
-﻿@using DocHub.Core.DTO;
 @model PatientUpdateRequest
 
 @{
     Layout = "_DashboardLayout";
-    ViewBag.CurrentUrl = "dashboard/profile";
-    ViewBag.Title = "Edit profile";
 }
-
 <div class="max-w-2xl mx-auto bg-white p-8 shadow-lg rounded-lg">
     <h1 class="text-2xl font-semibold mb-4 text-blue-500">Profil</h1>
-    <form asp-controller="Patient" asp-action="EditProfile" method="post">
+    <form asp-controller="MyPatients" asp-action="Edit" method="post">
         <input type="hidden" asp-for="Id"/>
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">

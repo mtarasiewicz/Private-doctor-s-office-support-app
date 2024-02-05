@@ -53,8 +53,7 @@ namespace DocHub.Ui.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> EditProfile(string? heading, string? submit, string? skip,
-            bool register = false)
+        public async Task<IActionResult> EditProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
@@ -85,19 +84,6 @@ namespace DocHub.Ui.Controllers
                 HistoryOfDiseases = patientProfile.HistoryOfDseases,
                 UserId = Guid.Parse(userId),
             };
-            if (register)
-            {
-                ViewBag.Heading = heading;
-                ViewBag.Submit = submit;
-                ViewBag.Skip = skip;
-            }
-            else
-            {
-                ViewBag.Heading = $"Edit {model.FirstName} {model.LastName}";
-                ViewBag.Submit = "Save";
-                ViewBag.Skip = "Cancel";
-            }
-
             return View(model);
         }
 

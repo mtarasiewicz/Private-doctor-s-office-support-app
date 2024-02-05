@@ -27,6 +27,8 @@ public class AppointmentsControllerTest
     private readonly IAppointmentUpdaterService _appointmentUpdaterService;
     private readonly IPrescriptionAdderService _prescriptionAdderService;
     private readonly IPrescriptionGetterService _prescriptionGetterService;
+    private readonly IReferralsGetterService _referralsGetterService;
+    private readonly IReferralsAdderService _referralsAdderService;
     private readonly IEmailSenderService _emailSender;
     private readonly IAppointmentsDeleterService _appointmentsDeleterService;
     private readonly Mock<IAppointmentsDeleterService> _mockDeleter;
@@ -41,6 +43,8 @@ public class AppointmentsControllerTest
     private readonly Mock<IPrescriptionGetterService> _mockPrescriptionGetter;
     private readonly Mock<IPrescriptionAdderService> _mockPrescriptionAdder;
     private readonly Mock<IEmailSenderService> _mockEmailService;
+    private readonly Mock<IReferralsAdderService> _mockReferralAdder;
+    private readonly Mock<IReferralsGetterService> _mockReferralGetter;
 
     private IFixture _fixture;
 
@@ -59,6 +63,8 @@ public class AppointmentsControllerTest
         _mockPrescriptionAdder = new Mock<IPrescriptionAdderService>();
         _mockEmailService = new Mock<IEmailSenderService>();
         _mockDeleter = new Mock<IAppointmentsDeleterService>();
+        _mockReferralGetter = new Mock<IReferralsGetterService>();
+        _mockReferralAdder = new Mock<IReferralsAdderService>();
 
         _appointmentsGetterService = _mockGetter.Object;
         _appointmentsRepository = _mockRepository.Object;
@@ -73,25 +79,29 @@ public class AppointmentsControllerTest
         _emailSender = _mockEmailService.Object;
         _appointmentsDeleterService = _mockDeleter.Object;
 
+
         _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
             .ForEach(b => _fixture.Behaviors.Remove(b));
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
-    
+
     [Fact]
     public async Task Index_ShouldReturnViewWithAppointmentsCollection()
     {
         var appointments = new List<AppointmentResponse>();
         for (int i = 0; i < 20; i++)
         {
-            appointments.Add(_fixture.Build<AppointmentResponse>().With(app => app.Start, DateTime.Now.AddDays(i)).Create());
+            appointments.Add(_fixture.Build<AppointmentResponse>().With(app => app.Start, DateTime.Now.AddDays(i))
+                .Create());
         }
+
         var patients = _fixture.Create<List<PatientResponse>>();
         AppointmentsController controller =
             new(_appointmentsGetterService, _appointmentsAdderService, _appointmentsBookerService,
                 _patientsGetterService, _userManager, _appointmentsRepository, _appointmentsAddRangeService,
-                _appointmentUpdaterService, _emailSender, _prescriptionAdderService, _prescriptionGetterService, _appointmentsDeleterService);
-        
+                _appointmentUpdaterService, _emailSender, _prescriptionAdderService, _prescriptionGetterService,
+                _appointmentsDeleterService, _referralsGetterService, _referralsAdderService);
+
         _mockGetter.Setup(method => method.GetAll()).ReturnsAsync(appointments);
         _mockPatientsGetter.Setup(method => method.GetAll()).ReturnsAsync(patients);
         var result = await controller.Index();
@@ -99,6 +109,4 @@ public class AppointmentsControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         viewResult.ViewData.Model.Should().BeAssignableTo<PaginatedGroup<DateTime?, AppointmentResponse>>();
     }
-    
-    
 }

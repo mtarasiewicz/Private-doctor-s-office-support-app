@@ -45,7 +45,6 @@ public class AppointmentsRepository : IAppointmentsRepository
                 );
         if (matchingAppointment is null)
             return appointment;
-        matchingAppointment.TestProp = appointment.TestProp;
         matchingAppointment.Patient = appointment.Patient;
         matchingAppointment.PatientId = appointment.PatientId;
         matchingAppointment.State = appointment.State;

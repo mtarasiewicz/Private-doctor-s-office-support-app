@@ -5,7 +5,6 @@
     Layout = "_DashboardLayout";
     PatientResponse patient = ViewData["Patient"] as PatientResponse ?? throw new InvalidOperationException();
     AppointmentResponse appointment = ViewData["Appointment"] as AppointmentResponse ?? throw new InvalidOperationException();
-    //@item.Start?.ToString("HH:mm")
     var allAppointments = ((List<AppointmentResponse>)ViewBag.AllAppointments);
     string? dayOfVisit = @appointment.Start?.ToString("dd.MM.yy");
     string? startVisit = @appointment.Start?.ToString("HH:mm");
@@ -15,6 +14,11 @@
                          + ", " + patient.Address;
 
 }
+<style>
+    .active, .accordion:hover {
+      color: rgb(28 100 242 / var(--tw-text-opacity));
+    }
+</style>
 <div class="md:flex space-x-2 mx-auto justify-center">
 <div class="bg-white p-8 rounded-md shadow-md md:w-1/2">
     <div class="items-center w-full space-y-4 mx-auto ml-10">
@@ -82,14 +86,14 @@
         <div class="mb-4">
             <label asp-for="Interview" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Interview</label>
             <textarea asp-for="Interview" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>
-            <span asp-validation-for="Interview"></span>
+            <span asp-validation-for="Interview" class="text-xs text-red-600"></span>
         </div>
 
 
         <div class="mb-4">
             <label asp-for="Diagnosis" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Diagnosis</label>
             <textarea asp-for="Diagnosis" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" ></textarea>
-            <span asp-validation-for="Diagnosis"></span>
+            <span asp-validation-for="Diagnosis" class="text-xs text-red-600"></span>
         </div>
 
 
@@ -129,14 +133,10 @@
                 <label class="text-gray-700 text-sm font-semibold">First name:</label>
                 <p class="text-gray-600 text-sm">@patient.FirstName</p>
             </div>
-
-            <!-- Nazwisko -->
             <div class="mb-4">
                 <label class="text-gray-700 text-sm font-semibold">Last name:</label>
                 <p class="text-gray-600 text-sm">@patient.LastName</p>
             </div>
-
-            <!-- Email -->
             <div class="mb-4">
                 <label class="text-gray-700 text-sm font-semibold">Email:</label>
                 <p class="text-gray-700 text-sm">@patient.Email</p>
@@ -165,14 +165,10 @@
                     <p class="text-gray-600 text-sm">@patient.PeselNumber</p>
                 }
             </div>
-
-            <!-- Nazwisko -->
             <div class="mb-4">
                 <label class="text-gray-700 text-sm font-semibold">Address:</label>
                 <p class="text-gray-600 text-sm">@fullAddress</p>
             </div>
-
-            <!-- Email -->
             <div class="mb-4">
                 <label class="text-gray-700 text-sm font-semibold">Phone number:</label>
                 <p class="text-gray-600 text-sm">@patient.PhoneNumber</p>
@@ -184,7 +180,7 @@
             <label class="text-gray-700 text-xs font-semibold">History of diseases:</label>
             <p class="text-gray-600 text-xs">@patient.HistoryOfDseases</p>
         </div>
-
+    
         <!-- Email -->
         <div class="mb-1">
             <label class="text-gray-700 text-xs font-semibold">Allergies:</label>
@@ -195,53 +191,91 @@
             <p class="text-gray-600 text-xs">@patient.TakenMedications</p>
         </div>
     </div>
-    <div class="mt-2 bg-gray-50 border border-gray-200 rounded-md p-2 overflow-y-scroll max-h-80">
-        <p class="text-gray-600 text-xs font-semibold">Recent appointments</p>
+    <p class="text-gray-700 text-xs mt-2 font-semibold">Recent appointments:</p>
+    <div class="bg-gray-50 border border-gray-200 rounded-md p-2 overflow-y-scroll max-h-80">
         @if (allAppointments.Any())
         {
             foreach (var item in allAppointments)
             {
-                <div class="w-full mx-auto border-gray-200 bg-white border rounded-md mb-1 p-2">
-                    <button class="accordion duration-1000 text-sm text-gray-700 font-semibold">@item.Start.Value.ToString("dd.MM.yyyy HH:mm")</button>
-                    <div class="panel transition-all ease-in-out duration-1000 overflow-hidden max-h-0 bg-white rounded">
-                        <div class="md:flex bg-white justify-between">
-                            <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
-                                <p class="text-xs font-semibold text-gray-700">Interview: </p>
-                                <p class="text-xs text-justify text-gray-800">@item.Interview</p>
-                            </div>
-                            <div class="flex-1 mr-1 b p-1 hover:bg-yellow-50 rounded-md">
-                                <p class="text-xs font-semibold text-gray-700">Diagnosis: </p>
-                                <p class="text-xs text-justify text-gray-800">@item.Diagnosis</p>
-                            </div>
-                        </div>
-                        <div class="md:flex bg-white justify-between">
-                            <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
-                                <p class="text-xs font-semibold text-gray-700">Recommendations: </p>
-                                <p class="text-xs text-justify text-gray-800">@item.Recommendations</p>
-                            </div>
-                            <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
-                                <p class="text-xs font-semibold text-gray-700">Notes: </p>
-                                <p class="text-xs text-justify text-gray-800">@item.Notes</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="accordion duration-1000 text-xs text-gray-700 font-semibold">Prescriptions</button>
-                    <div class="panel transition-all ease-in-out duration-1000 overflow-hidden max-h-0 bg-white rounded">
-                        @foreach (var p in item.Prescriptions)
-                        {
-                            <div class="border-b border-gray-200 rounded-md mb-1">
-                                <div class="leading-tight">
-                                    <span class="text-xs text-gray-700 font-semibold">AccessCode: </span>
-                                    <span class="text-xs text-gray-700">@p.AccessCode</span>
+                <div class="w-full mx-auto rounded-md mb-1 p-1">
+                            <button class="accordion duration-1000 text-xs text-gray-700 font-semibold inline-flex">
+                                @item.Start.Value.ToString("dd.MM.yyyy HH:mm")
+                                <svg class="w-3 h-3 my-auto text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div class="panel transition-all ease-in-out duration-1000 overflow-hidden max-h-0">
+                                <div class="md:flex justify-between">
+                                    <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
+                                        <p class="text-xs font-semibold text-gray-700">Interview: </p>
+                                        <p class="text-xs text-justify text-gray-800">@item.Interview</p>
+                                    </div>
+                                    <div class="flex-1 mr-1 b p-1 hover:bg-yellow-50 rounded-md">
+                                        <p class="text-xs font-semibold text-gray-700">Diagnosis: </p>
+                                        <p class="text-xs text-justify text-gray-800">@item.Diagnosis</p>
+                                    </div>
                                 </div>
-                                <div class="leading-tight">
-                                    <span class="text-xs text-gray-700 font-semibold">Information: </span>
-                                    <span class="text-xs text-gray-700">@p.Information</span>
+                                <div class="md:flex justify-between">
+                                    <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
+                                        <p class="text-xs font-semibold text-gray-700">Recommendations: </p>
+                                        <p class="text-xs text-justify text-gray-800">@item.Recommendations</p>
+                                    </div>
+                                    <div class="flex-1 mr-1 p-1 hover:bg-yellow-50 rounded-md">
+                                        <p class="text-xs font-semibold text-gray-700">Notes: </p>
+                                        <p class="text-xs text-justify text-gray-800">@item.Notes</p>
+                                    </div>
                                 </div>
                             </div>
-                        }
-                    </div>
-                </div>
+                            @if (item.Prescriptions != null && item.Prescriptions.Any())
+                            {
+                                <button class="accordion duration-1000 text-xs text-gray-700 font-semibold inline-flex">
+                                    Prescriptions
+                                    <svg class="w-3 h-3 my-auto text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="panel transition-all ease-in-out duration-1000 overflow-hidden max-h-0">
+                                    @foreach (var p in item.Prescriptions)
+                                    {
+                                        <div class="rounded-md mb-1">
+                                            <div class="leading-tight">
+                                                <span class="text-xs text-gray-700 font-semibold">AccessCode: </span>
+                                                <span class="text-xs text-gray-700">@p.AccessCode</span>
+                                            </div>
+                                            <div class="leading-tight">
+                                                <span class="text-xs text-gray-700 font-semibold">Information: </span>
+                                                <span class="text-xs text-gray-700">@p.Information</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            @if (item.Referrals != null && item.Referrals.Any())
+                            {
+                                <button class="accordion duration-1000 text-xs text-gray-700 font-semibold inline-flex">
+                                    Referrals
+                                    <svg class="w-3 h-3 my-auto text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="panel transition-all ease-in-out duration-1000 overflow-hidden max-h-0">
+                                    @foreach (var p in item.Referrals)
+                                    {
+                                        <div class="rounded-md mb-1">
+                                            <div class="leading-tight">
+                                                <span class="text-xs text-gray-700 font-semibold">AccessCode: </span>
+                                                <span class="text-xs text-gray-700">@p.AccessCode</span>
+                                            </div>
+                                            <div class="leading-tight">
+                                                <span class="text-xs text-gray-700 font-semibold">Information: </span>
+                                                <span class="text-xs text-gray-700">@p.Information</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            <hr class="border-dashed border border-gray-600"/>
+                        </div>
             }
         }
         else

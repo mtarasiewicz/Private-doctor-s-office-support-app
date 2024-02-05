@@ -10,6 +10,7 @@ using DocHub.Core.ServiceContracts;
 using DocHub.Core.Services;
 using DocHub.Infrastructure.BackgroundServices;
 using Hangfire;
+using NuGet.Packaging;
 
 namespace DocHub.Ui.StartupExtensions
 {
@@ -35,6 +36,7 @@ namespace DocHub.Ui.StartupExtensions
             services.AddScoped<IPatientsRepository, PatientsRepository>();
             services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
             services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
+            services.AddScoped<IReferralRepository, ReferralsRepository>();
             
             /*Services*/
             services.AddScoped<IPatientsAdderService, PatientsAdderService>();
@@ -51,6 +53,8 @@ namespace DocHub.Ui.StartupExtensions
             services.AddScoped<IAppointmentsDeleterService, AppointmentsDeleterService>();
             services.AddScoped<IPrescriptionAdderService, PrescriptionAdderService>();
             services.AddScoped<IPrescriptionGetterService, PrescriptionsGetterService>();
+            services.AddScoped<IReferralsGetterService, ReferralsGetterService>();
+            services.AddScoped<IReferralsAdderService, ReferralsAdderService>();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {

@@ -18,4 +18,5 @@ public class AppointmentUpdateRequest
     public bool? Finished { get; set; }
     public State? State { get; set; }
     public List<PrescriptionAddRequest>? Prescriptions { get; set; }
+    public List<ReferralAddRequest>? Referrals { get; set; }
 }

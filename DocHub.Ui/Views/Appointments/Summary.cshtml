@@ -101,11 +101,20 @@
                 <input asp-for="Prescriptions[i].Information" type="hidden">
                 <input asp-for="Prescriptions[i].AppointmentId" type="hidden">
             }
+            @for (int i = 0; i < @Model.Referrals.Count; i++)
+            {
+                <input asp-for="Referrals[i].FirstDigit" type="hidden">
+                <input asp-for="Referrals[i].SecondDigit" type="hidden">
+                <input asp-for="Referrals[i].ThirdDigit" type="hidden">
+                <input asp-for="Referrals[i].FourthDigit" type="hidden">
+                <input asp-for="Referrals[i].Information" type="hidden">
+                <input asp-for="Referrals[i].AppointmentId" type="hidden">
+            }
             <input asp-for="Finished" value="true" class="sr-only peer" type="hidden">
             <hr class="my-2">
             <div class="flex justify-between">
                 <div>
-                    <a asp-action="AddPrescription" asp-controller="Appointments">
+                    <a asp-action="AddReferral" asp-controller="Appointments">
                         <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Back</button>
                     </a>
                 </div>
@@ -116,11 +125,12 @@
         </form>
     </div>
     <div class="bg-white p-8 rounded-md shadow-md md:w-1/2">
-        <h2 class="text-xl text-gray-600 font-semibold mb-4">List of attached prescriptions</h2>
+        <h2 class="text-xl text-gray-600 font-semibold mb-4">List of attachments</h2>
         <hr class="my-2">
         <div class="rounded-md p-2 overflow-y-scroll max-h-80">
             @if (Model.Prescriptions.Any())
             {
+                <label class="text-gray-700 text-sm font-semibold">Prescriptions:</label>
                 foreach (var item in Model.Prescriptions)
                 {
                     <div class="md:flex bg-white justify-between border-b border-gray-50 p-1 rounded-md mb-1">
@@ -143,6 +153,32 @@
             {
                 <p class="text-center text-sm font-semibold text-gray-700">No prescriptions</p>
             }
+            @if (Model.Referrals.Any())
+            {
+                <label class="text-gray-700 text-sm font-semibold">Referrals:</label>
+                foreach (var item in Model.Referrals)
+                {
+                    <div class="md:flex bg-white justify-between border-b border-gray-50 p-1 rounded-md mb-1">
+                        <div class="my-auto me-1">
+                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 mr-1 my-auto">
+                            <p class="text-xs font-semibold text-gray-700">AccessCode: @String.Concat(item.FirstDigit, item.SecondDigit, item.ThirdDigit, item.FourthDigit)</p>
+                        </div>
+                        <div class="flex-1 mr-1 ">
+                            <p class="text-xs font-semibold text-gray-700">Information: </p>
+                            <p class="text-xs text-justify text-gray-800">@item.Information</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-sm font-semibold text-gray-700">No referrals</p>
+            }
+
 
         </div>
         <h2 class="text-2xl text-blue-500 font-semibold mb-4">Patient</h2>

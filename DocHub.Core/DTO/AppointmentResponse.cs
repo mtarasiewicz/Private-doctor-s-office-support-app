@@ -10,7 +10,6 @@ namespace DocHub.Core.DTO;
 public class AppointmentResponse
 {
     public Guid Id { get; set; }
-    public string? TestProp { get; set; }
     public Guid? PatientId { get; set; }
     public bool IsAvailable { get; set; } = true;
     public bool? Finished { get; set; } 
@@ -24,6 +23,7 @@ public class AppointmentResponse
     public string? Recommendations { get; set; }
     public string? Notes { get; set; }
     public List<PrescriptionResponse>? Prescriptions { get; set; }
+    public List<ReferralResponse>? Referrals { get; set; }
     public override bool Equals(object? obj)
     {
         if (obj is null) return false;
@@ -38,16 +38,18 @@ public class AppointmentResponse
         PatientId = this.PatientId,
     };
 
-    public List<PrescriptionResponse> SetPrescriptions(List<PrescriptionResponse> prescriptionResponses)
+    public void SetPrescriptions(List<PrescriptionResponse> prescriptionResponses)
     {
         this.Prescriptions = prescriptionResponses;
-        return prescriptionResponses;
+    } 
+    public void SetReferrals(List<ReferralResponse> referralResponses)
+    {
+        this.Referrals = referralResponses;
     }
 
     public AppointmentUpdateRequest ToAppointmentUpdateRequest() => new AppointmentUpdateRequest()
     {
         Id = this.Id,
-        TestProp = this.TestProp,
         State = this.State,
         Finished = this.Finished,
         Interview = this.Interview,
@@ -79,7 +81,6 @@ public static class AppointmentExtensions
             {
                 Id = appointment.Id,
                 PatientId = appointment.PatientId,
-                TestProp = appointment.TestProp,
                 IsAvailable = appointment.PatientId is null,
                 Start = appointment.Start,
                 End = appointment.End,

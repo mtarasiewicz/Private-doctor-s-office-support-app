@@ -122,6 +122,31 @@
             }
             @if (User.IsInRole("Patient") || User.IsInRole("Admin"))
             {
+                if (User.IsInRole("Patient"))
+                {
+                    @if (currentUrl == "appointments/myappointments")
+                    {
+                        <li>
+                            <a asp-controller="Appointments" asp-action="PatientAppointments" class="flex items-center p-2 text-gray-700 bg-white rounded-lg">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">My appointments</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-controller="Appointments" asp-action="PatientAppointments" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-gray-700 group">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">My appointments</span>
+                            </a>
+                        </li>
+                    }
+                }
                 @if (currentUrl == "appointments/index")
                 {
                     <li>
@@ -149,7 +174,7 @@
                     @if (currentUrl == "dashboard/profile")
                     {
                         <li>
-                            <a asp-controller="Patient" asp-action="Index" class="flex items-center p-2 text-gray-700 bg-white rounded-lg">
+                            <a asp-controller="Patient" asp-action="EditProfile" class="flex items-center p-2 text-gray-700 bg-white rounded-lg">
                                 <svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                 </svg>
@@ -160,7 +185,7 @@
                     else
                     {
                         <li>
-                            <a asp-controller="Patient" asp-action="Index" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-gray-700 group">
+                            <a asp-controller="Patient" asp-action="EditProfile" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-gray-700 group">
                                 <svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                 </svg>

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using DocHub.Core.Domain.Entities.IdentityEntities;
 using DocHub.Core.Domain.Models;
 using DocHub.Core.Domain.RepositoryContracts;
@@ -8,9 +9,11 @@ using DocHub.Core.DTO;
 using DocHub.Core.Enums.Appointments;
 using DocHub.Ui.Session;
 using Hangfire;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Protocol;
 
 namespace DocHub.Ui.Controllers;
@@ -30,13 +33,17 @@ public class AppointmentsController : Controller
     private readonly IPrescriptionAdderService _prescriptionAdderService;
     private readonly IPrescriptionGetterService _prescriptionGetterService;
     private readonly IAppointmentsDeleterService _appointmentsDeleterService;
+    private readonly IReferralsGetterService _referralsGetterService;
+    private readonly IReferralsAdderService _referralsAdderService;
 
     public AppointmentsController(IAppointmentsGetterService appointmentsGetterService,
         IAppointmentsAdderService appointmentsAdderService, IAppointmentsBookerService appointmentsBookerService,
         IPatientsGetterService patientsGetterService, UserManager<ApplicationUser> userManager,
         IAppointmentsRepository appointmentsRepository, IAppointmentsAddRangeService appointmentsAddRangeService,
         IAppointmentUpdaterService appointmentUpdaterService, IEmailSenderService emailSender,
-        IPrescriptionAdderService prescriptionAdderService, IPrescriptionGetterService prescriptionGetterService, IAppointmentsDeleterService appointmentsDeleterService)
+        IPrescriptionAdderService prescriptionAdderService, IPrescriptionGetterService prescriptionGetterService,
+        IAppointmentsDeleterService appointmentsDeleterService,
+        IReferralsGetterService referralsGetterService, IReferralsAdderService referralsAdderService)
     {
         _appointmentsGetterService = appointmentsGetterService;
         _appointmentsAdderService = appointmentsAdderService;
@@ -50,6 +57,8 @@ public class AppointmentsController : Controller
         _prescriptionAdderService = prescriptionAdderService;
         _prescriptionGetterService = prescriptionGetterService;
         _appointmentsDeleterService = appointmentsDeleterService;
+        _referralsGetterService = referralsGetterService;
+        _referralsAdderService = referralsAdderService;
     }
 
     // GET
@@ -113,7 +122,7 @@ public class AppointmentsController : Controller
         return View(request);
     }
 
-    [Authorize(Roles = "Patient, Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     [Route($"{{{nameof(appointmentId)}}}")]
     public async Task<IActionResult> Show(Guid appointmentId)
@@ -154,8 +163,10 @@ public class AppointmentsController : Controller
         {
             // DateTime reminderTime = reserve.Start.Value.AddHours(-24);      
             DateTime reminderTime = DateTime.Now.AddSeconds(10);
+            string message = $"Your visit will take place in: {reserve.Start.Value.Humanize()} \n Date of the visit: {reserve.Start.Value}";
             BackgroundJob.Schedule(
-                () => _emailSender.SendEmailAsync("marcin13101999@gmail.com", "Test", $"{reserve.Start.Value}"),
+                () => _emailSender.SendEmailAsync("marcin13101999@gmail.com", "Appointment reminder",
+                    message),
                 reminderTime);
         }
 
@@ -198,6 +209,7 @@ public class AppointmentsController : Controller
             foreach (var item in finishedAppointments)
             {
                 item.SetPrescriptions(_prescriptionGetterService.GetAllByAppointmentId(item.Id));
+                item.SetReferrals(_referralsGetterService.GetAllByAppointmentId(item.Id));
             }
 
             ViewBag.AllAppointments = finishedAppointments.OrderByDescending(app => app.Start).ToList();
@@ -205,12 +217,14 @@ public class AppointmentsController : Controller
 
         ViewData["Patient"] = patient;
         ViewData["Appointment"] = response;
-        var key = "StepOne" + appointmentId;
+        HttpContext.Session.SetObject<PatientResponse>("Patient", patient);
+        HttpContext.Session.SetObject<AppointmentResponse>("Appointment", response);
         var updateRequestFromSession = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
         if (updateRequestFromSession == null)
         {
             AppointmentUpdateRequest updateRequest = response.ToAppointmentUpdateRequest();
             updateRequest.Prescriptions = new List<PrescriptionAddRequest>();
+            updateRequest.Referrals = new List<ReferralAddRequest>();
             HttpContext.Session.SetObject("StepOne", updateRequest);
             return View(updateRequest);
         }
@@ -222,8 +236,6 @@ public class AppointmentsController : Controller
     [HttpPost]
     public IActionResult StepOne(AppointmentUpdateRequest request)
     {
-        var key = "StepOne" + request.Id;
-        var listKey = "List" + request.Id;
         if (request.Finished is null)
         {
             request.State = State.During;
@@ -231,15 +243,22 @@ public class AppointmentsController : Controller
         }
 
         var collection = HttpContext.Session.GetObject<List<PrescriptionAddRequest>>("List");
+        var referrals = HttpContext.Session.GetObject<List<ReferralAddRequest>>("ListR");
         if (collection != null)
         {
             request.Prescriptions = collection;
+        }
+
+        if (referrals != null)
+        {
+            request.Referrals = referrals;
         }
 
         if (ModelState.IsValid)
         {
             //var model = await _appointmentUpdaterService.Update(request: request);
             request.Prescriptions = collection ?? new List<PrescriptionAddRequest>();
+            request.Referrals = referrals ?? new List<ReferralAddRequest>();
             HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", request);
             var model = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
             return RedirectToAction("AddPrescription");
@@ -248,15 +267,19 @@ public class AppointmentsController : Controller
         return View(request);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public IActionResult AddPrescription()
     {
         var model = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
         ViewBag.List = model.Prescriptions;
         ViewBag.Appointment = model;
+        ViewBag.Patient = HttpContext.Session.GetObject<PatientResponse>("Patient");
+        ViewBag.Details = HttpContext.Session.GetObject<AppointmentResponse>("Appointment");
         return View();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult AddPrescription(PrescriptionAddRequest request)
     {
@@ -278,12 +301,53 @@ public class AppointmentsController : Controller
         {
             HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", appointment);
             var obj = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
-            return RedirectToAction("Summary", obj);
+            return RedirectToAction("AddReferral", obj);
         }
 
         return RedirectToAction("AddPrescription");
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public IActionResult AddReferral()
+    {
+        var appointmentModel = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        ViewBag.Referrals = appointmentModel.Referrals;
+        ViewBag.Appointment = appointmentModel;
+        ViewBag.Patient = HttpContext.Session.GetObject<PatientResponse>("Patient");
+        ViewBag.Details = HttpContext.Session.GetObject<AppointmentResponse>("Appointment");
+        return View();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public IActionResult AddReferral(ReferralAddRequest request)
+    {
+        var appointment = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+
+        if (request is { FirstDigit: not null, SecondDigit: not null, ThirdDigit: not null, FourthDigit: not null } &&
+            appointment != null)
+        {
+            request.AppointmentId = appointment.Id;
+            appointment?.Referrals?.Add(request);
+            if (appointment != null)
+            {
+                HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", appointment);
+                HttpContext.Session.SetObject<List<ReferralAddRequest>>("ListR", appointment.Referrals);
+            }
+        }
+
+        if (request is { FirstDigit: null, SecondDigit: null, ThirdDigit: null, FourthDigit: null, Information: null })
+        {
+            HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", appointment);
+            var obj = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+            return RedirectToAction("Summary", obj);
+        }
+
+        return RedirectToAction("AddReferral");
+    }
+
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> Summary()
     {
@@ -296,6 +360,7 @@ public class AppointmentsController : Controller
         return View(obj);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Save(AppointmentUpdateRequest request)
     {
@@ -310,6 +375,14 @@ public class AppointmentsController : Controller
                 }
             }
 
+            if (request.Referrals is not null)
+            {
+                if (request.Referrals.Any())
+                {
+                    var b = await _referralsAdderService.AddRange(request.Referrals);
+                }
+            }
+
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Today");
         }
@@ -317,6 +390,7 @@ public class AppointmentsController : Controller
         return Json(request);
     }
 
+    [Authorize(Roles = "Admin")]
     public IActionResult RemovePrescription(int id)
     {
         if (id < 0)
@@ -332,6 +406,21 @@ public class AppointmentsController : Controller
     }
 
     [Authorize(Roles = "Admin")]
+    public IActionResult RemoveReferral(int id)
+    {
+        if (id < 0)
+            return RedirectToAction("AddReferral");
+        var request = HttpContext.Session.GetObject<AppointmentUpdateRequest>("StepOne");
+        if (request?.Referrals != null && request.Referrals.Any())
+        {
+            request.Referrals.RemoveAt(id);
+        }
+
+        if (request != null) HttpContext.Session.SetObject<AppointmentUpdateRequest>("StepOne", request);
+        return RedirectToAction("AddReferral");
+    }
+
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> SignInPatient(Guid? patientId, Guid? appointmentId)
     {
@@ -340,31 +429,68 @@ public class AppointmentsController : Controller
             Id = appointmentId,
             PatientId = patientId
         };
-        var response =  await _appointmentsBookerService.Reserve(request);
+        var response = await _appointmentsBookerService.Reserve(request);
         return RedirectToAction("Index");
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Patient")]
     [HttpPost]
     public async Task<IActionResult> CancelAppointment(Guid? appointmentId)
     {
         if (appointmentId is null)
             return RedirectToAction("Index");
         await _appointmentsBookerService.CancelReservation(appointmentId.Value);
+        if (User.IsInRole("Patient"))
+            return RedirectToAction("PatientAppointments");
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> DeleteAppointments(DateTime dateTime)
     {
         var matchingAppointments = await _appointmentsGetterService.GetAllAvalibleByDate(dateTime);
-        return View(matchingAppointments.OrderBy(tmp => tmp.Start.Value).ToList());
+        if (matchingAppointments.Count > 0)
+        {
+            return View(matchingAppointments.OrderBy(tmp => tmp.Start.Value).ToList());
+        }
+        
+        return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> DeleteAppointmentsRange(List<Guid> ids)
     {
         var deletedAppointment = await _appointmentsDeleterService.DeleteRange(ids);
         return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Patient")]
+    public async Task<IActionResult> PatientAppointments(int tab = 1)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var patient = await _patientsGetterService.GetByUserId(Guid.Parse(userId));
+        var allAppointments = await _appointmentsGetterService.GetAllPatientsAppointments(patient.Id);
+        if (tab == 1)
+        {
+            ViewBag.Tab = 1;
+            return View(allAppointments.Where(appointment => appointment is { State: State.Reserved, Finished: null })
+                .OrderBy(appointment => appointment.Start).ToList());
+        }
+        if (tab == 2)
+        {
+            foreach (var item in allAppointments)
+            {
+                item.SetPrescriptions(_prescriptionGetterService.GetAllByAppointmentId(item.Id));
+                item.SetReferrals(_referralsGetterService.GetAllByAppointmentId(item.Id));
+            }
+            ViewBag.Tab = 2;
+            return View(allAppointments.Where(appointemnt => appointemnt.State == State.Finished)
+                .OrderByDescending(appointment => appointment.End).ToList());
+        }
+
+        return RedirectToAction("Index", "Dashboard");
     }
 }

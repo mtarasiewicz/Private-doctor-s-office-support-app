@@ -41,6 +41,13 @@ namespace DocHub.Core.Services
             return patients.Select(p => p.ToPatientResponse()).ToList();
         }
 
+        public async Task<IQueryable<PatientResponse>>? GetAllAsQueryable()
+        {
+            var allPatients = await _patientsRepository.GetAll();
+            if (allPatients is null) return null;
+            return allPatients.Select(patient => patient.ToPatientResponse()).AsQueryable();
+        }
+
         public async Task<PatientResponse?> GetByUserId(Guid? userId)
         {
             if (userId is null) return null;

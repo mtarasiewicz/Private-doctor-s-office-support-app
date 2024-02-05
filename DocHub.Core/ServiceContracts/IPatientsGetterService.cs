@@ -12,5 +12,6 @@ namespace DocHub.Core.ServiceContracts
         Task<PatientResponse?> Get(Guid? id);
         Task<PatientResponse?> GetByUserId(Guid? userId);
         Task<List<PatientResponse>?> GetAll();
+        Task<IQueryable<PatientResponse>>? GetAllAsQueryable();
     }
 }

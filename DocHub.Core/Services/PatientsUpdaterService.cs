@@ -42,5 +42,6 @@ namespace DocHub.Core.Services
             await _patientsRepository.Update(matchingPatient);
             return matchingPatient.ToPatientResponse();
         }
+        
     }
 }
