@@ -1,13 +1,6 @@
-﻿using DocHub.Core.Enums;
+﻿
 using DocHub.Core.Enums.Identity;
-using DocHub.Core.ValidationAttributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace DocHub.Core.DTO
 {
@@ -25,7 +18,6 @@ namespace DocHub.Core.DTO
         [EmailAddress]
         [DataType(DataType.EmailAddress)]
         [MaxLength(100, ErrorMessage = "Max 100 characters")]
-        //TODO: [Remote()]
         public required string Email { get; set; }
         [Required(ErrorMessage = "Password can't be blank")]
         public required string Password { get; set; }

@@ -54,6 +54,11 @@ namespace DocHub.Ui.Controllers
         public async Task<IActionResult> Register(RegisterRequest request)
         {
             //Validate the model, if model is invalid return view
+            var exists = await _userManager.FindByEmailAsync(request.Email);
+            if (exists is not null)
+            {
+                ModelState.AddModelError(string.Empty, "Email is already in use");
+            }
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors =
@@ -174,7 +179,6 @@ namespace DocHub.Ui.Controllers
             var logInResult = await _signInManager.PasswordSignInAsync(request.Email, request.Password, isPersistent: false, lockoutOnFailure: false);
             if (logInResult.Succeeded)
             {
-                TempData["SuccessMessage"] = $"Welcome";
                 return RedirectToAction(nameof(DashboardController.Index), "Dashboard");
             }
             ViewBag.Error = "Invalid email or password";
@@ -191,6 +195,5 @@ namespace DocHub.Ui.Controllers
             TempData["SuccessMessage"] = "You have been logged out successfully.";
             return RedirectToAction("Login");
         }
-     
     }
 }
