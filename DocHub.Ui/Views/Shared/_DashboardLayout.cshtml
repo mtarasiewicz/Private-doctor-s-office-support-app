@@ -52,7 +52,7 @@
             </li>
             @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
             {
-                @if (currentUrl == "dashboard/mypatients")
+                @if (currentUrl == "addapoitment")
                 {
                     <li>
                         <a asp-controller="Appointments" asp-action="CreateAppointment" class="flex items-center p-2 text-gray-700 bg-white rounded-lg">
@@ -149,25 +149,55 @@
                 }
                 @if (currentUrl == "appointments/index")
                 {
-                    <li>
-                        <a asp-controller="Appointments" asp-action="Index" class="flex items-center p-2 text-gray-700 bg-white rounded-lg">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
-                            </svg>
-                            <span class="flex-1 ml-3 whitespace-nowrap">Reserve appointment</span>
-                        </a>
-                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a asp-controller="Appointments" asp-action="Index" class="flex items-center p-2 text-gray-700 bg-white rounded-lg">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Schedule</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-controller="Appointments" asp-action="Index" class="flex items-center p-2 text-gray-700 bg-white rounded-lg">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Reserve appointment</span>
+                            </a>
+                        </li>
+                        
+                    }
                 }
                 else
                 {
-                    <li>
-                        <a asp-controller="Appointments" asp-action="Index" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-gray-700 group">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
-                            </svg>
-                            <span class="flex-1 ml-3 whitespace-nowrap">Reserve appointment</span>
-                        </a>
-                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a asp-controller="Appointments" asp-action="Index" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-gray-700 group">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Schedule</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-controller="Appointments" asp-action="Index" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-gray-700 group">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Reserve appointment</span>
+                            </a>
+                        </li>
+                        
+                    }
                 }
                 if (User.IsInRole("Patient"))
                 {

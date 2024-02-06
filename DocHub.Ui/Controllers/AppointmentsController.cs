@@ -161,13 +161,17 @@ public class AppointmentsController : Controller
         var reserve = await _appointmentsBookerService.Reserve(request);
         if (reserve.PatientId is not null)
         {
-            // DateTime reminderTime = reserve.Start.Value.AddHours(-24);      
-            DateTime reminderTime = DateTime.Now.AddSeconds(10);
-            string message = $"Your visit will take place in: {reserve.Start.Value.Humanize()} \n Date of the visit: {reserve.Start.Value}";
-            BackgroundJob.Schedule(
-                () => _emailSender.SendEmailAsync("marcin13101999@gmail.com", "Appointment reminder",
-                    message),
-                reminderTime);
+            TimeSpan? diff = reserve.Start - DateTime.Now;
+            if (diff.Value.TotalHours > 24)
+            {
+                DateTime reminderTime = reserve.Start.Value.AddHours(-24);      
+                //DateTime reminderTime = DateTime.Now.AddSeconds(10);
+                string message = $"Your visit will take place in: {reserve.Start.Value.Humanize()} \n Date of the visit: {reserve.Start.Value}";
+                BackgroundJob.Schedule(
+                    () => _emailSender.SendEmailAsync(patient.Email, "Appointment reminder",
+                        message),
+                    reminderTime);
+            }
         }
 
         if (response.Start != null) TempData["SuccessMessage"] = "Appointment booked - " + response.Start.Value.Date;

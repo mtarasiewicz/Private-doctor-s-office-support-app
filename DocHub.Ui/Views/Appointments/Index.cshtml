@@ -11,309 +11,312 @@
 }
 @if (TempData["Test"] is not null)
 {
-    <div id="alert-1" class="flex items-center p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
-        <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-        </svg>
-        <span class="sr-only">Info</span>
-        <div class="ms-3 text-sm font-medium">
-            <p>@TempData["Test"] appointments addead ready to reserve by patients</p>
-        </div>
-        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-1" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+    <div id="alert-1" class="flex justify-between p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+       
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
             </svg>
-        </button>
+            <span class="sr-only">Info</span>
+            <div class="ms-3 text-sm font-medium my-auto">
+                <p>@TempData["Test"] appointments addead ready to reserve by patients</p>
+            </div>
+        
+            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-1" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+            </button>
+        
     </div>
 }
 <div class="mx-auto px-3">
-    <div class="bg-white shadow-md overflow-x-auto rounded-lg p-3">
-        <h2 class="text-2xl text-blue-500 font-semibold mb-4">Appointments</h2>
-        <nav class="flex" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a asp-controller="Today" asp-action="Index" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400">
-                        <svg class="w-[12px] h-[12px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                            <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-                        </svg>
-                        &nbsp; Dashboard
-                    </a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        <p class="ml-1 text-sm font-medium text-blue-600 hover:text-blue-600 md:ml-2">
-                            Reserve appointment
-                        </p>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-        <div class="flex justify-center">
-            <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>Today</span>
-            @if (User.IsInRole("Patient"))
-            {
-                <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-gray-200 rounded-full me-1.5 flex-shrink-0"></span>Appointment already booked</span>
-            }
-            else if (User.IsInRole("Admin"))
-            {
-                <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-full me-1.5 flex-shrink-0"></span>Appointment already booked</span>
-            }
-            <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-full me-1.5 flex-shrink-0"></span>Appointment available</span>
-        </div>
-        @if (!Model.IsEmpty)
+<div class="bg-white shadow-md overflow-x-auto rounded-lg p-3">
+<h2 class="text-2xl text-blue-500 font-semibold mb-4">Appointments</h2>
+<nav class="flex" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+            <a asp-controller="Today" asp-action="Index" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400">
+                <svg class="w-[12px] h-[12px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
+                </svg>
+                &nbsp; Dashboard
+            </a>
+        </li>
+        <li>
+            <div class="flex items-center">
+                <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <p class="ml-1 text-sm font-medium text-blue-600 hover:text-blue-600 md:ml-2">
+                    Reserve appointment
+                </p>
+            </div>
+        </li>
+    </ol>
+</nav>
+<div class="flex justify-center">
+    <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>Today</span>
+    @if (User.IsInRole("Patient"))
+    {
+        <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-gray-200 rounded-full me-1.5 flex-shrink-0"></span>Appointment already booked</span>
+    }
+    else if (User.IsInRole("Admin"))
+    {
+        <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-full me-1.5 flex-shrink-0"></span>Appointment already booked</span>
+    }
+    <span class="flex items-center text-xs font-medium text-gray-500 me-3"><span class="flex w-2.5 h-2.5 bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-full me-1.5 flex-shrink-0"></span>Appointment available</span>
+</div>
+@if (!Model.IsEmpty)
+{
+    <div class="md:flex p-1 container mt-1 grid grid-cols-1 justify-center mx-auto">
+        <a asp-action="Index" asp-route-page="@(Model.PageNumber - 1)"
+           class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">
+            <svg class="w-3.5 h-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+            </svg>
+        </a>
+        @foreach (var group in Model)
         {
-            <div class="md:flex p-1 container mt-1 grid grid-cols-1 justify-center mx-auto">
-                <a asp-action="Index" asp-route-page="@(Model.PageNumber - 1)"
-                   class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">
-                    <svg class="w-3.5 h-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-                    </svg>
-                </a>
-                @foreach (var group in Model)
-                {
-                    var header = group.Key?.Date.ToString("dddd dd.MM");
-                    var dropDownId = string.Concat(header, "dropdown");
-                    var dropDownToggle = string.Concat(header, "dropdown", "toggle");
-                    <div class="md:w-1/5">
-                        <div class="">
-                            <div class="font-bold px-3 rounded-sm text-sm text-center flex justify-center">
-                                @if (header != null)
-                                {
-                                    <p class="my-auto">
-                                        @textInfo.ToTitleCase(header)
-                                    </p>
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <button id="@dropDownId" data-dropdown-toggle="@dropDownToggle" class="my-auto items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50" type="button">
-                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                                                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                                            </svg>
-                                        </button>
-                                        <div id="@dropDownToggle" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 border border-b-2 border-b-red-600 ">
-                                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
-                                                <li>
-                                                    <a asp-action="DeleteAppointments" asp-route-dateTime="@group.Key?.Date.ToString(CultureInfo.InvariantCulture)" class="block px-4 py-2 hover:bg-gray-100 text-xs">Delete appointments</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    }
-                                }
-                            </div>
-                            @if (!(bool)group.Key?.Date.Equals(DateTime.Today))
+            var header = group.Key?.Date.ToString("dddd dd.MM");
+            var dropDownId = string.Concat(header, "dropdown");
+            var dropDownToggle = string.Concat(header, "dropdown", "toggle");
+            <div class="md:w-1/5">
+                <div class="">
+                    <div class="font-bold px-3 rounded-sm text-sm text-center flex justify-center">
+                        @if (header != null)
+                        {
+                            <p class="my-auto">
+                                @textInfo.ToTitleCase(header)
+                            </p>
+                            @if (User.IsInRole("Admin"))
                             {
-                                <hr class="h-px my-2 bg-gray-200 border-0">
+                                <button id="@dropDownId" data-dropdown-toggle="@dropDownToggle" class="my-auto items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50" type="button">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                                        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                                    </svg>
+                                </button>
+                                <div id="@dropDownToggle" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 border border-b-2 border-b-red-600 ">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
+                                        <li>
+                                            <a asp-action="DeleteAppointments" asp-route-dateTime="@group.Key?.Date.ToString(CultureInfo.InvariantCulture)" class="block px-4 py-2 hover:bg-gray-100 text-xs">Delete appointments</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                        }
+                    </div>
+                    @if (!(bool)group.Key?.Date.Equals(DateTime.Today))
+                    {
+                        <hr class="h-px my-2 bg-gray-200 border-0">
+                    }
+                    else
+                    {
+                        <hr class="my-2 border-blue-500 border-2">
+                    }
+                    <div class="flex flex-wrap justify-center">
+                        @foreach (var item in group.ToList().OrderBy(a => a.Start).Where(a => a.Start > DateTime.Now))
+                        {
+                            var confirmAppointmentModalId = string.Concat(item.Id, "modal", "confirmAppointment");
+                            var confirmCancelAppointmentModalId = string.Concat(item.Id, "modal", "cancelAppointment");
+                            var signInPatientToAppointmentModalId = string.Concat(item.Id, "modal", "signInPatientToAppointmentModal");
+                            var dropDownAppointmentId = string.Concat(item.Id, "dropdown");
+                            var dropDownButtonAppointmentId = string.Concat(item.Id, "dropdownButton");
+                            var tooltipId = "tooltip" + item.Id;
+                            var tooltipIdFinished = "tooltipFinished" + item.Id;
+                            if (item.PatientId is null)
+                            {
+                                if (User.IsInRole("Patient"))
+                                {
+                                    <div data-modal-target="@confirmAppointmentModalId" data-modal-toggle="@confirmAppointmentModalId" class="text-white bg-gradient-to-r w-20 from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer">@item.Start?.ToString("HH:mm")</div>
+                                }
+                                else if (User.IsInRole("Admin"))
+                                {
+                                    <div data-modal-target="@signInPatientToAppointmentModalId" data-modal-toggle="@signInPatientToAppointmentModalId" class="text-white bg-gradient-to-r w-20 from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer">@item.Start?.ToString("HH:mm")</div>
+                                }
                             }
                             else
                             {
-                                <hr class="my-2 border-blue-500 border-2">
-                            }
-                            <div class="flex flex-wrap justify-center">
-                                @foreach (var item in group.ToList().OrderBy(a => a.Start).Where(a => a.Start > DateTime.Now))
+                                if (User.IsInRole("Patient"))
                                 {
-                                    var confirmAppointmentModalId = string.Concat(item.Id, "modal", "confirmAppointment");
-                                    var confirmCancelAppointmentModalId = string.Concat(item.Id, "modal", "cancelAppointment");
-                                    var signInPatientToAppointmentModalId = string.Concat(item.Id, "modal", "signInPatientToAppointmentModal");
-                                    var dropDownAppointmentId = string.Concat(item.Id, "dropdown");
-                                    var dropDownButtonAppointmentId = string.Concat(item.Id, "dropdownButton");
-                                    var tooltipId = "tooltip" + item.Id;
-                                    var tooltipIdFinished = "tooltipFinished" + item.Id;
-                                    if (item.PatientId is null)
-                                    {
-                                        if (User.IsInRole("Patient"))
-                                        {
-                                            <div data-modal-target="@confirmAppointmentModalId" data-modal-toggle="@confirmAppointmentModalId" class="text-white bg-gradient-to-r w-20 from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer">@item.Start?.ToString("HH:mm")</div>
-                                        }
-                                        else if (User.IsInRole("Admin"))
-                                        {
-                                            <div data-modal-target="@signInPatientToAppointmentModalId" data-modal-toggle="@signInPatientToAppointmentModalId" class="text-white bg-gradient-to-r w-20 from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer">@item.Start?.ToString("HH:mm")</div>
-                                        }
-                                    }
-                                    else 
-                                    {
-                                        if (User.IsInRole("Patient"))
-                                        {
-                                            <div data-tooltip-target="@tooltipId" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-200 line-through">@item.Start?.ToString("HH:mm")</div>
-                                        }
-                                        else if (User.IsInRole("Admin") && item is {State: State.Reserved})
-                                        {
-                                            <button id="@dropDownButtonAppointmentId" data-dropdown-toggle="@dropDownAppointmentId" class=" text-white bg-gradient-to-r w-20 from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer" type="button">
-                                                @item.Start?.ToString("HH:mm")
-                                            </button>
+                                    <div data-tooltip-target="@tooltipId" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-200 line-through">@item.Start?.ToString("HH:mm")</div>
+                                }
+                                else if (User.IsInRole("Admin") && item is {State: State.Reserved})
+                                {
+                                    <button id="@dropDownButtonAppointmentId" data-dropdown-toggle="@dropDownAppointmentId" class=" text-white bg-gradient-to-r w-20 from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-300  font-medium rounded-lg text-sm px-5 py-2.5 text-left me-2 mb-2 cursor-pointer" type="button">
+                                        @item.Start?.ToString("HH:mm")
+                                    </button>
 
-                                            <!-- Dropdown menu -->
-                                            <div id="@dropDownAppointmentId" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg border w-30 border-b-orange-500 border-b-2">
-                                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="@dropDownButtonAppointmentId">
-                                                    <li>
-                                                        <a asp-action="Show" asp-route-appointmentId="@item.Id" class="block px-4 py-2 hover:bg-gray-100 text-xs font-semibold text-center">Show</a>
-                                                    </li>
-                                                    <li>
-                                                        <div data-modal-target="@confirmCancelAppointmentModalId" data-modal-toggle="@confirmCancelAppointmentModalId" class="block px-4 py-2 hover:bg-gray-100 text-xs font-semibold text-center">Cancel</div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div data-tooltip-target="@tooltipIdFinished" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-200 line-through">@item.Start?.ToString("HH:mm")</div>
-                                        }
-                                    }
-
-                                    <div id="@tooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
-                                        Already reserved
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                    </div>
-                                    <div id="@tooltipIdFinished" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
-                                        Finished
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                    </div>
-                                    <div id="@confirmCancelAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                        <div class="relative p-4 w-full max-w-md max-h-full">
-                                            <div class="relative bg-white border border-gray-500 rounded-lg shadow">
-                                                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="@confirmCancelAppointmentModalId">
-                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                    </svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                                <div class="p-4 md:p-5 text-center">
-                                                    <div class="mt-3">
-                                                        <svg class="w-8 h-8 text-gray-500 me-1 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                                        </svg>
-                                                        <div class="my-auto">
-                                                            <h3 class="text-lg font-normal text-gray-500 my-auto">
-                                                                Do you want to cancel appointment?
-                                                            </h3>
-                                                            <p class="font-semibold text-sm text-gray-700">@item.Start.Value.ToString("dd.MM.yy HH:mm")</p>
-                                                            <p class="font-semibold text-xs text-gray-500">
-                                                                Duration: @((int)(item.End.Value - item.Start.Value).TotalMinutes) minutes
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex text-center items-center justify-center">
-                                                        <form asp-action="CancelAppointment" asp-controller="Appointments" method="post">
-                                                            <input type="hidden" for="appointmentId" name="appointmentId" value="@item.Id"/>
-                                                            <button data-modal-hide="@confirmCancelAppointmentModalId" type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
-                                                                Yes
-                                                            </button>
-                                                        </form>
-                                                        <button data-modal-hide="@confirmCancelAppointmentModalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">No</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    // confirm appointment modal
-                                    <div id="@confirmAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                        <div class="relative p-4 w-full max-w-md max-h-full">
-                                            <div class="relative bg-white border border-gray-500 rounded-lg shadow">
-                                                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="@confirmAppointmentModalId">
-                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                    </svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                                <div class="p-4 md:p-5 text-center">
-                                                    <div class="mt-3">
-                                                        <svg class="w-8 h-8 text-gray-500 me-1 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                                        </svg>
-                                                        <div class="my-auto">
-                                                            <h3 class="text-lg font-normal text-gray-500 my-auto">
-                                                                Do you want to sign up for a appointment?
-                                                            </h3>
-                                                            <p class="font-semibold text-sm text-gray-700">@item.Start.Value.ToString("dd.MM.yy HH:mm")</p>
-                                                            <p class="font-semibold text-xs text-gray-500">
-                                                                Duration: @((int)(item.End.Value - item.Start.Value).TotalMinutes) minutes
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex text-center items-center justify-center">
-                                                        <form asp-action="ReserveAppointment" asp-controller="Appointments" method="post">
-                                                            <input type="hidden" for="appointmentId" name="appointmentId" value="@item.Id"/>
-                                                            <button data-modal-hide="@confirmAppointmentModalId" type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
-                                                                Yes
-                                                            </button>
-                                                        </form>
-                                                        <button data-modal-hide="@confirmAppointmentModalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">No</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="@signInPatientToAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                        <div class="relative p-4 w-full max-w-md max-h-full">
-                                            <div class="relative bg-white border border-gray-500 rounded-lg shadow">
-                                                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="@signInPatientToAppointmentModalId">
-                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                    </svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                                <form asp-action="SignInPatient" asp-controller="Appointments" method="post">
-                                                    <div class="p-4 md:p-5 text-center">
-                                                        <div class="mt-6">
-                                                            <h3 class="text-lg font-normal text-gray-500 my-auto">
-                                                                Select the patient you want to book for a visit
-                                                            </h3>
-                                                            <div class="my-auto flex mt-2 my-auto">
-                                                                <div class="p-1 mx-auto">
-                                                                    <p class="font-semibold text-sm text-gray-700">@item.Start.Value.ToString("dd.MM.yy HH:mm")</p>
-                                                                    <p class="font-semibold text-xs text-gray-500">
-                                                                        Duration: @((int)(item.End.Value - item.Start.Value).TotalMinutes) minutes
-                                                                    </p>
-                                                                </div>
-                                                                <div class="p-1 mx-auto my-auto">
-                                                                    <select asp-items="@ViewBag.Patients" for="patientId" name="patientId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                                                        <option value="">-- Select Patient --</option>
-                                                                    </select>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex text-center items-center justify-center">
-                                                            <input type="hidden" for="appointmentId" name="appointmentId" value="@item.Id"/>
-                                                            <button data-modal-hide="@signInPatientToAppointmentModalId" type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
-                                                                Save
-                                                            </button>
-                                                            <button data-modal-hide="@signInPatientToAppointmentModalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">No</button>
-                                                        </div>
-
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-
+                                    <!-- Dropdown menu -->
+                                    <div id="@dropDownAppointmentId" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg border w-30 border-b-orange-500 border-b-2">
+                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="@dropDownButtonAppointmentId">
+                                            <li>
+                                                <a asp-action="Show" asp-route-appointmentId="@item.Id" class="block px-4 py-2 hover:bg-gray-100 text-xs font-semibold text-center">Show</a>
+                                            </li>
+                                            <li>
+                                                <div data-modal-target="@confirmCancelAppointmentModalId" data-modal-toggle="@confirmCancelAppointmentModalId" class="block px-4 py-2 hover:bg-gray-100 text-xs font-semibold text-center">Cancel</div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 }
-                            </div>
-                        </div>
+                                else
+                                {
+                                    <div data-tooltip-target="@tooltipIdFinished" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-200 line-through">@item.Start?.ToString("HH:mm")</div>
+                                }
+                            }
 
+                            <div id="@tooltipId" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+                                Already reserved
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                            <div id="@tooltipIdFinished" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+                                Finished
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                            <div id="@confirmCancelAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <div class="relative bg-white border border-gray-500 rounded-lg shadow">
+                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="@confirmCancelAppointmentModalId">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <div class="p-4 md:p-5 text-center">
+                                            <div class="mt-3">
+                                                <svg class="w-8 h-8 text-gray-500 me-1 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                                </svg>
+                                                <div class="my-auto">
+                                                    <h3 class="text-lg font-normal text-gray-500 my-auto">
+                                                        Do you want to cancel appointment?
+                                                    </h3>
+                                                    <p class="font-semibold text-sm text-gray-700">@item.Start.Value.ToString("dd.MM.yy HH:mm")</p>
+                                                    <p class="font-semibold text-xs text-gray-500">
+                                                        Duration: @((int)(item.End.Value - item.Start.Value).TotalMinutes) minutes
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flex text-center items-center justify-center">
+                                                <form asp-action="CancelAppointment" asp-controller="Appointments" method="post">
+                                                    <input type="hidden" for="appointmentId" name="appointmentId" value="@item.Id"/>
+                                                    <button data-modal-hide="@confirmCancelAppointmentModalId" type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
+                                                        Yes
+                                                    </button>
+                                                </form>
+                                                <button data-modal-hide="@confirmCancelAppointmentModalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            // confirm appointment modal
+                            <div id="@confirmAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <div class="relative bg-white border border-gray-500 rounded-lg shadow">
+                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="@confirmAppointmentModalId">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <div class="p-4 md:p-5 text-center">
+                                            <div class="mt-3">
+                                                <svg class="w-8 h-8 text-gray-500 me-1 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                                </svg>
+                                                <div class="my-auto">
+                                                    <h3 class="text-lg font-normal text-gray-500 my-auto">
+                                                        Do you want to sign up for a appointment?
+                                                    </h3>
+                                                    <p class="font-semibold text-sm text-gray-700">@item.Start.Value.ToString("dd.MM.yy HH:mm")</p>
+                                                    <p class="font-semibold text-xs text-gray-500">
+                                                        Duration: @((int)(item.End.Value - item.Start.Value).TotalMinutes) minutes
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flex text-center items-center justify-center">
+                                                <form asp-action="ReserveAppointment" asp-controller="Appointments" method="post">
+                                                    <input type="hidden" for="appointmentId" name="appointmentId" value="@item.Id"/>
+                                                    <button data-modal-hide="@confirmAppointmentModalId" type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
+                                                        Yes
+                                                    </button>
+                                                </form>
+                                                <button data-modal-hide="@confirmAppointmentModalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="@signInPatientToAppointmentModalId" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <div class="relative bg-white border border-gray-500 rounded-lg shadow">
+                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="@signInPatientToAppointmentModalId">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <form asp-action="SignInPatient" asp-controller="Appointments" method="post">
+                                            <div class="p-4 md:p-5 text-center">
+                                                <div class="mt-6">
+                                                    <h3 class="text-lg font-normal text-gray-500 my-auto">
+                                                        Select the patient you want to book for a visit
+                                                    </h3>
+                                                    <div class="my-auto flex mt-2 my-auto">
+                                                        <div class="p-1 mx-auto">
+                                                            <p class="font-semibold text-sm text-gray-700">@item.Start.Value.ToString("dd.MM.yy HH:mm")</p>
+                                                            <p class="font-semibold text-xs text-gray-500">
+                                                                Duration: @((int)(item.End.Value - item.Start.Value).TotalMinutes) minutes
+                                                            </p>
+                                                        </div>
+                                                        <div class="p-1 mx-auto my-auto">
+                                                            <select asp-items="@ViewBag.Patients" for="patientId" name="patientId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                                                <option value="">-- Select Patient --</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex text-center items-center justify-center">
+                                                    <input type="hidden" for="appointmentId" name="appointmentId" value="@item.Id"/>
+                                                    <button data-modal-hide="@signInPatientToAppointmentModalId" type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
+                                                        Save
+                                                    </button>
+                                                    <button data-modal-hide="@signInPatientToAppointmentModalId" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">No</button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
                     </div>
-                }
-                @if (Model.HasNextPage)
-                {
-                    <a asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">
-                        <svg class="w-3.5 h-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                        </svg>
-                    </a>
-                }
+                </div>
+
             </div>
         }
-        else
+        @if (Model.HasNextPage)
         {
-            <div class="text-center text-gray-600 h-20 flex items-center justify-center">
-                <div>
-                    <p class="my-auto text-sm">Unfortunately, no available appointments were found, add available dates for your patients</p>
-                    <a class="text-blue-600 hover:underline text-xs" asp-action="CreateAppointment" asp-controller="Appointments">Add appointment.</a>
-                </div>
-            </div>
+            <a asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">
+                <svg class="w-3.5 h-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </a>
         }
     </div>
+}
+else if (User.IsInRole("Admin"))
+{
+    <div class="text-center text-gray-600 h-20 flex items-center justify-center">
+        <div>
+            <p class="my-auto text-sm">Unfortunately, no available appointments were found, add available dates for your patients</p>
+            <a class="text-blue-600 hover:underline text-xs" asp-action="CreateAppointment" asp-controller="Appointments">Add appointment.</a>
+        </div>
+    </div>
+}
+</div>
 </div>

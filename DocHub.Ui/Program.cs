@@ -12,7 +12,6 @@ var app = builder.Build();
 if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseHangfireDashboard("/jobs");
 }
 else
 {
@@ -23,7 +22,7 @@ else
     app.UseExceptionHandler("/Error");
 }
 /*Middlewares*/
-
+app.UseHangfireDashboard("/jobs");
 /*Https*/
 app.UseHsts(); // Active Hsts
 app.UseHttpsRedirection();

@@ -128,7 +128,6 @@ namespace DocHub.Ui.Controllers
                     ViewBag.Submit = "Save";
                     ViewBag.Skip = "Skip";
                     await _signInManager.SignInAsync(appUser, isPersistent: false);
-                    TempData["SuccessMessage"] = "Registration successful.";
                     return RedirectToAction(nameof(PatientController.EditProfile), "Patient", new { heading = "Add some aditional data.", 
                     submit = "Save", skip = "Skip", register = true});
                 }
@@ -192,7 +191,6 @@ namespace DocHub.Ui.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            TempData["SuccessMessage"] = "You have been logged out successfully.";
             return RedirectToAction("Login");
         }
     }

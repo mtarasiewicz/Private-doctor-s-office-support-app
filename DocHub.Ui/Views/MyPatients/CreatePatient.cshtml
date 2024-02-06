@@ -7,7 +7,7 @@
 }
 
 <div class="max-w-2xl mx-auto bg-white p-8 shadow-lg rounded-lg">
-    <h1 class="text-2xl font-semibold mb-4 text-blue-700">Add new patient</h1>
+    <h1 class="text-2xl font-semibold mb-4 text-blue-500">Add new patient</h1>
     <form asp-controller="MyPatients" asp-action="CreatePatient" method="post">
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -30,88 +30,152 @@
             </ol>
         </nav>
         <div class="border-b border-gray-400 my-4"></div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <h2 class="text-lg font-semibold mb-4">Personal data</h2>
-                <div>
-                    <label asp-for="FirstName" class="block text-gray-600 text-sm">Name</label>
-                    <input asp-for="FirstName" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="FirstName" class="text-red-500 text-sm"></span>
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h2 class="text-lg font-semibold mb-4">Dane osobowe</h2>
+                        <div>
+                            <label asp-for="FirstName" class="text-sm text-gray-700">First name</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+                                    </svg>
+                                </span>
+                                <input asp-for="FirstName" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="FirstName" class="text-xs text-red-600"></span>
+                        </div>
+                        <div>
+                            <label asp-for="LastName" class="text-sm text-gray-700">Last name</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+                                    </svg>
+                                </span>
+                                <input asp-for="LastName" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="LastName" class="text-xs text-red-600"></span>
+                        </div>
+                        <div>
+                            <label asp-for="PeselNumber" class="text-sm text-gray-700">PESEL</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 10a28.076 28.076 0 0 1-1.091 9M6.231 2.37a8.994 8.994 0 0 1 12.88 3.73M1.958 13S2 12.577 2 10a8.949 8.949 0 0 1 1.735-5.307m12.84 3.088c.281.706.426 1.46.425 2.22a30 30 0 0 1-.464 6.231M5 10a6 6 0 0 1 9.352-4.974M3 19a5.964 5.964 0 0 1 1.01-3.328 5.15 5.15 0 0 0 .786-1.926m8.66 2.486a13.96 13.96 0 0 1-.962 2.683M6.5 17.336C8 15.092 8 12.846 8 10a3 3 0 1 1 6 0c0 .75 0 1.521-.031 2.311M11 10.001c0 3 0 6-2 9"/>
+                                    </svg>
+                                </span>
+                                <input asp-for="PeselNumber" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="PeselNumber" class="text-xs text-red-600"></span>
+                        </div>
+                        <div>
+                            <label asp-for="DateOfBirth" class="text-sm text-gray-700">Date of birth</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path fill="currentColor" d="M6 1a1 1 0 0 0-2 0h2ZM4 4a1 1 0 0 0 2 0H4Zm7-3a1 1 0 1 0-2 0h2ZM9 4a1 1 0 1 0 2 0H9Zm7-3a1 1 0 1 0-2 0h2Zm-2 3a1 1 0 1 0 2 0h-2ZM1 6a1 1 0 0 0 0 2V6Zm18 2a1 1 0 1 0 0-2v2ZM5 11v-1H4v1h1Zm0 .01H4v1h1v-1Zm.01 0v1h1v-1h-1Zm0-.01h1v-1h-1v1ZM10 11v-1H9v1h1Zm0 .01H9v1h1v-1Zm.01 0v1h1v-1h-1Zm0-.01h1v-1h-1v1ZM10 15v-1H9v1h1Zm0 .01H9v1h1v-1Zm.01 0v1h1v-1h-1Zm0-.01h1v-1h-1v1ZM15 15v-1h-1v1h1Zm0 .01h-1v1h1v-1Zm.01 0v1h1v-1h-1Zm0-.01h1v-1h-1v1ZM15 11v-1h-1v1h1Zm0 .01h-1v1h1v-1Zm.01 0v1h1v-1h-1Zm0-.01h1v-1h-1v1ZM5 15v-1H4v1h1Zm0 .01H4v1h1v-1Zm.01 0v1h1v-1h-1Zm0-.01h1v-1h-1v1ZM2 4h16V2H2v2Zm16 0h2a2 2 0 0 0-2-2v2Zm0 0v14h2V4h-2Zm0 14v2a2 2 0 0 0 2-2h-2Zm0 0H2v2h16v-2ZM2 18H0a2 2 0 0 0 2 2v-2Zm0 0V4H0v14h2ZM2 4V2a2 2 0 0 0-2 2h2Zm2-3v3h2V1H4Zm5 0v3h2V1H9Zm5 0v3h2V1h-2ZM1 8h18V6H1v2Zm3 3v.01h2V11H4Zm1 1.01h.01v-2H5v2Zm1.01-1V11h-2v.01h2Zm-1-1.01H5v2h.01v-2ZM9 11v.01h2V11H9Zm1 1.01h.01v-2H10v2Zm1.01-1V11h-2v.01h2Zm-1-1.01H10v2h.01v-2ZM9 15v.01h2V15H9Zm1 1.01h.01v-2H10v2Zm1.01-1V15h-2v.01h2Zm-1-1.01H10v2h.01v-2ZM14 15v.01h2V15h-2Zm1 1.01h.01v-2H15v2Zm1.01-1V15h-2v.01h2Zm-1-1.01H15v2h.01v-2ZM14 11v.01h2V11h-2Zm1 1.01h.01v-2H15v2Zm1.01-1V11h-2v.01h2Zm-1-1.01H15v2h.01v-2ZM4 15v.01h2V15H4Zm1 1.01h.01v-2H5v2Zm1.01-1V15h-2v.01h2Zm-1-1.01H5v2h.01v-2Z"/>
+                                    </svg>
+                                </span>
+                                <input name="DateOfBirth" datepicker datepicker-orientation="bottom right" datepicker-format="dd.mm.yyyy" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="@DateTime.Today.Date.ToString("dd.MM.yyyy")">
+                            </div>
+                            <span asp-validation-for="DateOfBirth" class="text-xs text-red-600"></span>
+                        </div>
+                    </div>
+        
+        
+                    <div>
+                        <h2 class="text-lg font-semibold mb-4">Contact data</h2>
+                        <div>
+                            <label asp-for="Email" class="text-sm text-gray-700">Email</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16v-5.5C11 8.5 9.4 7 7.5 7m3.5 9H4v-5.5C4 8.5 5.6 7 7.5 7m3.5 9v4M7.5 7H14m0 0V4h2.5M14 7v3m-3.5 6H20v-6a3 3 0 0 0-3-3m-2 9v4m-8-6.5h1"/>
+                                      </svg>
+                                </span>
+                                <input asp-for="Email" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="Email" class="text-xs text-red-600"></span>
+                        </div>
+                        <div>
+                            <label asp-for="PhoneNumber" class="text-sm text-gray-700">Phone number</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m18.4 14.8-1.2-1.3a1.7 1.7 0 0 0-2.4 0l-.7.7a1.7 1.7 0 0 1-2.4 0l-1.9-1.9a1.7 1.7 0 0 1 0-2.4l.7-.6a1.7 1.7 0 0 0 0-2.5L9.2 5.6a1.6 1.6 0 0 0-2.4 0c-3.2 3.2-1.7 6.9 1.5 10 3.2 3.3 7 4.8 10.1 1.6a1.6 1.6 0 0 0 0-2.4Z"/>
+                                      </svg>
+                                </span>
+                                <input asp-for="PhoneNumber" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-xs text-red-600"></span>
+                        </div>
+                        <div>
+                            <label asp-for="City" class="text-sm text-gray-700">City</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 14h0a7 7 0 1 0-11.5 0h0l.1.3.3.3L12 21l5.1-6.2.6-.7.1-.2Z"/>
+                                      </svg>
+                                </span>
+                                <input asp-for="City" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="City" class="text-xs text-red-600"></span>
+                        </div>
+                        <div>
+                            <label asp-for="PostalCode" class="text-sm text-gray-700">Postal code</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m3.5 5.5 7.9 6c.4.3.8.3 1.2 0l7.9-6M4 19h16c.6 0 1-.4 1-1V6c0-.6-.4-1-1-1H4a1 1 0 0 0-1 1v12c0 .6.4 1 1 1Z"/>
+                                      </svg>
+                                </span>
+                                <input asp-for="PostalCode" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="PostalCode" class="text-xs text-red-600"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Address" class="text-sm text-gray-700">Address</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"/>
+                                      </svg>
+                                </span>
+                                <input asp-for="Address" class="rounded-none rounded-e-lg bg-white border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <span asp-validation-for="Address" class="text-xs text-red-600"></span>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="border-b border-gray-400 my-4"></div>
+                <div class="mb-4">
+                    <h2 class="text-lg font-semibold">Additional data</h2>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="HistoryOfDiseases" class="block text-gray-600 text-sm">History of diseases</label>
+                    <textarea asp-for="HistoryOfDiseases" class="w-full border p-2 rounded-md"></textarea>
+                    <span asp-validation-for="HistoryOfDiseases" class="text-red-500 text-sm"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Allergies" class="block text-gray-600 text-sm">Allergies</label>
+                    <textarea asp-for="Allergies" class="w-full border p-2 rounded-md"></textarea>
+                    <span asp-validation-for="Allergies" class="text-sm text-red-500"></span>
                 </div>
                 <div>
-                    <label asp-for="LastName" class="block text-gray-600 text-sm">Last name</label>
-                    <input asp-for="LastName" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="LastName" class="text-red-500 text-sm"></span>
+                    <label asp-for="TakenMedications" class="block text-gray-600 text-sm">Taken medications</label>
+                    <textarea asp-for="TakenMedications" class="w-full border p-2 rounded-md"></textarea>
+                    <span asp-validation-for="TakenMedications" class="text-sm text-red-500"></span>
                 </div>
-                <div>
-                    <label asp-for="PeselNumber" class="block text-gray-600 text-sm">PESEL</label>
-                    <input asp-for="PeselNumber" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="PeselNumber" class="text-red-500 text-sm"></span>
+        
+                <div class="mt-6">
+                    <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">Zapisz</button>
+                    <a asp-controller="Dashboard" asp-action="Index" class="text-gray-700 bg-gray-200 hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">Anuluj</a>
                 </div>
-                <div>
-                    <label asp-for="DateOfBirth" class="block text-gray-600 text-sm">Date of birth</label>
-                    <input asp-for="DateOfBirth" type="date" class="w-full border p-2 rounded-md">
-                    <span asp-validation-for="DateOfBirth" class="text-red-500 text-sm"></span>
-                </div>
-            </div>
-
-
-            <div>
-                <h2 class="text-lg font-semibold mb-4">Contact data</h2>
-                <div>
-                    <label asp-for="Email" class="block text-gray-600 text-sm">Email address</label>
-                    <input asp-for="Email" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="Email" class="text-red-500"></span>
-                </div>
-                <div>
-                    <label asp-for="PhoneNumber" class="block text-gray-600 text-sm">Phone number</label>
-                    <input asp-for="PhoneNumber" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="PhoneNumber" class="text-red-500"></span>
-                </div>
-                <div>
-                    <label asp-for="City" class="block text-gray-600 text-sm">City</label>
-                    <input asp-for="City" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="City" class="text-red-500"></span>
-                </div>
-                <div>
-                    <label asp-for="PostalCode" class="block text-gray-600 text-sm">Postal code</label>
-                    <input asp-for="PostalCode" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="PostalCode" class="text-red-500"></span>
-                </div>
-                <div>
-                    <label asp-for="Address" class="block text-gray-600 text-sm">Adress</label>
-                    <input asp-for="Address" class="w-full border p-2 rounded-md" />
-                    <span asp-validation-for="Address" class="text-red-500"></span>
-                </div>
-            </div>
+            </form>
         </div>
-
-        <div class="border-b border-gray-400 my-4"></div>
-        <div class="mb-4">
-            <h2 class="text-lg font-semibold">Additional data</h2>
-        </div>
-        <div class="mb-4">
-            <label asp-for="HistoryOfDiseases" class="block text-gray-600 text-sm">History of diseases</label>
-            <textarea asp-for="HistoryOfDiseases" class="w-full border p-2 rounded-md"></textarea>
-            <span asp-validation-for="HistoryOfDiseases" class="text-red-500 text-sm"></span>
-        </div>
-        <div class="mb-4">
-            <label asp-for="Allergies" class="block text-gray-600 text-sm">Allergies</label>
-            <textarea asp-for="Allergies" class="w-full border p-2 rounded-md"></textarea>
-            <span asp-validation-for="Allergies" class="text-sm text-red-500"></span>
-        </div>
-        <div>
-            <label asp-for="TakenMedications" class="block text-gray-600 text-sm">Taken medications</label>
-            <textarea asp-for="TakenMedications" class="w-full border p-2 rounded-md"></textarea>
-            <span asp-validation-for="TakenMedications" class="text-sm text-red-500"></span>
-        </div>
-
-        <div class="mt-6">
-            <button type="submit" class="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br text-white font-medium text-base px-4 py-2 rounded-md shadow-md transition duration-300">Save</button>
-            <a asp-controller="Dashboard" asp-action="Index" class="bg-gray-50 border hover:bg-gray-100 text-gray-700 font-medium text-base px-4 py-2 rounded-md border-gray-200 duration-300">Cancel</a>
-        </div>
-    </form>
-</div>
 @section scripts
     {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
