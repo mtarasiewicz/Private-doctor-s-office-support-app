@@ -12,4 +12,4 @@
 - **Tailwind CSS:** Utility-first CSS framework for rapidly building custom designs.
 - **Microsoft SQL Server:** Relational database management system for storing and retrieving data efficiently.
 
-![Visit schedule](https://imgur.com/a/j5J8F24)
+![Visit schedule](https://i.imgur.com/v0atl9x.png)
