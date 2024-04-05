@@ -18,7 +18,7 @@
 - Appointments schedule
 ![Visit schedule](https://i.imgur.com/v0atl9x.png)
 - A doctor assigning a patient to an appointment
-![A doctor assigning a patient to an appointment](https://imgur.com/odY36oN)
+![A doctor assigning a patient to an appointment](https://i.imgur.com/odY36oN.png)
 - Deleting appointments
 ![Deleting appointments](https://i.imgur.com/ekMRBkx.png)
 - Adding multiple appointments in a time frame
