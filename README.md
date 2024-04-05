@@ -12,4 +12,27 @@
 - **Tailwind CSS:** Utility-first CSS framework for rapidly building custom designs.
 - **Microsoft SQL Server:** Relational database management system for storing and retrieving data efficiently.
 
+## Private Medical Practice Management System
+
+*The most interesting application modules*
+- Appointments schedule
 ![Visit schedule](https://i.imgur.com/v0atl9x.png)
+- A doctor assigning a patient to an appointment
+![A doctor assigning a patient to an appointment](https://imgur.com/odY36oN)](https://i.imgur.com/odY36oN.png)
+- Deleting appointments
+![Deleting appointments](https://i.imgur.com/ekMRBkx.png)
+- Adding multiple appointments in a time frame
+![Adding multiple appointments](https://i.imgur.com/7moKvoA.png)
+- Patients profile
+![Patients profile](https://i.imgur.com/TIMlBJd.png)
+- Appointmetns during the day
+![Appointmetns during the day](https://i.imgur.com/EY4q713.png)
+- The first step of conducting a appointemnt
+![First step](https://i.imgur.com/89Jjl8e.png)
+- The second step of conducting a appointemnt
+![Second step](https://i.imgur.com/tCeqXCY.png)
+- The third step of conducting a appointemnt
+![Third step](https://i.imgur.com/AAh8bwp.png)
+- View from mobile device
+![View from mobile device](https://i.imgur.com/wNOkvcm.png)
+
