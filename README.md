@@ -1,10 +1,14 @@
 ## Features
 
-- **Self-Service Appointment Booking:** Patients can easily schedule appointments on their own.
-- **Flexible Appointment Scheduling:** Doctors can easily manage their appointment schedules according to their availability.
-- **Automatic Email Reminders:** Automatic email reminders are sent to patients to remind them of their upcoming appointments.
-- **Patient List and Visit History:** Maintain a list of patients along with their visit history for easy reference.
-- **Conducting Visits:** Ability for doctors to conduct visits with patients, record diagnosis, and prescribe medications.
+**Patient self-registration:** Patients can self-register for appointments using a simple online form. The system automatically checks the availability of dates and books appointments, eliminating the need to make an appointment by phone.
+
+**Appointment schedule management:** The doctor has full insight into his or her appointment schedule and can easily add, edit and delete appointments.
+
+**Appointments History:** The system stores a history of all patient visits, including the date and time of the visit, the patient's name, a description of the visit, and any additional information.
+
+**Automatic appointment notifications:** Patients receive automatic email notifications of upcoming appointments, helping them avoid forgetting appointments.
+
+**Patient Profile Management:** Patients can create and edit their profiles, add medical information and view visit history.
 
 ## Technologies Used
 
